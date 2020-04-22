@@ -17,11 +17,14 @@ protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: tru
 function createWindow() {
 	const winUrl = process.env.WEBPACK_DEV_SERVER_URL ? process.env.WEBPACK_DEV_SERVER_URL : 'app://./index.html';
 
+	//TODO:
+	//use https://github.com/AlexTorresSk/custom-electron-titlebar
+
 	// Create the browser window.
 	win = new BrowserWindow({
 		title: 'vChat',
-		width: 800,
-		height: 600,
+		minWidth: 800,
+		minHeigt: 600,
 		webPreferences: {
 			nodeIntegration: true
 		}

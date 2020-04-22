@@ -15,8 +15,6 @@
 		.loading-image {
 			display: block;
 			margin: auto;
-			width: 200px;
-			height: 200px;
 		}
 	}
 </style>
