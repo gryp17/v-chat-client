@@ -1,5 +1,5 @@
 
-import { app, protocol, BrowserWindow } from 'electron';
+import { app, protocol, BrowserWindow, Menu } from 'electron';
 import {
 	createProtocol,
 	installVueDevtools
@@ -15,6 +15,8 @@ let win;
 protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }]);
 
 function createWindow() {
+	const winUrl = process.env.WEBPACK_DEV_SERVER_URL ? process.env.WEBPACK_DEV_SERVER_URL : 'app://./index.html';
+
 	// Create the browser window.
 	win = new BrowserWindow({
 		title: 'vChat',
@@ -26,14 +28,34 @@ function createWindow() {
 	});
 
 	if (process.env.WEBPACK_DEV_SERVER_URL) {
-		// Load the url of the dev server if in development mode
-		win.loadURL(process.env.WEBPACK_DEV_SERVER_URL);
+		win.loadURL(winUrl);
 		if (!process.env.IS_TEST) win.webContents.openDevTools();
 	} else {
 		createProtocol('app');
-		// Load the index.html when not in development
-		win.loadURL('app://./index.html');
+		win.loadURL(winUrl);
 	}
+
+	const menu = Menu.buildFromTemplate([
+		{
+			label: 'Menu',
+			submenu: [
+				{
+					label: 'Reload',
+					click() {
+						win.loadURL(winUrl);
+					}
+				},
+				{
+					label: 'Exit',
+					click() {
+						app.quit();
+					}
+				}
+			]
+		}
+	]);
+
+	Menu.setApplicationMenu(menu);
 
 	win.on('closed', () => {
 		win = null;

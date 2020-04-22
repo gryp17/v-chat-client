@@ -1,14 +1,43 @@
 <template>
 	<div id="app">
-		<h2>vChat</h2>
-
-		<div id="nav">
-			<router-link to="/">Home</router-link> |
-			<router-link to="/about">About</router-link>
-		</div>
+		<LoadingIndicator v-show="loading" />
 		<router-view/>
 	</div>
 </template>
+
+<script>
+	import { mapState, mapActions } from 'vuex';
+	import LoadingIndicator from '@/components/LoadingIndicator';
+
+	export default {
+		components: {
+			LoadingIndicator
+		},
+		computed: {
+			...mapState('ui', [
+				'loading'
+			])
+		},
+		created() {
+			this.setLoading(true);
+
+			//TODO: check if the server URL is set
+			//TODO: check if the user is logged in
+			//TODO: and finally redirect to the chat/signup or the initial setup page
+
+			setTimeout(() => {
+				this.$router.push({
+					name: 'Chat'
+				});
+			}, 1500);
+		},
+		methods: {
+			...mapActions('ui', [
+				'setLoading'
+			])
+		}
+	};
+</script>
 
 <style lang="scss">
 	@font-face {
