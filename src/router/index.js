@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import InitialSetup from '@/views/InitialSetup';
-import Signup from '@/views/Signup';
+import Authentication from '@/views/Authentication';
 import Chat from '@/views/Chat';
 
 Vue.use(VueRouter);
@@ -9,17 +9,17 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: '/',
-		name: 'InitialSetup',
+		name: 'initial-setup',
 		component: InitialSetup
 	},
 	{
-		path: '/signup',
-		name: 'Signup',
-		component: Signup
+		path: '/authentication',
+		name: 'authentication',
+		component: Authentication
 	},
 	{
 		path: '/chat',
-		name: 'Chat',
+		name: 'chat',
 		component: Chat
 	}
 ];

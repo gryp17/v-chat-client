@@ -6,7 +6,7 @@
 </template>
 
 <script>
-	import { mapState, mapActions } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
 	import LoadingIndicator from '@/components/LoadingIndicator';
 
 	export default {
@@ -16,6 +16,12 @@
 		computed: {
 			...mapState('ui', [
 				'loading'
+			]),
+			...mapState('auth', [
+				'server'
+			]),
+			...mapGetters('auth', [
+				'isLoggedIn'
 			])
 		},
 		created() {
@@ -25,15 +31,35 @@
 			//TODO: check if the user is logged in
 			//TODO: and finally redirect to the chat/signup or the initial setup page
 
-			setTimeout(() => {
+			if (!this.server) {
+				//redirect to the initial setup page
 				this.$router.push({
-					name: 'Chat'
+					name: 'initial-setup'
 				});
-			}, 1500);
+				this.setLoading(false);
+				return;
+			}
+
+			this.getUserSession().then(() => {
+				if (!this.isLoggedIn) {
+					this.$router.push({
+						name: 'authentication'
+					});
+				} else {
+					this.$router.push({
+						name: 'chat'
+					});
+				}
+
+				this.setLoading(false);
+			});
 		},
 		methods: {
 			...mapActions('ui', [
 				'setLoading'
+			]),
+			...mapActions('auth', [
+				'getUserSession'
 			])
 		}
 	};
