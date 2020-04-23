@@ -23,7 +23,7 @@ function createWindow() {
 	// Create the browser window.
 	win = new BrowserWindow({
 		title: 'vChat',
-		minWidth: 800,
+		minWidth: 900,
 		minHeigt: 600,
 		webPreferences: {
 			nodeIntegration: true
