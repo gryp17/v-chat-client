@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
-//TODO: look for a different persisted state plugin
-//import { createPersistedState } from 'vuex-electron';
+import createPersistedState from 'vuex-persistedstate';
 
 import modules from './modules';
 
@@ -11,7 +9,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	modules,
 	plugins: [
-		//createPersistedState()
+		createPersistedState({
+			//persist only the auth module for now
+			paths: [
+				'auth'
+			]
+		})
 	],
 	strict: process.env.NODE_ENV !== 'production'
 });
