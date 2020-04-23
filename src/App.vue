@@ -71,6 +71,19 @@
 			outline: none;
 		}
 
+		//custom titlebar/menu styling
+		.titlebar {
+			.action-menu-item {
+				.menu-item-icon {
+					display: none;
+
+					.action-label:not(.separator) {
+						padding: 0 20px;
+					}
+				}
+			}
+		}
+
 		#app {
 			display: flex;
 			flex-direction: column;
