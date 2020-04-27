@@ -25,12 +25,18 @@
 				'setServer'
 			]),
 			onSetServer() {
-				//TODO: check if the server URL is correct and the user can connect to the API (maybe add an enpoint for checking the server status)
-				this.setServer(this.url);
+				//try to set the server URL
+				this.setServer(this.url).then((success) => {
+					if (!success) {
+						//TODO: show an error...
+						alert('Fail');
+						return;
+					}
 
-				//redirect to the authentication page
-				this.$router.push({
-					name: 'authentication'
+					//redirect to the authentication page
+					this.$router.push({
+						name: 'authentication'
+					});
 				});
 			}
 		}

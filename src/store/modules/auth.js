@@ -1,3 +1,6 @@
+import API from '@/services/API';
+import MiscHttpService from '@/services/misc';
+
 const getDefaultState = () => {
 	return {
 		server: null,
@@ -29,7 +32,19 @@ const dummySession = {
 
 const actions = {
 	setServer(context, server) {
-		context.commit('SET_SERVER', server);
+		return MiscHttpService.handshake(server).then((res) => {
+			if (!res.data || !res.data.success) {
+				return false;
+			}
+
+			//set the axios base URL
+			API.defaults.baseURL = server;
+
+			context.commit('SET_SERVER', server);
+			return true;
+		}).catch(() => {
+			return false;
+		});
 	},
 	getUserSession(context) {
 		return new Promise((resolve, reject) => {

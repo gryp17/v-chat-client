@@ -6,6 +6,7 @@
 </template>
 
 <script>
+	import API from '@/services/API';
 	import { mapState, mapGetters, mapActions } from 'vuex';
 	import LoadingIndicator from '@/components/LoadingIndicator';
 
@@ -39,6 +40,9 @@
 				this.setLoading(false);
 				return;
 			}
+
+			//set the axios base URL
+			API.defaults.baseURL = this.server;
 
 			this.getUserSession().then(() => {
 				if (!this.isLoggedIn) {
