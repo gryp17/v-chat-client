@@ -120,6 +120,16 @@
 			}
 		}
 
+		.toasted {
+			&.toasted-primary {
+				padding: 15px;
+			}
+
+			> svg:first-child {
+				margin-right: 10px;
+			}
+		}
+
 		#app {
 			display: flex;
 			flex-direction: column;

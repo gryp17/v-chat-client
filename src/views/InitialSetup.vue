@@ -27,16 +27,12 @@
 			onSetServer() {
 				//try to set the server URL
 				this.setServer(this.url).then((success) => {
-					if (!success) {
-						//TODO: show an error...
-						alert('Fail');
-						return;
+					if (success) {
+						//redirect to the authentication page
+						this.$router.push({
+							name: 'authentication'
+						});
 					}
-
-					//redirect to the authentication page
-					this.$router.push({
-						name: 'authentication'
-					});
 				});
 			}
 		}

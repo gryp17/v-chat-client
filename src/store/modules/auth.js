@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import API from '@/services/API';
 import UserHttpService from '@/services/user';
 import MiscHttpService from '@/services/misc';
@@ -43,6 +44,10 @@ const actions = {
 			context.commit('SET_SERVER', server);
 			return true;
 		}).catch(() => {
+			Vue.toasted.global.apiError({
+				message: 'Failed to connect to the specified server'
+			});
+
 			return false;
 		});
 	},
@@ -69,14 +74,9 @@ const actions = {
 			}
 			return res;
 		}).catch((error) => {
-			alert(error);
-			/*
-			TODO: add the vue toasts...
-
 			Vue.toasted.global.apiError({
 				message: `login failed - ${error}`
 			});
-			*/
 		});
 	},
 	logout(context) {
