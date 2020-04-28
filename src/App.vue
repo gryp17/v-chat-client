@@ -19,7 +19,8 @@
 				'loading'
 			]),
 			...mapState('auth', [
-				'server'
+				'server',
+				'token'
 			]),
 			...mapGetters('auth', [
 				'isLoggedIn'
@@ -43,6 +44,11 @@
 
 			//set the axios base URL
 			API.defaults.baseURL = this.server;
+
+			//set the axios token header
+			if (this.token) {
+				API.defaults.headers.common.token = this.token;
+			}
 
 			this.getUserSession().then(() => {
 				if (!this.isLoggedIn) {

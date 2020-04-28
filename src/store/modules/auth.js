@@ -1,9 +1,11 @@
 import API from '@/services/API';
+import UserHttpService from '@/services/user';
 import MiscHttpService from '@/services/misc';
 
 const getDefaultState = () => {
 	return {
 		server: null,
+		token: null,
 		userSession: null
 	};
 };
@@ -20,14 +22,12 @@ const mutations = {
 	SET_SERVER(state, server) {
 		state.server = server;
 	},
+	SET_TOKEN(state, token) {
+		state.token = token;
+	},
 	SET_USER_SESSION(state, userSession) {
 		state.userSession = userSession;
 	}
-};
-
-const dummySession = {
-	id: 1,
-	username: 'Plamen'
 };
 
 const actions = {
@@ -47,15 +47,37 @@ const actions = {
 		});
 	},
 	getUserSession(context) {
-		return new Promise((resolve, reject) => {
-			setTimeout(() => {
-				context.commit('SET_USER_SESSION', dummySession);
-				resolve(dummySession);
-			}, 3000);
+		context.commit('SET_USER_SESSION', null);
+
+		return UserHttpService.getSession().then((res) => {
+			if (res.data && res.data.user) {
+				context.commit('SET_USER_SESSION', res.data.user);
+			}
+			return res;
+		}).catch(() => {
+			return false;
 		});
 	},
-	login(context, { username, password, rememberMe }) {
-		context.commit('SET_USER_SESSION', dummySession);
+	login(context, { username, password }) {
+		return UserHttpService.login(username, password).then((res) => {
+			if (res.data && res.data.token) {
+				//set the axios token header
+				API.defaults.headers.common.token = res.data.token;
+
+				context.commit('SET_TOKEN', res.data.token);
+				context.commit('SET_USER_SESSION', res.data.user);
+			}
+			return res;
+		}).catch((error) => {
+			alert(error);
+			/*
+			TODO: add the vue toasts...
+
+			Vue.toasted.global.apiError({
+				message: `login failed - ${error}`
+			});
+			*/
+		});
 	},
 	logout(context) {
 		context.commit('SET_USER_SESSION', null);
