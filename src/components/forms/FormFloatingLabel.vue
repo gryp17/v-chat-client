@@ -1,0 +1,35 @@
+<template>
+	<div :class="['form-floating-label', {'visible': visible}]">
+		<slot></slot>
+	</div>
+</template>
+
+<script>
+	export default {
+		props: {
+			visible: {
+				default: false
+			}
+		}
+	};
+</script>
+
+<style scoped lang="scss">
+	.form-floating-label {
+		position: absolute;
+		top: 0px;
+		left: 5px;
+		padding: 0px 5px;
+		background-color: $white;
+		border: solid 1px $blue-light;
+		font-size: 10px;
+		opacity: 0;
+		z-index: 6;
+		transition: all 100ms ease-in;
+
+		&.visible {
+			top: -8px;
+			opacity: 1;
+		}
+	}
+</style>

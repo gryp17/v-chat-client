@@ -3,6 +3,14 @@
 		initial setup page
 		contains controls for setting up the workspace/server URL
 
+		<FormInput
+			v-model="url"
+			type="text"
+			name="url"
+			floating-label
+			placeholder="Server URL"
+		></FormInput>
+
 		<input v-model="url" placeholder="Server URL" type="text" />
 
 		<button @click="onSetServer">

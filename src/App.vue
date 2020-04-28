@@ -6,10 +6,16 @@
 </template>
 
 <script>
+	import Vue from 'vue';
 	import { ipcRenderer } from 'electron';
 	import { mapState, mapGetters, mapActions } from 'vuex';
 	import API from '@/services/API';
+
+	import FormInput from '@/components/forms/FormInput';
 	import LoadingIndicator from '@/components/LoadingIndicator';
+
+	//global components
+	Vue.component('FormInput', FormInput);
 
 	export default {
 		components: {
