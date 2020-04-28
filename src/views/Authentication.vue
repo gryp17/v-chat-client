@@ -18,7 +18,7 @@
 			]),
 			onLogin() {
 				this.login({
-					username: 'plamen',
+					email: 'plamen@abv.bg',
 					password: '1234'
 				});
 			}

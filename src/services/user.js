@@ -4,13 +4,13 @@ import API from './API';
 export default {
 	/**
 	 * Logs in the user with the provided credentials
-	 * @param {String} username
+	 * @param {String} email
 	 * @param {String} password
 	 * @returns {Promise}
 	 */
-	login(username, password) {
+	login(email, password) {
 		return API.post('/auth/login', {
-			username,
+			email,
 			password
 		});
 	},

@@ -63,8 +63,8 @@ const actions = {
 			return false;
 		});
 	},
-	login(context, { username, password }) {
-		return UserHttpService.login(username, password).then((res) => {
+	login(context, { email, password }) {
+		return UserHttpService.login(email, password).then((res) => {
 			if (res.data && res.data.token) {
 				//set the axios token header
 				API.defaults.headers.common.token = res.data.token;
