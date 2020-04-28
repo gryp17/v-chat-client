@@ -98,7 +98,8 @@
 	}
 
 	body {
-		font-family: "Roboto Mono";
+		background: $background;
+		font-family:  $font-family;
 		color: $text-color;
 
 		:focus {
