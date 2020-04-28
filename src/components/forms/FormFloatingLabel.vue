@@ -23,6 +23,7 @@
 		background-color: $white;
 		border: solid 1px $blue-light;
 		font-size: 10px;
+		font-weight: bold;
 		opacity: 0;
 		z-index: 6;
 		transition: all 100ms ease-in;

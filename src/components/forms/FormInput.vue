@@ -136,11 +136,14 @@
 		margin-bottom: 15px;
 
 		.form-control {
+			display: block;
+			width: 100%;
 			padding: 10px;
 			border-radius: 0px;
-			background-color: $gray;
-			border: solid 1px transparent;
+			background-color: $white;
+			border: solid 1px $gray;
 			font-size: inherit;
+			box-sizing: border-box;
 			transition: all 300ms;
 
 			&:focus {

@@ -3,19 +3,21 @@
 		initial setup page
 		contains controls for setting up the workspace/server URL
 
-		<FormInput
-			v-model="url"
-			type="text"
-			name="url"
-			floating-label
-			placeholder="Server URL"
-		></FormInput>
+		<div class="form-wrapper">
+			<FormInput
+				v-model="url"
+				type="text"
+				name="url"
+				floating-label
+				placeholder="Server URL"
+			></FormInput>
 
-		<input v-model="url" placeholder="Server URL" type="text" />
+			<input v-model="url" placeholder="Server URL" type="text" />
 
-		<button @click="onSetServer">
-			Set server
-		</button>
+			<button @click="onSetServer">
+				Set server
+			</button>
+		</div>
 	</div>
 </template>
 
@@ -48,5 +50,10 @@
 </script>
 
 <style lang="scss">
-
+	.initial-setup-page {
+		.form-wrapper {
+			margin: auto;
+			width: 70%;
+		}
+	}
 </style>
