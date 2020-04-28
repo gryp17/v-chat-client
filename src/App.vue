@@ -6,8 +6,9 @@
 </template>
 
 <script>
-	import API from '@/services/API';
+	import { ipcRenderer } from 'electron';
 	import { mapState, mapGetters, mapActions } from 'vuex';
+	import API from '@/services/API';
 	import LoadingIndicator from '@/components/LoadingIndicator';
 
 	export default {
@@ -27,6 +28,10 @@
 			])
 		},
 		created() {
+			ipcRenderer.on('sign-out', () => {
+				this.resetState();
+			});
+
 			this.setLoading(true);
 
 			//TODO: check if the server URL is set
@@ -69,7 +74,8 @@
 				'setLoading'
 			]),
 			...mapActions('auth', [
-				'getUserSession'
+				'getUserSession',
+				'resetState'
 			])
 		}
 	};

@@ -20,6 +20,9 @@ const getters = {
 };
 
 const mutations = {
+	RESET_STATE(state) {
+		Object.assign(state, getDefaultState());
+	},
 	SET_SERVER(state, server) {
 		state.server = server;
 	},
@@ -32,6 +35,9 @@ const mutations = {
 };
 
 const actions = {
+	resetState(context) {
+		context.commit('RESET_STATE');
+	},
 	setServer(context, server) {
 		return MiscHttpService.handshake(server).then((res) => {
 			if (!res.data || !res.data.success) {

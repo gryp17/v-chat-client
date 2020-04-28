@@ -47,6 +47,13 @@ function createWindow() {
 					}
 				},
 				{
+					label: 'Sign out',
+					click() {
+						win.webContents.send('sign-out');
+						win.loadURL(winUrl);
+					}
+				},
+				{
 					label: 'Exit',
 					click() {
 						app.quit();
