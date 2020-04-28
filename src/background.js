@@ -22,7 +22,7 @@ function createWindow() {
 		title: 'vChat',
 		frame: false,
 		minWidth: 900,
-		minHeigt: 600,
+		minHeight: 600,
 		webPreferences: {
 			nodeIntegration: true
 		}
