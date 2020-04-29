@@ -12,10 +12,12 @@
 	import API from '@/services/API';
 
 	import FormInput from '@/components/forms/FormInput';
+	import FormButton from '@/components/forms/FormButton';
 	import LoadingIndicator from '@/components/LoadingIndicator';
 
 	//global components
 	Vue.component('FormInput', FormInput);
+	Vue.component('FormButton', FormButton);
 
 	export default {
 		components: {
@@ -136,6 +138,21 @@
 		.toasted {
 			&.toasted-primary {
 				padding: 15px;
+
+				a.action.icon {
+					padding: 0px;
+					margin-right: 0px;
+					color: $white;
+					opacity: 0.7;
+
+					> svg {
+						font-size: 20px;
+					}
+
+					&:hover {
+						opacity: 1;
+					}
+				}
 			}
 
 			> svg:first-child {

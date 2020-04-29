@@ -15,7 +15,7 @@ new Titlebar({
 
 Vue.use(Toasted, {
 	position: 'bottom-center',
-	duration: 5000,
+	duration: 3000,
 	keepOnHover: true,
 	iconPack: 'fontawesome'
 });
@@ -27,7 +27,15 @@ Vue.toasted.register('apiError', (payload) => {
 	type: 'error',
 	icon: {
 		name: 'fa-exclamation-triangle'
-	}
+	},
+	action: [
+		{
+			icon: 'fa-times',
+			onClick: (e, toast) => {
+				toast.goAway(0);
+			}
+		}
+	]
 });
 
 Vue.config.productionTip = false;

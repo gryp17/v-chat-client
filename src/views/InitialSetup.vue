@@ -5,15 +5,19 @@
 
 			<FormInput
 				v-model="url"
+				@keyup.enter="submit"
 				type="text"
 				name="url"
 				floating-label
 				placeholder="Server URL"
 			></FormInput>
 
-			<button @click="onSetServer">
+			<FormButton
+				:disabled="submitting"
+				@click="submit"
+			>
 				Set server
-			</button>
+			</FormButton>
 		</div>
 	</div>
 </template>
@@ -24,14 +28,21 @@
 	export default {
 		data() {
 			return {
-				url: ''
+				url: '',
+				submitting: false
 			};
 		},
 		methods: {
 			...mapActions('auth', [
 				'setServer'
 			]),
-			onSetServer() {
+			submit() {
+				if (this.submitting) {
+					return;
+				}
+
+				this.submitting = true;
+
 				//try to set the server URL
 				this.setServer(this.url).then((success) => {
 					if (success) {
@@ -40,6 +51,8 @@
 							name: 'authentication'
 						});
 					}
+
+					this.submitting = false;
 				});
 			}
 		}
@@ -55,12 +68,17 @@
 		.form-wrapper {
 			margin: auto;
 			width: 70%;
-			padding: 10px;
+			padding: 15px;
 			background-color: $gray;
 
 			h4 {
-				margin-top: 10px;
+				margin-top: 5px;
 				text-align: center;
+			}
+
+			.form-button {
+				display: block;
+				margin: auto;
 			}
 		}
 	}
