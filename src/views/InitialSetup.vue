@@ -68,6 +68,7 @@
 		.form-wrapper {
 			margin: auto;
 			width: 70%;
+			max-width: 500px;
 			padding: 15px;
 			background-color: $gray;
 
