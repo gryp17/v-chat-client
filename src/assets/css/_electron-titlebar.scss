@@ -1,0 +1,11 @@
+.titlebar {
+	.action-menu-item {
+		.menu-item-icon {
+			display: none;
+
+			.action-label:not(.separator) {
+				padding: 0 20px;
+			}
+		}
+	}
+}

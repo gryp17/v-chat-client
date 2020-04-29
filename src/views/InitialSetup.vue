@@ -16,7 +16,7 @@
 				:disabled="submitting"
 				@click="submit"
 			>
-				Set server
+				Proceed
 			</FormButton>
 		</div>
 	</div>

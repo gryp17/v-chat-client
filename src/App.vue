@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<LoadingIndicator v-show="loading" />
-		<router-view/>
+		<router-view />
 	</div>
 </template>
 
@@ -90,6 +90,10 @@
 </script>
 
 <style lang="scss">
+	@import '~@/assets/css/_electron-titlebar';
+	@import '~@/assets/css/_vue-tabs';
+	@import '~@/assets/css/_vue-toasted';
+
 	@font-face {
 		font-family: "Roboto Mono";
 		src: url(~@/assets/fonts/RobotoMono-Regular.woff2) format("woff2"),
@@ -120,44 +124,6 @@
 
 		button:focus {
 			outline: none;
-		}
-
-		//custom titlebar/menu styling
-		.titlebar {
-			.action-menu-item {
-				.menu-item-icon {
-					display: none;
-
-					.action-label:not(.separator) {
-						padding: 0 20px;
-					}
-				}
-			}
-		}
-
-		.toasted {
-			&.toasted-primary {
-				padding: 15px;
-
-				a.action.icon {
-					padding: 0px;
-					margin-right: 0px;
-					color: $white;
-					opacity: 0.7;
-
-					> svg {
-						font-size: 20px;
-					}
-
-					&:hover {
-						opacity: 1;
-					}
-				}
-			}
-
-			> svg:first-child {
-				margin-right: 10px;
-			}
 		}
 
 		#app {
