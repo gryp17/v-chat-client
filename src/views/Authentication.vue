@@ -1,8 +1,7 @@
 <template>
 	<div class="authentication-page">
-		authentication page that contains two tabs with signup and login options
 
-		<div class="form-wrapper">
+		<div class="tabs-wrapper">
 			<Tabs cache-lifetime="0">
 				<Tab name="Login">
 					1111111
@@ -44,13 +43,23 @@
 
 <style lang="scss">
 	.authentication-page {
-		.form-wrapper {
+		$tabs-border: solid 2px $gray;
+
+		.tabs-wrapper {
 			margin: auto;
+			margin-top: 100px;
 			width: 70%;
 			max-width: 500px;
 
+			.tabs-component {
+				border-left: $tabs-border;
+				border-right: $tabs-border;
+				border-bottom: $tabs-border;
+			}
+
 			.tabs-component-tab {
 				flex: 1;
+				border-top: solid 3px $gray;
 
 				&.is-active {
 					background-color: $white;

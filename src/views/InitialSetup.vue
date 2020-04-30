@@ -70,7 +70,8 @@
 			width: 70%;
 			max-width: 500px;
 			padding: 15px;
-			background-color: $gray;
+			background-color: $white;
+			border: solid 2px $gray;
 
 			h4 {
 				margin-top: 5px;
