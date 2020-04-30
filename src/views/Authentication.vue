@@ -56,6 +56,10 @@
 					justify-content: center;;
 				}
 			}
+
+			.tabs-component-panels {
+				padding: 20px;
+			}
 		}
 	}
 </style>

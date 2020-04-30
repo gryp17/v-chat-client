@@ -66,7 +66,7 @@
 		.form-button {
 			display: block;
 			margin: auto;
-			margin-bottom: 5px;
+			margin-top: 20px;
 		}
 	}
 </style>
