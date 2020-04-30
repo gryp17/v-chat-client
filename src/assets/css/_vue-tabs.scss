@@ -12,33 +12,28 @@
 	}
 
 	.tabs-component-tab {
-		color: #999;
+		background-color: $gray;
+		color: lighten($text-color, 20%);
 		font-size: 14px;
 		font-weight: 600;
 		list-style: none;
 		transform: translateY(1px);
-		transition: transform .3s ease;
-
-		/*
-		&:not(:last-child) {
-			border-bottom: dotted 1px #ddd;
-		}
-		*/
+		transition: transform 0.3s ease;
 
 		&:hover {
-			color: #666;
+			color: $text-color;
 		}
 
 		&.is-active {
-			color: #000;
-			border: solid 1px #ddd;
-			background-color: #fff;
-			border-bottom: solid 1px #fff;
+			color: $text-color;
+			border: solid 1px $gray;
+			background-color: $white;
+			border-bottom: solid 1px $white;
 			z-index: 2;
 		}
 
 		&.is-disabled * {
-			color: #cdcdcd;
+			color: lighten($text-color, 50%);;
 			cursor: not-allowed !important;
 		}
 
@@ -46,15 +41,15 @@
 			align-items: center;
 			color: inherit;
 			display: flex;
-			padding: .75em 1em;
+			padding: 10px 15px;
 			text-decoration: none;
 		}
 	}
 
 	.tabs-component-panels {
 		border-top-left-radius: 0;
-		background-color: #fff;
-		border: solid 1px #ddd;
+		background-color: $white;
+		border: solid 1px $gray;
 		box-shadow: 0 0 10px rgba(0, 0, 0, .05);
 		padding: 10px;
 	}

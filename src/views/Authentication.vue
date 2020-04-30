@@ -2,17 +2,16 @@
 	<div class="authentication-page">
 		authentication page that contains two tabs with signup and login options
 
-		<Tabs cache-lifetime="0">
-			<Tab name="First tab">
-				1111111
-			</Tab>
-			<Tab name="Second tab">
-				222222
-			</Tab>
-			<Tab name="Third tab">
-				3333333333
-			</Tab>
-		</Tabs>
+		<div class="form-wrapper">
+			<Tabs cache-lifetime="0">
+				<Tab name="Login">
+					1111111
+				</Tab>
+				<Tab name="Sign Up">
+					222222
+				</Tab>
+			</Tabs>
+		</div>
 
 		<button @click="onLogin">
 			Login
@@ -42,3 +41,25 @@
 		}
 	};
 </script>
+
+<style lang="scss">
+	.authentication-page {
+		.form-wrapper {
+			margin: auto;
+			width: 70%;
+			max-width: 500px;
+
+			.tabs-component-tab {
+				flex: 1;
+
+				&.is-active {
+					background-color: $white;
+				}
+
+				.tabs-component-tab-a {
+					justify-content: center;;
+				}
+			}
+		}
+	}
+</style>
