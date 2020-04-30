@@ -85,6 +85,22 @@ const actions = {
 			});
 		});
 	},
+	signup(context, { email, displayName, password, repeatPassword }) {
+		return UserHttpService.signup(email, displayName, password, repeatPassword).then((res) => {
+			if (res.data && res.data.token) {
+				//set the axios token header
+				API.defaults.headers.common.token = res.data.token;
+
+				context.commit('SET_TOKEN', res.data.token);
+				context.commit('SET_USER_SESSION', res.data.user);
+			}
+			return res;
+		}).catch((error) => {
+			Vue.toasted.global.apiError({
+				message: `signup failed - ${error}`
+			});
+		});
+	},
 	logout(context) {
 		context.commit('SET_USER_SESSION', null);
 	}

@@ -15,6 +15,22 @@ export default {
 		});
 	},
 	/**
+	 * Signs up the user
+	 * @param {String} email
+	 * @param {String} displayName
+	 * @param {String} password
+	 * @param {String} repeatPassword
+	 * @returns {Promise}
+	 */
+	signup(email, displayName, password, repeatPassword) {
+		return API.post('/auth/signup', {
+			email,
+			displayName,
+			password,
+			repeatPassword
+		});
+	},
+	/**
 	 * Returns the current user session
 	 * @returns {Promise}
 	 */
