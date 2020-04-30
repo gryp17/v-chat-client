@@ -2,7 +2,10 @@
 	<div class="login-form">
 		<FormInput
 			v-model="email"
+			:error="errors.email"
 			@keyup.enter="submit"
+			@keyup="clearError"
+			@focus="clearError"
 			type="text"
 			name="email"
 			floating-label
@@ -11,7 +14,10 @@
 
 		<FormInput
 			v-model="password"
+			:error="errors.password"
 			@keyup.enter="submit"
+			@keyup="clearError"
+			@focus="clearError"
 			type="password"
 			name="password"
 			floating-label
@@ -27,7 +33,9 @@
 </template>
 
 <script>
-	import { mapActions } from 'vuex';
+	import { mapState, mapActions } from 'vuex';
+
+	const formName = 'login';
 
 	export default {
 		data() {
@@ -37,9 +45,22 @@
 				submitting: false
 			};
 		},
+		computed: {
+			...mapState('forms', {
+				errors: (state) => state.errors[formName]
+			})
+		},
+		created() {
+			this.resetFormErrors(formName);
+		},
 		methods: {
 			...mapActions('auth', [
 				'login'
+			]),
+			...mapActions('forms', [
+				'setFormErrors',
+				'clearFormError',
+				'resetFormErrors'
 			]),
 			submit() {
 				if (this.submitting) {
@@ -48,13 +69,37 @@
 
 				this.submitting = true;
 
-				this.login({
-					email: 'plamen@abv.bg',
-					password: '12345'
-				}).then((res) => {
-					console.log(res);
+				const params = {
+					email: this.email,
+					password: this.password
+				};
+
+				this.login(params).then((res) => {
+					const data = res.data;
+
+					if (data.user) {
+						this.$router.push({
+							name: 'chat'
+						});
+					} else if (data.errors) {
+						this.setFormErrors({
+							errors: data.errors,
+							form: formName
+						});
+					}
 
 					this.submitting = false;
+				});
+			},
+			/**
+			 * Clears the form error related to this input
+			 * @param {Object} e
+			 */
+			clearError(e) {
+				const field = e.target.name;
+				this.clearFormError({
+					form: formName,
+					field
 				});
 			}
 		}

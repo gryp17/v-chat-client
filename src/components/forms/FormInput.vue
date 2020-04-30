@@ -133,7 +133,7 @@
 <style scoped lang="scss">
 	.form-input{
 		position: relative;
-		margin-bottom: 15px;
+		margin-bottom: 18px;
 
 		.form-control {
 			display: block;
