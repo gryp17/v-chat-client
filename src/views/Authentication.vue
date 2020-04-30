@@ -1,42 +1,29 @@
 <template>
 	<div class="authentication-page">
-
 		<div class="tabs-wrapper">
 			<Tabs cache-lifetime="0">
 				<Tab name="Login">
-					1111111
+					<LoginForm />
 				</Tab>
 				<Tab name="Sign Up">
-					222222
+					<SignupForm />
 				</Tab>
 			</Tabs>
 		</div>
-
-		<button @click="onLogin">
-			Login
-		</button>
 	</div>
 </template>
 
 <script>
-	import { mapActions } from 'vuex';
 	import { Tabs, Tab } from 'vue-tabs-component';
+	import LoginForm from '@/components/LoginForm';
+	import SignupForm from '@/components/SignupForm';
 
 	export default {
 		components: {
 			Tabs,
-			Tab
-		},
-		methods: {
-			...mapActions('auth', [
-				'login'
-			]),
-			onLogin() {
-				this.login({
-					email: 'plamen@abv.bg',
-					password: '1234'
-				});
-			}
+			Tab,
+			LoginForm,
+			SignupForm
 		}
 	};
 </script>
