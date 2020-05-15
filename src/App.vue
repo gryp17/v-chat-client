@@ -11,9 +11,13 @@
 	import { mapState, mapGetters, mapActions } from 'vuex';
 	import API from '@/services/API';
 
+	import errorsMap from '@/filters/errorsMap';
 	import FormInput from '@/components/forms/FormInput';
 	import FormButton from '@/components/forms/FormButton';
 	import LoadingIndicator from '@/components/LoadingIndicator';
+
+	//global filters
+	Vue.filter('errorsMap', errorsMap);
 
 	//global components
 	Vue.component('FormInput', FormInput);

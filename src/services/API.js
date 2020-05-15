@@ -1,5 +1,5 @@
 import axios from 'axios';
-//import errorsMap from '@/filters/errorsMap';
+import errorsMap from '@/filters/errorsMap';
 
 const API = axios.create({
 	withCredentials: true
@@ -12,7 +12,13 @@ API.interceptors.response.use((res) => {
 		return Promise.reject(res.data.apiError);
 	}
 
-	//TODO: translate the error code into error string
+	//translate the error codes into actual error messages
+	if (res.data && res.data.errors) {
+		Object.keys(res.data.errors).forEach((field) => {
+			const error = res.data.errors[field];
+			res.data.errors[field] = errorsMap(error);
+		});
+	}
 
 	return res;
 });
