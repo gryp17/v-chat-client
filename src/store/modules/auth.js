@@ -103,6 +103,7 @@ const actions = {
 	},
 	logout(context) {
 		context.commit('SET_USER_SESSION', null);
+		context.commit('SET_TOKEN', null);
 	}
 };
 

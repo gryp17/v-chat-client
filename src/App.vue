@@ -40,8 +40,23 @@
 			])
 		},
 		created() {
-			ipcRenderer.on('sign-out', () => {
+			ipcRenderer.on('change-server', () => {
+				//reset the auth state
 				this.resetState();
+
+				this.redirectTo({
+					name: 'initial-setup'
+				});
+			});
+
+			ipcRenderer.on('reset-settings', () => {
+				//reset the auth state
+				this.resetState();
+				//TODO: reset the rest of the settings state
+
+				this.redirectTo({
+					name: 'initial-setup'
+				});
 			});
 
 			this.setLoading(true);
@@ -52,7 +67,7 @@
 
 			if (!this.server) {
 				//redirect to the initial setup page
-				this.$router.push({
+				this.redirectTo({
 					name: 'initial-setup'
 				});
 				this.setLoading(false);
@@ -69,11 +84,11 @@
 
 			this.getUserSession().then(() => {
 				if (!this.isLoggedIn) {
-					this.$router.push({
+					this.redirectTo({
 						name: 'authentication'
 					});
 				} else {
-					this.$router.push({
+					this.redirectTo({
 						name: 'chat'
 					});
 				}
@@ -88,7 +103,15 @@
 			...mapActions('auth', [
 				'getUserSession',
 				'resetState'
-			])
+			]),
+			/**
+			 * Proxy function redirects to the specified path
+			 * It's used in order to catch any NavigationDuplicated exceptions
+			 * @param {String} path
+			 */
+			redirectTo(path) {
+				this.$router.push(path).catch(() => {});
+			}
 		}
 	};
 </script>

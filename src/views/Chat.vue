@@ -2,6 +2,10 @@
 	<div class="chat-page">
 		<div class="page-header">
 			page header
+
+			<FormButton @click="onLogout">
+				Logout
+			</FormButton>
 		</div>
 		<div class="page-content">
 			<div class="conversations-list">
@@ -58,7 +62,16 @@
 		methods: {
 			...mapActions('ui', [
 				'setLoading'
-			])
+			]),
+			...mapActions('auth', [
+				'logout'
+			]),
+			onLogout() {
+				this.logout();
+				this.$router.push({
+					name: 'authentication'
+				});
+			}
 		}
 	};
 </script>

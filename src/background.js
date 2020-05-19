@@ -47,10 +47,15 @@ function createWindow() {
 					}
 				},
 				{
-					label: 'Sign out',
+					label: 'Change server',
 					click() {
-						win.webContents.send('sign-out');
-						win.loadURL(winUrl);
+						win.webContents.send('change-server');
+					}
+				},
+				{
+					label: 'Reset settings',
+					click() {
+						win.webContents.send('reset-settings');
 					}
 				},
 				{
