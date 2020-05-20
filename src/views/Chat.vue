@@ -9,6 +9,9 @@
 		</div>
 		<div class="page-content">
 			<div class="conversations-list">
+
+				{{ conversations }}
+
 				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
 				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
 				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
@@ -48,14 +51,20 @@
 </template>
 
 <script>
-	import { mapActions } from 'vuex';
+	import { mapState, mapActions } from 'vuex';
 
 	export default {
+		computed: {
+			...mapState('conversations', [
+				'conversations'
+			])
+		},
 		mounted() {
 			//TODO: fetch all the necessary data and set loading to false
 			this.setLoading(true);
 
 			setTimeout(() => {
+				this.getConversations();
 				this.setLoading(false);
 			}, 1500);
 		},
@@ -65,6 +74,9 @@
 			]),
 			...mapActions('auth', [
 				'logout'
+			]),
+			...mapActions('conversations', [
+				'getConversations'
 			]),
 			onLogout() {
 				this.logout();
