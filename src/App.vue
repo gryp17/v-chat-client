@@ -9,7 +9,7 @@
 	import Vue from 'vue';
 	import { ipcRenderer } from 'electron';
 	import { mapState, mapGetters, mapActions } from 'vuex';
-	import API from '@/services/API';
+	import { setApiBaseURL, setApiToken } from '@/services/API';
 
 	import errorsMap from '@/filters/errorsMap';
 	import FormInput from '@/components/forms/FormInput';
@@ -61,10 +61,6 @@
 
 			this.setLoading(true);
 
-			//TODO: check if the server URL is set
-			//TODO: check if the user is logged in
-			//TODO: and finally redirect to the chat/signup or the initial setup page
-
 			if (!this.server) {
 				//redirect to the initial setup page
 				this.redirectTo({
@@ -75,11 +71,11 @@
 			}
 
 			//set the axios base URL
-			API.defaults.baseURL = this.server;
+			setApiBaseURL(this.server);
 
 			//set the axios token header
 			if (this.token) {
-				API.defaults.headers.common.token = this.token;
+				setApiToken(this.token);
 			}
 
 			this.getUserSession().then(() => {

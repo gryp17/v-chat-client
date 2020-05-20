@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import API from '@/services/API';
+import { setApiBaseURL, setApiToken } from '@/services/API';
 import UserHttpService from '@/services/user';
 import MiscHttpService from '@/services/misc';
 
@@ -37,17 +37,25 @@ const mutations = {
 const actions = {
 	resetState(context) {
 		context.commit('RESET_STATE');
+		setApiBaseURL('');
+		setApiToken('');
 	},
 	setServer(context, server) {
-		return MiscHttpService.handshake(server).then((res) => {
+		let url = server;
+
+		if (url && !/^(https?:\/\/|\/\/)/i.test(url)) {
+			url = `//${url}`;
+		}
+
+		return MiscHttpService.handshake(url).then((res) => {
 			if (!res.data || !res.data.success) {
 				return false;
 			}
 
 			//set the axios base URL
-			API.defaults.baseURL = server;
+			setApiBaseURL(url);
 
-			context.commit('SET_SERVER', server);
+			context.commit('SET_SERVER', url);
 			return true;
 		}).catch(() => {
 			Vue.toasted.global.apiError({
@@ -73,7 +81,7 @@ const actions = {
 		return UserHttpService.login(email, password).then((res) => {
 			if (res.data && res.data.token) {
 				//set the axios token header
-				API.defaults.headers.common.token = res.data.token;
+				setApiToken(res.data.token);
 
 				context.commit('SET_TOKEN', res.data.token);
 				context.commit('SET_USER_SESSION', res.data.user);
@@ -89,7 +97,7 @@ const actions = {
 		return UserHttpService.signup(email, displayName, password, repeatPassword).then((res) => {
 			if (res.data && res.data.token) {
 				//set the axios token header
-				API.defaults.headers.common.token = res.data.token;
+				setApiToken(res.data.token);
 
 				context.commit('SET_TOKEN', res.data.token);
 				context.commit('SET_USER_SESSION', res.data.user);

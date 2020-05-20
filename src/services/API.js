@@ -23,4 +23,12 @@ API.interceptors.response.use((res) => {
 	return res;
 });
 
+export function setApiToken(token) {
+	API.defaults.headers.common.token = token;
+}
+
+export function setApiBaseURL(baseURL) {
+	API.defaults.baseURL = baseURL;
+}
+
 export default API;
