@@ -51,22 +51,53 @@
 </template>
 
 <script>
+	import SocketIO from 'socket.io-client';
 	import { mapState, mapActions } from 'vuex';
 
 	export default {
+		data() {
+			return {
+				socket: null
+			};
+		},
 		computed: {
+			...mapState('auth', [
+				'server',
+				'token'
+			]),
 			...mapState('conversations', [
 				'conversations'
 			])
 		},
 		mounted() {
-			//TODO: fetch all the necessary data and set loading to false
 			this.setLoading(true);
 
-			setTimeout(() => {
-				this.getConversations();
-				this.setLoading(false);
-			}, 1500);
+			//initialize the socket connection
+			this.socket = SocketIO(this.server, {
+				transports: ['websocket'],
+				upgrade: false,
+				query: {
+					//TODO: need to fix the loading logic because the App.vue component hides the Chat.vue loading
+					token: 1234 //this.token
+				}
+			});
+
+			this.socket.on('connect', (data) => {
+				console.log('######### connected succesfully');
+
+				//TODO: this data needs to be passed by the sockets
+				this.getConversations().then(() => {
+					this.setLoading(false);
+				});
+			});
+
+			this.socket.on('disconnect', (data) => {
+				console.log('@@@@@@@@@@ disconect');
+			});
+
+			this.socket.on('test', (data) => {
+				console.log(data);
+			});
 		},
 		methods: {
 			...mapActions('ui', [

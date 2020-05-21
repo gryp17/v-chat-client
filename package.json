@@ -17,6 +17,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "custom-electron-titlebar": "^3.2.2-hotfix62",
+    "socket.io": "^2.3.0",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
     "vue-tabs-component": "^1.5.0",
