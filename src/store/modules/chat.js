@@ -1,6 +1,3 @@
-import Vue from 'vue';
-import ConversationsHttpService from '@/services/conversations';
-
 const getDefaultState = () => {
 	return {
 		conversations: []
@@ -19,15 +16,8 @@ const mutations = {
 };
 
 const actions = {
-	getConversations(context) {
-		return ConversationsHttpService.getConversations().then((res) => {
-			context.commit('SET_CONVERSATIONS', res.data);
-			return res;
-		}).catch(() => {
-			Vue.toasted.global.apiError({
-				message: 'Failed to fetch the user conversations'
-			});
-		});
+	setConversations(context, conversations) {
+		context.commit('SET_CONVERSATIONS', conversations);
 	}
 };
 

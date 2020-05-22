@@ -9,17 +9,14 @@
 		</div>
 		<div class="page-content">
 			<div class="conversations-list">
-
-				{{ conversations }}
-
-				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
-				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
-				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
-				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
-				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
-				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
-				<div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div><div>conversation</div>
-
+				<div
+					v-for="conversation in conversations"
+					:key="conversation.id"
+					@click="openConversation(conversation)"
+					class="conversation"
+				>
+					{{ conversation.name }}
+				</div>
 			</div>
 			<div class="chat-wrapper">
 				<div class="header">
@@ -27,13 +24,18 @@
 				</div>
 
 				<div class="messages-list">
-					<div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div>
-					<div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div>
-					<div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div>
-					<div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div><div>chat message</div>v
-					<div>chat message</div>
-					<div>chat message</div>
-					<div>chat message</div>
+					<div v-if="conversation">
+						<div
+							v-for="message in conversation.messages"
+							:key="message.id"
+							class="message"
+						>
+							{{ message.content }}
+						</div>
+					</div>
+					<div v-else>
+						Messages placeholder...
+					</div>
 				</div>
 
 				<div class="controls">
@@ -41,10 +43,18 @@
 				</div>
 			</div>
 			<div class="users-list">
-				<div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div>
-				<div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div>
-				<div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div><div>user</div>
-
+				<div v-if="conversation">
+					<div
+						v-for="user in conversation.users"
+						:key="user.id"
+						class="user"
+					>
+						{{ user.displayName }}
+					</div>
+				</div>
+				<div v-else>
+					...
+				</div>
 			</div>
 		</div>
 	</div>
@@ -57,7 +67,8 @@
 	export default {
 		data() {
 			return {
-				socket: null
+				socket: null,
+				conversation: null
 			};
 		},
 		computed: {
@@ -65,7 +76,7 @@
 				'server',
 				'token'
 			]),
-			...mapState('conversations', [
+			...mapState('chat', [
 				'conversations'
 			])
 		},
@@ -81,33 +92,31 @@
 				}
 			});
 
-			this.socket.on('connect', (data) => {
-				console.log('######### connected succesfully');
-
-				//TODO: this data needs to be passed by the sockets
-				this.getConversations().then(() => {
-					this.setLoading(false);
+			this.socket.on('error', (error) => {
+				this.$toasted.global.apiError({
+					message: error
 				});
 			});
 
-			this.socket.on('disconnect', (data) => {
-				console.log('@@@@@@@@@@ disconect');
-			});
-
-			this.socket.on('test', (data) => {
+			this.socket.on('updateConversations', (data) => {
 				console.log(data);
+				this.setConversations(data);
+				this.setLoading(false);
 			});
 		},
 		methods: {
 			...mapActions('ui', [
 				'setLoading'
 			]),
+			...mapActions('chat', [
+				'setConversations'
+			]),
 			...mapActions('auth', [
 				'logout'
 			]),
-			...mapActions('conversations', [
-				'getConversations'
-			]),
+			openConversation(conversation) {
+				this.conversation = conversation;
+			},
 			onLogout() {
 				this.logout();
 				this.$router.push({
@@ -153,6 +162,7 @@
 				}
 
 				.messages-list {
+					height: 100%;
 					overflow-y: auto;
 				}
 
