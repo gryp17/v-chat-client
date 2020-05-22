@@ -7,7 +7,7 @@
 				Logout
 			</FormButton>
 		</div>
-		<div class="page-content">
+		<div v-if="conversation" class="page-content">
 			<div class="conversations-list">
 				<div
 					v-for="conversation in conversations"
@@ -15,7 +15,8 @@
 					@click="openConversation(conversation)"
 					class="conversation"
 				>
-					{{ conversation.name }}
+					<!-- TODO: this needs to go in a computed property and the user isn't always [1] -->
+					{{ conversation.name || conversation.users[1].displayName }}
 				</div>
 			</div>
 			<div class="chat-wrapper">
@@ -24,17 +25,12 @@
 				</div>
 
 				<div class="messages-list">
-					<div v-if="conversation">
-						<div
-							v-for="message in conversation.messages"
-							:key="message.id"
-							class="message"
-						>
-							{{ message.content }}
-						</div>
-					</div>
-					<div v-else>
-						Messages placeholder...
+					<div
+						v-for="message in conversation.messages"
+						:key="message.id"
+						class="message"
+					>
+						{{ message.content }}
 					</div>
 				</div>
 
@@ -43,17 +39,12 @@
 				</div>
 			</div>
 			<div class="users-list">
-				<div v-if="conversation">
-					<div
-						v-for="user in conversation.users"
-						:key="user.id"
-						class="user"
-					>
-						{{ user.displayName }}
-					</div>
-				</div>
-				<div v-else>
-					...
+				<div
+					v-for="user in conversation.users"
+					:key="user.id"
+					class="user"
+				>
+					{{ user.displayName }}
 				</div>
 			</div>
 		</div>
@@ -101,6 +92,7 @@
 			this.socket.on('updateConversations', (data) => {
 				console.log(data);
 				this.setConversations(data);
+				this.openConversation(this.conversations[0]);
 				this.setLoading(false);
 			});
 		},
