@@ -1,26 +1,39 @@
 const getDefaultState = () => {
 	return {
-		loading: false
+		activeProcesses: 0
 	};
 };
 
 const state = getDefaultState();
 
+const getters = {
+	loading(state) {
+		return state.activeProcesses > 0;
+	}
+};
+
 const mutations = {
-	SET_LOADING(state, loading) {
-		state.loading = loading;
+	ADD_ACTIVE_PROCESS(state) {
+		state.activeProcesses++;
+	},
+	REMOVE_ACTIVE_PROCESS(state) {
+		if (state.activeProcesses > 0) {
+			state.activeProcesses--;
+		}
 	}
 };
 
 const actions = {
 	setLoading(context, loading) {
-		context.commit('SET_LOADING', loading);
+		const mutation = loading ? 'ADD_ACTIVE_PROCESS' : 'REMOVE_ACTIVE_PROCESS';
+		context.commit(mutation);
 	}
 };
 
 export default {
 	namespaced: true,
 	state,
+	getters,
 	mutations,
 	actions
 };

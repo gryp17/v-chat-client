@@ -77,8 +77,7 @@
 				transports: ['websocket'],
 				upgrade: false,
 				query: {
-					//TODO: need to fix the loading logic because the App.vue component hides the Chat.vue loading
-					token: 1234 //this.token
+					token: this.token
 				}
 			});
 

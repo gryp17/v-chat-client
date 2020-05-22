@@ -28,12 +28,12 @@
 			LoadingIndicator
 		},
 		computed: {
-			...mapState('ui', [
-				'loading'
-			]),
 			...mapState('auth', [
 				'server',
 				'token'
+			]),
+			...mapGetters('ui', [
+				'loading'
 			]),
 			...mapGetters('auth', [
 				'isLoggedIn'
