@@ -9,15 +9,13 @@
 		</div>
 		<div v-if="conversation" class="page-content">
 			<div class="conversations-list">
-				<div
+				<ConversationItem
 					v-for="conversation in conversations"
 					:key="conversation.id"
-					@click="openConversation(conversation)"
-					class="conversation"
-				>
-					<!-- TODO: this needs to go in a computed property and the user isn't always [1] -->
-					{{ conversation.name || conversation.users[1].displayName }}
-				</div>
+					:conversation="conversation"
+					:currentUser="userSession"
+					@open="openConversation"
+				/>
 			</div>
 			<div class="chat-wrapper">
 				<div class="header">
@@ -54,8 +52,12 @@
 <script>
 	import SocketIO from 'socket.io-client';
 	import { mapState, mapActions } from 'vuex';
+	import ConversationItem from '@/components/ConversationItem';
 
 	export default {
+		components: {
+			ConversationItem
+		},
 		data() {
 			return {
 				socket: null,
@@ -65,7 +67,8 @@
 		computed: {
 			...mapState('auth', [
 				'server',
-				'token'
+				'token',
+				'userSession'
 			]),
 			...mapState('chat', [
 				'conversations'
