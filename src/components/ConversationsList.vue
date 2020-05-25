@@ -8,9 +8,6 @@
 			v-for="conversation in channels"
 			:key="conversation.id"
 			:conversation="conversation"
-			:active="currentConversation && currentConversation.id === conversation.id"
-			v-bind="$props"
-			v-on="$listeners"
 		/>
 
 		<div
@@ -24,29 +21,22 @@
 			v-for="conversation in privateMessages"
 			:key="conversation.id"
 			:conversation="conversation"
-			:active="currentConversation && currentConversation.id === conversation.id"
-			v-bind="$props"
-			v-on="$listeners"
 		/>
 	</div>
 </template>
 
 <script>
+	import { mapState } from 'vuex';
 	import ConversationItem from '@/components/ConversationItem';
 
 	export default {
 		components: {
 			ConversationItem
 		},
-		props: {
-			conversations: Array,
-			currentUser: {
-				type: Object,
-				required: true
-			},
-			currentConversation: Object
-		},
 		computed: {
+			...mapState('chat', [
+				'conversations'
+			]),
 			channels() {
 				return this.conversations.filter((conversation) => {
 					return !conversation.isPrivate;
@@ -61,7 +51,7 @@
 	};
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 	.conversations-list {
 		padding: 5px;
 

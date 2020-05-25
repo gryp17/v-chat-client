@@ -9,17 +9,14 @@
 		</div>
 		<div v-if="conversation" class="page-content">
 			<div class="conversations-list-wrapper">
-				<!-- TODO: use vuex for the currentUser and currentConversation variables... -->
-				<ConversationsList
-					:conversations="conversations"
-					:currentUser="userSession"
-					:currentConversation="conversation"
-					@open="openConversation"
-				/>
+				<ConversationsList />
 			</div>
 			<div class="chat-wrapper">
 				<div class="header">
-					Header
+					<FormButton :active="detailsAreVisible" transparent @click="toggleDetails">
+						<i class="fas fa-info-circle"></i>
+						Details
+					</FormButton>
 				</div>
 
 				<div class="messages-list">
@@ -36,7 +33,8 @@
 					Controls
 				</div>
 			</div>
-			<div class="users-list">
+			<div :class="['users-list', { visible: this.detailsAreVisible }]">
+				<h4>Members:</h4>
 				<div
 					v-for="user in conversation.users"
 					:key="user.id"
@@ -61,17 +59,17 @@
 		data() {
 			return {
 				socket: null,
-				conversation: null
+				detailsAreVisible: false
 			};
 		},
 		computed: {
 			...mapState('auth', [
 				'server',
-				'token',
-				'userSession'
+				'token'
 			]),
 			...mapState('chat', [
-				'conversations'
+				'conversations',
+				'conversation'
 			])
 		},
 		mounted() {
@@ -95,7 +93,7 @@
 			this.socket.on('updateConversations', (data) => {
 				console.log(data);
 				this.setConversations(data);
-				this.openConversation(this.conversations[0]);
+				this.setConversation(this.conversations[0]);
 				this.setLoading(false);
 			});
 		},
@@ -104,19 +102,20 @@
 				'setLoading'
 			]),
 			...mapActions('chat', [
-				'setConversations'
+				'setConversations',
+				'setConversation'
 			]),
 			...mapActions('auth', [
 				'logout'
 			]),
-			openConversation(conversation) {
-				this.conversation = conversation;
-			},
 			onLogout() {
 				this.logout();
 				this.$router.push({
 					name: 'authentication'
 				});
+			},
+			toggleDetails() {
+				this.detailsAreVisible = !this.detailsAreVisible;
 			}
 		}
 	};
@@ -152,8 +151,14 @@
 				flex: 1;
 
 				.header {
-					padding: 20px;
-					background-color: #b6d4b0;
+					padding: 10px;
+					background-color: $white;
+					border-bottom: solid 1px $gray;
+
+					.form-button {
+						float: right;
+						color: $text-color;
+					}
 				}
 
 				.messages-list {
@@ -168,9 +173,14 @@
 			}
 
 			.users-list {
-				width: 200px;
-				background-color: #868686;
+				width: 0px;
+				background-color: $gray;
 				overflow-y: auto;
+				transition: all 400ms ease;
+
+				&.visible {
+					width: 200px;
+				}
 			}
 		}
 	}
