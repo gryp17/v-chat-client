@@ -8,12 +8,12 @@
 			</FormButton>
 		</div>
 		<div v-if="conversation" class="page-content">
-			<div class="conversations-list">
-				<ConversationItem
-					v-for="conversation in conversations"
-					:key="conversation.id"
-					:conversation="conversation"
+			<div class="conversations-list-wrapper">
+				<!-- TODO: use vuex for the currentUser and currentConversation variables... -->
+				<ConversationsList
+					:conversations="conversations"
 					:currentUser="userSession"
+					:currentConversation="conversation"
 					@open="openConversation"
 				/>
 			</div>
@@ -52,11 +52,11 @@
 <script>
 	import SocketIO from 'socket.io-client';
 	import { mapState, mapActions } from 'vuex';
-	import ConversationItem from '@/components/ConversationItem';
+	import ConversationsList from '@/components/ConversationsList';
 
 	export default {
 		components: {
-			ConversationItem
+			ConversationsList
 		},
 		data() {
 			return {
@@ -140,10 +140,10 @@
 			display: flex;
 			height: calc(100% - #{$page-header-height});
 
-			.conversations-list {
+			.conversations-list-wrapper {
 				width: 200px;
 				overflow-y: auto;
-				background-color: gray;
+				background-color: $gray;
 			}
 
 			.chat-wrapper {
