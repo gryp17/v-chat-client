@@ -8,9 +8,8 @@
 			</FormButton>
 		</div>
 		<div v-if="conversation" class="page-content">
-			<div class="conversations-list-wrapper">
-				<ConversationsList />
-			</div>
+			<ConversationsList />
+
 			<div class="chat-wrapper">
 				<div class="header">
 					<FormButton transparent :active="detailsAreVisible" @click="toggleDetails">
@@ -33,9 +32,8 @@
 					Controls
 				</div>
 			</div>
-			<div :class="['conversation-details-wrapper', { visible: this.detailsAreVisible }]">
-				<ConversationDetails />
-			</div>
+
+			<ConversationDetails :opened="detailsAreVisible" />
 		</div>
 	</div>
 </template>
@@ -127,18 +125,13 @@
 		.page-header {
 			height: $page-header-height;
 			line-height: $page-header-height;
-			background-color: #d8d8d8;
+			background-color: $white;
+			border-bottom: solid 1px $gray;
 		}
 
 		.page-content {
 			display: flex;
 			height: calc(100% - #{$page-header-height});
-
-			.conversations-list-wrapper {
-				width: 200px;
-				overflow-y: auto;
-				background-color: $gray;
-			}
 
 			.chat-wrapper {
 				display: flex;
@@ -164,17 +157,6 @@
 				.controls {
 					padding: 20px;
 					background-color: #b6d4b0;
-				}
-			}
-
-			.conversation-details-wrapper {
-				width: 0px;
-				overflow-y: auto;
-				transition: all 400ms ease;
-				background-color: $gray;
-
-				&.visible {
-					width: 200px;
 				}
 			}
 		}

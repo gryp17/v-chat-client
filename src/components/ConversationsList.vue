@@ -53,7 +53,11 @@
 
 <style lang="scss">
 	.conversations-list {
+		width: 200px;
 		padding: 5px;
+		overflow-y: auto;
+		background-color: $gray-very-dark;
+		color: $white;
 
 		.conversations-title {
 			margin-top: 15px;

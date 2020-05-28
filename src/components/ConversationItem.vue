@@ -58,11 +58,11 @@
 		cursor: pointer;
 
 		&.active {
-			background-color: darken($gray, 5%);
+			background-color: darken($gray-very-dark, 5%);
 		}
 
 		&:hover {
-			background-color: darken($gray, 5%);
+			background-color: darken($gray-very-dark, 5%);
 		}
 
 		.online-indicator {

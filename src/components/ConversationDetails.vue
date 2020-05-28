@@ -1,12 +1,14 @@
 <template>
-	<div class="conversation-details">
-		<div class="section-title">Members</div>
-		<div
-			v-for="user in conversation.users"
-			:key="user.id"
-			class="user"
-		>
-			{{ user.displayName }}
+	<div :class="['conversation-details', { opened }]">
+		<div class="inner-wrapper">
+			<div class="section-title">Members</div>
+			<div
+				v-for="user in conversation.users"
+				:key="user.id"
+				class="user"
+			>
+				{{ user.displayName }}
+			</div>
 		</div>
 	</div>
 </template>
@@ -15,6 +17,9 @@
 	import { mapState } from 'vuex';
 
 	export default {
+		props: {
+			opened: Boolean
+		},
 		computed: {
 			...mapState('chat', [
 				'conversation'
@@ -25,7 +30,19 @@
 
 <style lang="scss">
 	.conversation-details {
-		padding: 5px;
+		width: 0px;
+		overflow-y: auto;
+		transition: all 400ms ease;
+		background-color: $white;
+		border-left: solid 1px $gray;
+
+		&.opened {
+			width: 200px;
+		}
+
+		.inner-wrapper {
+			padding: 5px;
+		}
 
 		.section-title {
 			margin: 5px 0px;
