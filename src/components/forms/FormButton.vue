@@ -73,7 +73,7 @@
 			color: $blue-light;
 			opacity: 0.8;
 
-			&:hover, &:active, &:focus, &.active {
+			&:hover, &.active {
 				background-color: lighten($gray, 5%);
 				opacity: 1;
 			}

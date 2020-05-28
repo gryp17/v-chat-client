@@ -13,7 +13,7 @@
 			</div>
 			<div class="chat-wrapper">
 				<div class="header">
-					<FormButton :active="detailsAreVisible" transparent @click="toggleDetails">
+					<FormButton transparent :active="detailsAreVisible" @click="toggleDetails">
 						<i class="fas fa-info-circle"></i>
 						Details
 					</FormButton>
@@ -33,15 +33,8 @@
 					Controls
 				</div>
 			</div>
-			<div :class="['users-list', { visible: this.detailsAreVisible }]">
-				<h4>Members:</h4>
-				<div
-					v-for="user in conversation.users"
-					:key="user.id"
-					class="user"
-				>
-					{{ user.displayName }}
-				</div>
+			<div :class="['conversation-details-wrapper', { visible: this.detailsAreVisible }]">
+				<ConversationDetails />
 			</div>
 		</div>
 	</div>
@@ -51,10 +44,12 @@
 	import SocketIO from 'socket.io-client';
 	import { mapState, mapActions } from 'vuex';
 	import ConversationsList from '@/components/ConversationsList';
+	import ConversationDetails from '@/components/ConversationDetails';
 
 	export default {
 		components: {
-			ConversationsList
+			ConversationsList,
+			ConversationDetails
 		},
 		data() {
 			return {
@@ -172,11 +167,11 @@
 				}
 			}
 
-			.users-list {
+			.conversation-details-wrapper {
 				width: 0px;
-				background-color: $gray;
 				overflow-y: auto;
 				transition: all 400ms ease;
+				background-color: $gray;
 
 				&.visible {
 					width: 200px;
