@@ -20,6 +20,15 @@ const mutations = {
 	},
 	SET_ONLINE_USERS(state, onlineUsers) {
 		state.onlineUsers = onlineUsers;
+	},
+	SET_CONVERSATION_USERS(state, { conversationId, users }) {
+		state.conversations = state.conversations.map((conversation) => {
+			if (conversation.id === conversationId) {
+				conversation.users = users;
+			}
+
+			return conversation;
+		});
 	}
 };
 
@@ -38,6 +47,9 @@ const actions = {
 		});
 
 		context.commit('SET_ONLINE_USERS', users);
+	},
+	setConversationUsers(context, data) {
+		context.commit('SET_CONVERSATION_USERS', data);
 	}
 };
 

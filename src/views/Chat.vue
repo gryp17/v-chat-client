@@ -93,6 +93,10 @@
 			this.socket.on('updateOnlineUsers', (onlineUsers) => {
 				this.setOnlineUsers(onlineUsers);
 			});
+
+			this.socket.on('updateConversationUsers', (data) => {
+				this.setConversationUsers(data);
+			});
 		},
 		methods: {
 			...mapActions('ui', [
@@ -101,7 +105,8 @@
 			...mapActions('chat', [
 				'setConversations',
 				'setConversation',
-				'setOnlineUsers'
+				'setOnlineUsers',
+				'setConversationUsers'
 			]),
 			...mapActions('auth', [
 				'logout'
