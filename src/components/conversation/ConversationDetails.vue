@@ -15,7 +15,7 @@
 
 <script>
 	import { mapState, mapGetters } from 'vuex';
-	import ConversationMember from '@/components/conversation-details/ConversationMember';
+	import ConversationMember from '@/components/conversation/ConversationMember';
 
 	export default {
 		components: {
@@ -40,6 +40,7 @@
 	.conversation-details {
 		width: 0px;
 		overflow-y: auto;
+		overflow-x: hidden;
 		transition: all 400ms ease;
 		background-color: $white;
 		border-left: solid 1px $gray;

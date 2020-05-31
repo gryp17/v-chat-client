@@ -28,9 +28,7 @@
 					</div>
 				</div>
 
-				<div class="controls">
-					Controls
-				</div>
+				<ConversationControls />
 			</div>
 
 			<ConversationDetails :opened="detailsAreVisible" />
@@ -42,12 +40,14 @@
 	import SocketIO from 'socket.io-client';
 	import { mapState, mapActions } from 'vuex';
 	import ConversationsList from '@/components/conversations/ConversationsList';
-	import ConversationDetails from '@/components/conversation-details/ConversationDetails';
+	import ConversationDetails from '@/components/conversation/ConversationDetails';
+	import ConversationControls from '@/components/conversation/ConversationControls';
 
 	export default {
 		components: {
 			ConversationsList,
-			ConversationDetails
+			ConversationDetails,
+			ConversationControls
 		},
 		data() {
 			return {
@@ -162,11 +162,6 @@
 				.messages-list {
 					height: 100%;
 					overflow-y: auto;
-				}
-
-				.controls {
-					padding: 20px;
-					background-color: #b6d4b0;
 				}
 			}
 		}
