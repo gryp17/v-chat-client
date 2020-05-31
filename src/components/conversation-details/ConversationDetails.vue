@@ -2,27 +2,35 @@
 	<div :class="['conversation-details', { opened }]">
 		<div class="inner-wrapper">
 			<div class="section-title">Members</div>
-			<div
+			<ConversationMember
 				v-for="user in conversation.users"
 				:key="user.id"
+				:user="user"
+				:online="userIsOnline(user.id)"
 				class="user"
-			>
-				{{ user.displayName }}
-			</div>
+			/>
 		</div>
 	</div>
 </template>
 
 <script>
-	import { mapState } from 'vuex';
+	import { mapState, mapGetters } from 'vuex';
+	import ConversationMember from '@/components/conversation-details/ConversationMember';
 
 	export default {
+		components: {
+			ConversationMember
+		},
 		props: {
 			opened: Boolean
 		},
 		computed: {
 			...mapState('chat', [
-				'conversation'
+				'conversation',
+				'onlineUsers'
+			]),
+			...mapGetters('chat', [
+				'userIsOnline'
 			])
 		}
 	};

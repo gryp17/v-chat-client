@@ -8,6 +8,14 @@ const getDefaultState = () => {
 
 const state = getDefaultState();
 
+const getters = {
+	userIsOnline(state) {
+		return (userId) => {
+			return state.onlineUsers.hasOwnProperty(userId);
+		};
+	}
+};
+
 const mutations = {
 	RESET_STATE(state) {
 		Object.assign(state, getDefaultState());
@@ -56,6 +64,7 @@ const actions = {
 export default {
 	namespaced: true,
 	state,
+	getters,
 	mutations,
 	actions
 };

@@ -41,8 +41,8 @@
 <script>
 	import SocketIO from 'socket.io-client';
 	import { mapState, mapActions } from 'vuex';
-	import ConversationsList from '@/components/ConversationsList';
-	import ConversationDetails from '@/components/ConversationDetails';
+	import ConversationsList from '@/components/conversations/ConversationsList';
+	import ConversationDetails from '@/components/conversation-details/ConversationDetails';
 
 	export default {
 		components: {

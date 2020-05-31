@@ -46,6 +46,7 @@ module.exports = {
 		'newline-per-chained-call': 0,
 		'no-alert': 0,
 		'no-new': 0,
+		'no-prototype-builtins': 0,
 		'indent': ['error', 'tab'],
 		'vue/html-indent': ['error', 'tab'],
 		'vue/script-indent': ['error', 'tab', {
