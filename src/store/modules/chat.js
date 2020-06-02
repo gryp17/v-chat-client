@@ -1,3 +1,6 @@
+import Vue from 'vue';
+import MessageHttpService from '@/services/message';
+
 const getDefaultState = () => {
 	return {
 		conversations: [],
@@ -58,6 +61,13 @@ const actions = {
 	},
 	setConversationUsers(context, data) {
 		context.commit('SET_CONVERSATION_USERS', data);
+	},
+	sendMessage(context, { conversationId, content }) {
+		return MessageHttpService.sendMessage(conversationId, content).catch(() => {
+			Vue.toasted.global.apiError({
+				message: 'Failed to send the message'
+			});
+		});
 	}
 };
 

@@ -84,7 +84,6 @@
 			});
 
 			this.socket.on('updateConversations', (data) => {
-				console.log(data);
 				this.setConversations(data);
 				this.setConversation(this.conversations[0]);
 				this.setLoading(false);

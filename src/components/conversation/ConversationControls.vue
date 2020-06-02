@@ -39,6 +39,8 @@
 </template>
 
 <script>
+	import { mapState, mapActions } from 'vuex';
+
 	export default {
 		data() {
 			return {
@@ -46,7 +48,15 @@
 				submitting: false
 			};
 		},
+		computed: {
+			...mapState('chat', [
+				'conversation'
+			])
+		},
 		methods: {
+			...mapActions('chat', [
+				'sendMessage'
+			]),
 			onSubmit(e) {
 				//TODO: check the message length
 
@@ -61,14 +71,16 @@
 					return;
 				}
 
+				const params = {
+					conversationId: this.conversation.id,
+					content: message
+				};
+
 				this.submitting = true;
-
-				console.log('send ', message);
-				this.message = '';
-
-				setTimeout(() => {
+				this.sendMessage(params).then(() => {
+					this.message = '';
 					this.submitting = false;
-				}, 1000);
+				});
 			}
 		}
 	};
