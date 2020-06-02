@@ -3,7 +3,7 @@
 		<FormInput
 			v-model="message"
 			:rows="3"
-			@keyup.enter="onSubmit"
+			@keypress.enter="onSubmit"
 			tag="textarea"
 			placeholder="Write a message..."
 			class="message-input"
@@ -48,7 +48,11 @@
 		},
 		methods: {
 			onSubmit(e) {
-				e.preventDefault();
+				//TODO: check the message length
+
+				if (!e.shiftKey) {
+					e.preventDefault();
+				}
 
 				const message = this.message.trim();
 
