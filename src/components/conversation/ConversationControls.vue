@@ -1,21 +1,33 @@
 <template>
 	<div class="conversation-controls">
 		<FormInput
+			v-model="message"
+			:rows="3"
+			@keyup.enter="onSubmit"
 			tag="textarea"
-			rows="3"
 			placeholder="Write a message..."
 			class="message-input"
 		/>
 
 		<div class="controls-wrapper">
-			<FormButton transparent>
+			<FormButton
+				transparent
+				title="Add emoticon"
+				class="emoticons-btn"
+			>
 				<i class="fas fa-smile"></i>
 			</FormButton>
-			<FormButton transparent>
+			<FormButton
+				transparent
+				title="Add attachment"
+				class="attachment-btn"
+			>
 				<i class="fas fa-paperclip"></i>
 			</FormButton>
 
 			<FormButton
+				@click="onSubmit"
+				:disabled="submitting"
 				transparent
 				class="send-btn"
 			>
@@ -25,6 +37,38 @@
 		</div>
 	</div>
 </template>
+
+<script>
+	export default {
+		data() {
+			return {
+				message: '',
+				submitting: false
+			};
+		},
+		methods: {
+			onSubmit(e) {
+				e.preventDefault();
+
+				const message = this.message.trim();
+
+				//don't submit on shift + enter
+				if (e.shiftKey || message.length === 0 || this.submitting) {
+					return;
+				}
+
+				this.submitting = true;
+
+				console.log('send ', message);
+				this.message = '';
+
+				setTimeout(() => {
+					this.submitting = false;
+				}, 1000);
+			}
+		}
+	};
+</script>
 
 <style lang="scss">
 	.conversation-controls {
@@ -40,8 +84,12 @@
 		.controls-wrapper {
 			background-color: $gray-very-light;
 
-			.form-button {
-				font-size: 20px;
+			.emoticons-btn {
+				color: $yellow;
+			}
+
+			.attachment-btn {
+				color: $text-color;
 			}
 
 			.send-btn {
