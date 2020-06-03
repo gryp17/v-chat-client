@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import moment from 'moment';
 import MessageHttpService from '@/services/message';
 
 const getDefaultState = () => {
@@ -16,6 +17,11 @@ const getters = {
 		return (userId) => {
 			return state.onlineUsers.hasOwnProperty(userId);
 		};
+	},
+	conversationMessages(state) {
+		return [...state.conversation.messages].sort((a, b) => {
+			return moment(a.createdAt) - moment(b.createdAt);
+		});
 	}
 };
 
@@ -39,6 +45,13 @@ const mutations = {
 			}
 
 			return conversation;
+		});
+	},
+	ADD_CONVERSATION_MESSAGE(state, message) {
+		state.conversations.forEach((conversation) => {
+			if (conversation.id === message.conversationId) {
+				conversation.messages.push(message);
+			}
 		});
 	}
 };
@@ -68,6 +81,13 @@ const actions = {
 				message: 'Failed to send the message'
 			});
 		});
+	},
+	messageReceived(context, message) {
+		context.commit('ADD_CONVERSATION_MESSAGE', message);
+
+		if (context.state.conversation.id !== message.conversationId) {
+			//TODO: NOTIFY THE USER ABOUT NEW MESSAGES...
+		}
 	}
 };
 

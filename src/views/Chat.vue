@@ -20,7 +20,7 @@
 
 				<div class="messages-list">
 					<div
-						v-for="message in conversation.messages"
+						v-for="message in conversationMessages"
 						:key="message.id"
 						class="message"
 					>
@@ -38,7 +38,7 @@
 
 <script>
 	import SocketIO from 'socket.io-client';
-	import { mapState, mapActions } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
 	import ConversationsList from '@/components/conversations/ConversationsList';
 	import ConversationDetails from '@/components/conversation/ConversationDetails';
 	import ConversationControls from '@/components/conversation/ConversationControls';
@@ -63,6 +63,9 @@
 			...mapState('chat', [
 				'conversations',
 				'conversation'
+			]),
+			...mapGetters('chat', [
+				'conversationMessages'
 			])
 		},
 		mounted() {
@@ -96,6 +99,10 @@
 			this.socket.on('updateConversationUsers', (data) => {
 				this.setConversationUsers(data);
 			});
+
+			this.socket.on('message', (message) => {
+				this.messageReceived(message);
+			});
 		},
 		methods: {
 			...mapActions('ui', [
@@ -105,7 +112,8 @@
 				'setConversations',
 				'setConversation',
 				'setOnlineUsers',
-				'setConversationUsers'
+				'setConversationUsers',
+				'messageReceived'
 			]),
 			...mapActions('auth', [
 				'logout'
