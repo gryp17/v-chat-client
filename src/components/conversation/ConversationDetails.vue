@@ -49,12 +49,8 @@
 			width: 200px;
 		}
 
-		.inner-wrapper {
-			padding: 5px;
-		}
-
 		.section-title {
-			margin: 5px 0px;
+			padding: 5px;
 			font-weight: bold;
 		}
 	}

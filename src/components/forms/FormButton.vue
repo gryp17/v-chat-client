@@ -74,7 +74,7 @@
 			opacity: 0.8;
 
 			&:hover, &.active {
-				background-color: lighten($gray, 5%);
+				background-color: $gray-light;
 				opacity: 1;
 			}
 		}

@@ -21,3 +21,14 @@
 		}
 	};
 </script>
+
+<style lang="scss">
+	.conversation-member {
+		padding: 5px;
+		cursor: pointer;
+
+		&:hover {
+			background-color: $gray-light;
+		}
+	}
+</style>
