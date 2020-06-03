@@ -1,5 +1,5 @@
 <template>
-	<modal name="base-modal" @closed="closed">
+	<modal v-bind="$attrs" @closed="closed" name="base-modal">
 		<slot></slot>
 	</modal>
 </template>

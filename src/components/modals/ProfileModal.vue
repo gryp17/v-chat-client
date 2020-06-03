@@ -1,5 +1,8 @@
 <template>
 	<BaseModal
+		:adaptive="true"
+		:width="'100%'"
+		:maxWidth="600"
 		:visible="visible"
 		@hidden="hideProfileModal"
 	>
