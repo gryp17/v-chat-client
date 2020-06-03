@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Toasted from 'vue-toasted';
+import VModal from 'vue-js-modal';
 import { Titlebar } from 'custom-electron-titlebar';
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
@@ -37,6 +38,8 @@ Vue.toasted.register('apiError', (payload) => {
 		}
 	]
 });
+
+Vue.use(VModal);
 
 Vue.config.productionTip = false;
 

@@ -1,5 +1,5 @@
 <template>
-	<div class="conversation-member">
+	<div class="conversation-member" @click="onClick">
 		<OnlineIndicator v-show="online" />
 		{{ user.displayName }}
 	</div>
@@ -18,6 +18,11 @@
 				required: true
 			},
 			online: Boolean
+		},
+		methods: {
+			onClick() {
+				this.$emit('click', this.user.id);
+			}
 		}
 	};
 </script>

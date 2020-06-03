@@ -7,18 +7,22 @@
 				:key="user.id"
 				:user="user"
 				:online="userIsOnline(user.id)"
-				class="user"
+				@click="showProfileModal($event)"
 			/>
 		</div>
+
+		<ProfileModal />
 	</div>
 </template>
 
 <script>
-	import { mapState, mapGetters } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
+	import ProfileModal from '@/components/modals/ProfileModal';
 	import ConversationMember from '@/components/conversation/ConversationMember';
 
 	export default {
 		components: {
+			ProfileModal,
 			ConversationMember
 		},
 		props: {
@@ -31,6 +35,11 @@
 			]),
 			...mapGetters('chat', [
 				'userIsOnline'
+			])
+		},
+		methods: {
+			...mapActions('modals', [
+				'showProfileModal'
 			])
 		}
 	};
