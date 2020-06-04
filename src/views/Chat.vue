@@ -62,7 +62,8 @@
 			]),
 			...mapState('chat', [
 				'conversations',
-				'conversation'
+				'conversation',
+				'users'
 			]),
 			...mapGetters('chat', [
 				'conversationMessages'
@@ -71,53 +72,62 @@
 		mounted() {
 			this.setLoading(true);
 
-			//initialize the socket connection
-			this.socket = SocketIO(this.server, {
-				transports: ['websocket'],
-				upgrade: false,
-				query: {
-					token: this.token
-				}
-			});
-
-			this.socket.on('error', (error) => {
-				this.$toasted.global.apiError({
-					message: error
-				});
-			});
-
-			this.socket.on('updateConversations', (data) => {
-				this.setConversations(data);
-				this.setConversation(this.conversations[0]);
+			Promise.all([
+				this.getConversations(),
+				this.getUsers()
+			]).then((results) => {
+				this.connectToSocket();
 				this.setLoading(false);
 			});
-
-			this.socket.on('updateOnlineUsers', (onlineUsers) => {
-				this.setOnlineUsers(onlineUsers);
-			});
-
-			this.socket.on('updateConversationUsers', (data) => {
-				this.setConversationUsers(data);
-			});
-
-			this.socket.on('message', (message) => {
-				this.messageReceived(message);
-			});
+		},
+		beforeDestroy() {
+			this.disconnectFromSocket();
 		},
 		methods: {
 			...mapActions('ui', [
 				'setLoading'
 			]),
 			...mapActions('chat', [
-				'setConversations',
-				'setConversation',
-				'setOnlineUsers',
+				'getConversations',
+				'getUsers',
+				'updateOnlineUsers',
 				'setConversationUsers',
 				'messageReceived'
 			]),
 			...mapActions('auth', [
 				'logout'
 			]),
+			connectToSocket() {
+				//initialize the socket connection
+				this.socket = SocketIO(this.server, {
+					transports: ['websocket'],
+					upgrade: false,
+					query: {
+						token: this.token
+					}
+				});
+
+				this.socket.on('error', (error) => {
+					this.$toasted.global.apiError({
+						message: error
+					});
+				});
+
+				this.socket.on('updateOnlineUsers', (onlineUsers) => {
+					this.updateOnlineUsers(onlineUsers);
+				});
+
+				this.socket.on('updateConversationUsers', (data) => {
+					this.setConversationUsers(data);
+				});
+
+				this.socket.on('message', (message) => {
+					this.messageReceived(message);
+				});
+			},
+			disconnectFromSocket() {
+				this.socket.disconnect();
+			},
 			onLogout() {
 				this.logout();
 				this.$router.push({

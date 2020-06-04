@@ -1,6 +1,6 @@
 <template>
 	<div class="conversation-member" @click="onClick">
-		<OnlineIndicator v-show="online" />
+		<OnlineIndicator v-show="user.online" />
 		{{ user.displayName }}
 	</div>
 </template>
@@ -16,8 +16,7 @@
 			user: {
 				type: Object,
 				required: true
-			},
-			online: Boolean
+			}
 		},
 		methods: {
 			onClick() {

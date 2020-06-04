@@ -21,23 +21,30 @@
 				type: Object,
 				required: true
 			},
-			online: Boolean,
 			currentUser: {
 				type: Object,
 				required: true
 			}
 		},
 		computed: {
+			conversationUser() {
+				return this.conversation.users.find((user) => {
+					return user.id !== this.currentUser.id;
+				});
+			},
 			conversationName() {
-				if (this.conversation.isPrivate) {
-					const user = this.conversation.users.find((user) => {
-						return user.id !== this.currentUser.id;
-					});
-
-					return user.displayName;
+				if (!this.conversationUser) {
+					return;
 				}
 
-				return this.conversation.name;
+				return this.conversation.isPrivate ? this.conversationUser.displayName : this.conversation.name;
+			},
+			online() {
+				if (this.conversation.isPrivate) {
+					return this.conversationUser.online;
+				}
+
+				return false;
 			}
 		}
 	};

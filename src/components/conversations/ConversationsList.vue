@@ -9,7 +9,6 @@
 			:key="conversation.id"
 			:active="conversation.id === openedConversation.id"
 			:conversation="conversation"
-			:online="conversationUserIsOnline(conversation)"
 			:currentUser="userSession"
 			@open="setConversation"
 		/>
@@ -26,7 +25,6 @@
 			:key="conversation.id"
 			:active="conversation.id === openedConversation.id"
 			:conversation="conversation"
-			:online="conversationUserIsOnline(conversation)"
 			:currentUser="userSession"
 			@open="setConversation"
 		/>
@@ -43,14 +41,13 @@
 		},
 		computed: {
 			...mapState('chat', {
-				conversations: (state) => state.conversations,
 				openedConversation: (state) => state.conversation
 			}),
 			...mapState('auth', [
 				'userSession'
 			]),
 			...mapGetters('chat', [
-				'userIsOnline'
+				'conversations'
 			]),
 			channels() {
 				return this.conversations.filter((conversation) => {
@@ -66,18 +63,7 @@
 		methods: {
 			...mapActions('chat', [
 				'setConversation'
-			]),
-			conversationUserIsOnline(conversation) {
-				if (conversation.isPrivate) {
-					const user = conversation.users.find((user) => {
-						return user.id !== this.userSession.id;
-					});
-
-					return this.userIsOnline(user.id);
-				}
-
-				return false;
-			}
+			])
 		}
 	};
 </script>

@@ -6,7 +6,6 @@
 				v-for="user in conversation.users"
 				:key="user.id"
 				:user="user"
-				:online="userIsOnline(user.id)"
 				@click="showProfileModal($event)"
 			/>
 		</div>

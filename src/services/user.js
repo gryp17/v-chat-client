@@ -36,5 +36,8 @@ export default {
 	 */
 	getSession() {
 		return API.get('/auth/session');
+	},
+	getUsers() {
+		return API.get('/user/all');
 	}
 };
