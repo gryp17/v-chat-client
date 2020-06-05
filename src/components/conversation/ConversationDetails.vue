@@ -15,7 +15,7 @@
 </template>
 
 <script>
-	import { mapState, mapGetters, mapActions } from 'vuex';
+	import { mapGetters, mapActions } from 'vuex';
 	import ProfileModal from '@/components/modals/ProfileModal';
 	import ConversationMember from '@/components/conversation/ConversationMember';
 
@@ -28,12 +28,8 @@
 			opened: Boolean
 		},
 		computed: {
-			...mapState('chat', [
-				'conversation',
-				'onlineUsers'
-			]),
 			...mapGetters('chat', [
-				'userIsOnline'
+				'conversation'
 			])
 		},
 		methods: {

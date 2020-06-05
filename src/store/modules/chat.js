@@ -7,7 +7,7 @@ import MessageHttpService from '@/services/message';
 const getDefaultState = () => {
 	return {
 		conversations: [],
-		conversation: null,
+		selectedConversation: null,
 		users: {}
 	};
 };
@@ -27,8 +27,13 @@ const getters = {
 			};
 		});
 	},
-	conversationMessages(state) {
-		return [...state.conversation.messages].sort((a, b) => {
+	conversation(state, getters) {
+		return getters.conversations.find((conversation) => {
+			return conversation.id === state.selectedConversation;
+		});
+	},
+	conversationMessages(state, getters) {
+		return [...getters.conversation.messages].sort((a, b) => {
 			return moment(a.createdAt) - moment(b.createdAt);
 		});
 	}
@@ -41,8 +46,8 @@ const mutations = {
 	SET_CONVERSATIONS(state, conversations) {
 		state.conversations = conversations;
 	},
-	SET_CONVERSATION(state, conversation) {
-		state.conversation = conversation;
+	SET_SELECTED_CONVERSATION(state, conversationId) {
+		state.selectedConversation = conversationId;
 	},
 	SET_USERS(state, users) {
 		state.users = users;
@@ -80,8 +85,13 @@ const mutations = {
 const actions = {
 	getConversations(context) {
 		return ConversationHttpService.getConversations().then((res) => {
-			context.commit('SET_CONVERSATIONS', res.data);
-			context.commit('SET_CONVERSATION', context.getters.conversations[0]);
+			const conversations = res.data;
+
+			context.commit('SET_CONVERSATIONS', conversations);
+
+			if (conversations && conversations.length > 0) {
+				context.commit('SET_SELECTED_CONVERSATION', conversations[0].id);
+			}
 		}).catch(() => {
 			Vue.toasted.global.apiError({
 				message: 'Failed to fetch the conversations'
@@ -104,8 +114,8 @@ const actions = {
 			});
 		});
 	},
-	setConversation(context, conversation) {
-		context.commit('SET_CONVERSATION', conversation);
+	setSelectedConversation(context, conversationId) {
+		context.commit('SET_SELECTED_CONVERSATION', conversationId);
 	},
 	updateOnlineUsers(context, onlineUsers) {
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
@@ -123,7 +133,7 @@ const actions = {
 	messageReceived(context, message) {
 		context.commit('ADD_CONVERSATION_MESSAGE', message);
 
-		if (context.state.conversation.id !== message.conversationId) {
+		if (context.state.selectedConversation !== message.conversationId) {
 			//TODO: NOTIFY THE USER ABOUT NEW MESSAGES...
 		}
 	}

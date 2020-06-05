@@ -60,12 +60,8 @@
 				'server',
 				'token'
 			]),
-			...mapState('chat', [
-				'conversations',
-				'conversation',
-				'users'
-			]),
 			...mapGetters('chat', [
+				'conversation',
 				'conversationMessages'
 			])
 		},
@@ -90,6 +86,7 @@
 			...mapActions('chat', [
 				'getConversations',
 				'getUsers',
+				'setSelectedConversation',
 				'updateOnlineUsers',
 				'setConversationUsers',
 				'messageReceived'

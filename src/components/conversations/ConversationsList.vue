@@ -7,10 +7,10 @@
 		<ConversationItem
 			v-for="conversation in channels"
 			:key="conversation.id"
-			:active="conversation.id === openedConversation.id"
+			:active="conversation.id === selectedConversation"
 			:conversation="conversation"
 			:currentUser="userSession"
-			@open="setConversation"
+			@open="setSelectedConversation"
 		/>
 
 		<div
@@ -23,10 +23,10 @@
 		<ConversationItem
 			v-for="conversation in privateMessages"
 			:key="conversation.id"
-			:active="conversation.id === openedConversation.id"
+			:active="conversation.id === selectedConversation"
 			:conversation="conversation"
 			:currentUser="userSession"
-			@open="setConversation"
+			@open="setSelectedConversation"
 		/>
 	</div>
 </template>
@@ -40,9 +40,9 @@
 			ConversationItem
 		},
 		computed: {
-			...mapState('chat', {
-				openedConversation: (state) => state.conversation
-			}),
+			...mapState('chat', [
+				'selectedConversation'
+			]),
 			...mapState('auth', [
 				'userSession'
 			]),
@@ -62,7 +62,7 @@
 		},
 		methods: {
 			...mapActions('chat', [
-				'setConversation'
+				'setSelectedConversation'
 			])
 		}
 	};

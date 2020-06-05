@@ -1,7 +1,7 @@
 <template>
 	<div
 		:class="['conversation-item', { active }]"
-		@click="$emit('open', conversation)"
+		@click="$emit('open', conversation.id)"
 	>
 		<OnlineIndicator v-show="online" />
 		{{ conversationName }}
