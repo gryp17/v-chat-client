@@ -1,6 +1,6 @@
 <template>
 	<div class="conversation-member" @click="onClick">
-		<OnlineIndicator v-show="user.online" />
+		<OnlineIndicator :online="user.online" />
 		{{ user.displayName }}
 	</div>
 </template>
@@ -28,6 +28,8 @@
 
 <style lang="scss">
 	.conversation-member {
+		display: flex;
+		align-items: center;
 		padding: 5px;
 		cursor: pointer;
 

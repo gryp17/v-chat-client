@@ -3,7 +3,11 @@
 		:class="['conversation-item', { active }]"
 		@click="$emit('open', conversation.id)"
 	>
-		<OnlineIndicator v-show="online" />
+		<OnlineIndicator
+			v-show="conversation.isPrivate"
+			:online="online"
+			dark
+		/>
 		{{ conversationName }}
 	</div>
 </template>
@@ -52,6 +56,8 @@
 
 <style lang="scss">
 	.conversation-item {
+		display: flex;
+		align-items: center;
 		padding: 5px;
 		cursor: pointer;
 
