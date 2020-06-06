@@ -11,6 +11,7 @@
 		width: 100%;
 		height: 100%;
 		background-color: $white;
+		z-index: 1;
 
 		.loading-image {
 			display: block;
