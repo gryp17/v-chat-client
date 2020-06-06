@@ -44,7 +44,7 @@ const actions = {
 		let url = server;
 
 		if (url && !/^(https?:\/\/|\/\/)/i.test(url)) {
-			url = `//${url}`;
+			url = `http://${url}`;
 		}
 
 		return MiscHttpService.handshake(url).then((res) => {
