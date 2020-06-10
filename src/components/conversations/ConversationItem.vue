@@ -3,12 +3,14 @@
 		:class="['conversation-item', { active, unread: conversation.unread }]"
 		@click="$emit('open', conversation.id)"
 	>
-		<OnlineIndicator
-			v-show="conversation.isPrivate"
-			:online="online"
-			dark
-		/>
-		{{ conversationName }}
+		<div class="conversation-item-inner">
+			<OnlineIndicator
+				v-show="conversation.isPrivate"
+				:online="online"
+				dark
+			/>
+			{{ conversationName }}
+		</div>
 	</div>
 </template>
 
@@ -56,17 +58,43 @@
 
 <style lang="scss">
 	.conversation-item {
-		display: flex;
-		align-items: center;
-		padding: 5px;
-		cursor: pointer;
+		.conversation-item-inner {
+			display: flex;
+			align-items: center;
+			padding: 5px;
+			cursor: pointer;
+		}
 
 		&.active {
 			background-color: darken($gray-very-dark, 5%);
 		}
 
 		&.unread {
-			color: $red;
+			.conversation-item-inner {
+				color: $orange;
+				font-weight: bold;
+
+				animation: 3s shake 0.82s cubic-bezier(.36,.07,.19,.97) both infinite;
+				transform: translate3d(0, 0, 0);
+
+				@keyframes shake {
+					5%, 45% {
+						transform: translate3d(-1px, 0, 0);
+					}
+
+					10%, 40% {
+						transform: translate3d(2px, 0, 0);
+					}
+
+					15%, 25%, 35% {
+						transform: translate3d(-4px, 0, 0);
+					}
+
+					20%, 30% {
+						transform: translate3d(4px, 0, 0);
+					}
+				}
+			}
 		}
 
 		&:hover {

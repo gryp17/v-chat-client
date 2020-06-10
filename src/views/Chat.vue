@@ -86,7 +86,6 @@
 			...mapActions('chat', [
 				'getConversations',
 				'getUsers',
-				'setSelectedConversation',
 				'updateOnlineUsers',
 				'setConversationUsers',
 				'messageReceived'

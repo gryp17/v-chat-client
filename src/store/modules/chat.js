@@ -99,7 +99,7 @@ const actions = {
 			context.commit('SET_CONVERSATIONS', conversations);
 
 			if (conversations && conversations.length > 0) {
-				context.commit('SET_SELECTED_CONVERSATION', conversations[0].id);
+				context.dispatch('setSelectedConversation', conversations[0].id);
 			}
 		}).catch(() => {
 			Vue.toasted.global.apiError({
