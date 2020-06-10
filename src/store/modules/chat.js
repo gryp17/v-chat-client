@@ -79,6 +79,15 @@ const mutations = {
 				conversation.messages.push(message);
 			}
 		});
+	},
+	SET_CONVERSATION_UNREAD_STATUS(state, { conversationId, status }) {
+		state.conversations = state.conversations.map((conversation) => {
+			if (conversation.id === conversationId) {
+				conversation.unread = status;
+			}
+
+			return conversation;
+		});
 	}
 };
 
@@ -116,6 +125,13 @@ const actions = {
 	},
 	setSelectedConversation(context, conversationId) {
 		context.commit('SET_SELECTED_CONVERSATION', conversationId);
+
+		const conversation = context.getters.conversation;
+
+		//mark the opened conversation as read if necessary
+		if (conversation && conversation.unread) {
+			context.dispatch('markAsRead', conversationId);
+		}
 	},
 	updateOnlineUsers(context, onlineUsers) {
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
@@ -133,9 +149,34 @@ const actions = {
 	messageReceived(context, message) {
 		context.commit('ADD_CONVERSATION_MESSAGE', message);
 
-		if (context.state.selectedConversation !== message.conversationId) {
-			//TODO: NOTIFY THE USER ABOUT NEW MESSAGES...
+		const userSession = context.rootState.auth.userSession;
+
+		if (message.userId === userSession.id) {
+			return;
 		}
+
+		//if the conversation is not opened mark it as unread
+		if (message.conversationId !== context.state.selectedConversation) {
+			context.commit('SET_CONVERSATION_UNREAD_STATUS', {
+				conversationId: message.conversationId,
+				status: true
+			});
+		} else {
+			//otherwise mark it as read automatically
+			context.dispatch('markAsRead', message.conversationId);
+		}
+	},
+	markAsRead(context, conversationId) {
+		ConversationHttpService.markAsRead(conversationId).then(() => {
+			context.commit('SET_CONVERSATION_UNREAD_STATUS', {
+				conversationId,
+				status: false
+			});
+		}).catch(() => {
+			Vue.toasted.global.apiError({
+				message: 'Failed to mark as read'
+			});
+		});
 	}
 };
 

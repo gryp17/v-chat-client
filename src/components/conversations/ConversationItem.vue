@@ -1,6 +1,6 @@
 <template>
 	<div
-		:class="['conversation-item', { active }]"
+		:class="['conversation-item', { active, unread: conversation.unread }]"
 		@click="$emit('open', conversation.id)"
 	>
 		<OnlineIndicator
@@ -63,6 +63,10 @@
 
 		&.active {
 			background-color: darken($gray-very-dark, 5%);
+		}
+
+		&.unread {
+			color: $red;
 		}
 
 		&:hover {
