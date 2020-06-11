@@ -1,22 +1,48 @@
 <template>
-	<BaseModal
-		:adaptive="true"
-		:width="'100%'"
-		:maxWidth="600"
-		:visible="visible"
-		@hidden="hideProfileModal"
-	>
-		profile modal content
-	</BaseModal>
+	<div class="profile-modal">
+		<BaseModal
+			:adaptive="true"
+			:width="'100%'"
+			:maxWidth="320"
+			:height="'auto'"
+			:visible="visible"
+			@hidden="hideProfileModal"
+		>
+			<template v-if="userProfile">
+				<img :src="avatar" class="avatar" />
+
+				<div class="content">
+					<div class="display-name">
+						<OnlineIndicator
+							:online="userProfile.online"
+						/>
+						{{ userProfile.displayName }}
+					</div>
+
+					<!-- TODO: apply some limit to this field or add a scroll for it -->
+					<p class="bio">
+						{{ bio }}
+					</p>
+
+					<!-- TODO: show a "send message" button in the user modal (if the conversation with this user exists open it - otherwise create it) -->
+					<FormButton>
+						Message
+					</FormButton>
+				</div>
+			</template>
+		</BaseModal>
+	</div>
 </template>
 
 <script>
-	import { mapState, mapActions } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
 	import BaseModal from '@/components/modals/BaseModal';
+	import OnlineIndicator from '@/components/OnlineIndicator';
 
 	export default {
 		components: {
-			BaseModal
+			BaseModal,
+			OnlineIndicator
 		},
 		data() {
 			return {};
@@ -24,7 +50,19 @@
 		computed: {
 			...mapState('modals', {
 				visible: 'profileModalOpened'
-			})
+			}),
+			...mapState('auth', [
+				'server'
+			]),
+			...mapGetters('chat', [
+				'userProfile'
+			]),
+			avatar() {
+				return `${this.server}/avatars/${this.userProfile.avatar}`;
+			},
+			bio() {
+				return this.userProfile.bio ? this.userProfile.bio : 'Apparently, this user prefers to keep an air of mystery about them.';
+			}
 		},
 		watch: {
 			/**
@@ -47,3 +85,27 @@
 		}
 	};
 </script>
+
+<style lang="scss">
+	.profile-modal {
+		.avatar {
+			width: 100%;
+		}
+
+		.content {
+			padding: 0px 10px 10px 10px;
+
+			.display-name {
+				display: flex;
+				align-items: center;
+				padding: 5px 0px;
+				font-size: 20px;
+				font-weight: bold;
+			}
+
+			.bio {
+				margin-top: 0px;
+			}
+		}
+	}
+</style>

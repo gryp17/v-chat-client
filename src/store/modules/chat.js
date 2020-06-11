@@ -8,7 +8,8 @@ const getDefaultState = () => {
 	return {
 		conversations: [],
 		selectedConversation: null,
-		users: {}
+		users: {},
+		selectedUser: null
 	};
 };
 
@@ -36,6 +37,9 @@ const getters = {
 		return [...getters.conversation.messages].sort((a, b) => {
 			return moment(a.createdAt) - moment(b.createdAt);
 		});
+	},
+	userProfile(state) {
+		return state.users[state.selectedUser];
 	}
 };
 
@@ -89,6 +93,9 @@ const mutations = {
 
 			return conversation;
 		});
+	},
+	SET_SELECTED_USER(state, userId) {
+		state.selectedUser = userId;
 	}
 };
 
@@ -185,6 +192,9 @@ const actions = {
 				message: 'Failed to mark as read'
 			});
 		});
+	},
+	setSelectedUser(context, userId) {
+		context.commit('SET_SELECTED_USER', userId);
 	}
 };
 

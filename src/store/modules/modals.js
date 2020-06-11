@@ -19,10 +19,7 @@ const actions = {
 	 */
 	showProfileModal(context, userId) {
 		context.commit('SET_PROFILE_MODAL_OPENED', true);
-
-		//TODO: call an action from the chat module that will fetch the user data for this ID
-		//TODO: think of a way to fetch all user accounts and map them instead of fetching them every time...
-		console.log(userId);
+		context.dispatch('chat/setSelectedUser', userId, { root: true });
 	},
 	/**
 	 * Hides the profile modal
