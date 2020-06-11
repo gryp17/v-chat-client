@@ -25,9 +25,15 @@
 					</p>
 
 					<!-- TODO: show a "send message" button in the user modal (if the conversation with this user exists open it - otherwise create it) -->
-					<FormButton>
-						Message
-					</FormButton>
+					<div class="buttons-wrapper">
+						<FormButton>
+							Message
+						</FormButton>
+
+						<FormButton>
+							Edit Profile
+						</FormButton>
+					</div>
 				</div>
 			</template>
 		</BaseModal>
@@ -104,7 +110,21 @@
 			}
 
 			.bio {
+				max-height: 120px;
 				margin-top: 0px;
+				overflow-y: auto;
+			}
+
+			.buttons-wrapper {
+				display: flex;
+
+				.form-button {
+					flex: 1;
+
+					+ .form-button {
+						margin-left: 10px;
+					}
+				}
 			}
 		}
 	}
