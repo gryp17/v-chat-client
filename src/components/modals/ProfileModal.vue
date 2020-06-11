@@ -18,9 +18,6 @@
 		components: {
 			BaseModal
 		},
-		props: {
-			user: Object
-		},
 		data() {
 			return {};
 		},

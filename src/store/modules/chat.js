@@ -52,6 +52,9 @@ const mutations = {
 	SET_USERS(state, users) {
 		state.users = users;
 	},
+	ADD_USER(state, user) {
+		Vue.set(state.users, user.id, user);
+	},
 	UPDATE_ONLINE_USERS(state, onlineUsers) {
 		Object.keys(state.users).forEach((userId) => {
 			const online = onlineUsers.includes(parseInt(userId));
@@ -64,13 +67,11 @@ const mutations = {
 			Vue.set(state.users, userId, updatedUser);
 		});
 	},
-	SET_CONVERSATION_USERS(state, { conversationId, users }) {
-		state.conversations = state.conversations.map((conversation) => {
+	ADD_CONVERSATION_USER(state, { conversationId, userId }) {
+		state.conversations.forEach((conversation) => {
 			if (conversation.id === conversationId) {
-				conversation.users = users;
+				conversation.users.push(userId);
 			}
-
-			return conversation;
 		});
 	},
 	ADD_CONVERSATION_MESSAGE(state, message) {
@@ -136,8 +137,15 @@ const actions = {
 	updateOnlineUsers(context, onlineUsers) {
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
 	},
-	setConversationUsers(context, data) {
-		context.commit('SET_CONVERSATION_USERS', data);
+	newUserReceived(context, user) {
+		context.commit('ADD_USER', user);
+
+		user.conversations.forEach((conversationId) => {
+			context.commit('ADD_CONVERSATION_USER', {
+				conversationId,
+				userId: user.id
+			});
+		});
 	},
 	sendMessage(context, { conversationId, content }) {
 		return MessageHttpService.sendMessage(conversationId, content).catch(() => {

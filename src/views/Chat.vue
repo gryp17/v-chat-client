@@ -87,7 +87,7 @@
 				'getConversations',
 				'getUsers',
 				'updateOnlineUsers',
-				'setConversationUsers',
+				'newUserReceived',
 				'messageReceived'
 			]),
 			...mapActions('auth', [
@@ -113,8 +113,8 @@
 					this.updateOnlineUsers(onlineUsers);
 				});
 
-				this.socket.on('updateConversationUsers', (data) => {
-					this.setConversationUsers(data);
+				this.socket.on('newUser', (user) => {
+					this.newUserReceived(user);
 				});
 
 				this.socket.on('message', (message) => {
