@@ -141,6 +141,17 @@ const actions = {
 			context.dispatch('markAsRead', conversationId);
 		}
 	},
+	openConversationWithUser(context, userId) {
+		const conversation = context.state.conversations.find((conversation) => {
+			return conversation.isPrivate && conversation.users.includes(userId);
+		});
+
+		//TODO: if the conversation with this user exists open it - otherwise create it and open it
+		//TODO: figure out how to show the newly created conversation only to the first user until a message is sent
+		if (conversation) {
+			context.dispatch('setSelectedConversation', conversation.id);
+		}
+	},
 	updateOnlineUsers(context, onlineUsers) {
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
 	},

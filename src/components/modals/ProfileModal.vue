@@ -23,16 +23,14 @@
 						{{ bio }}
 					</p>
 
-					<!-- TODO: (if the conversation with this user exists open it - otherwise create it) -->
 					<div class="buttons-wrapper">
-						<FormButton>
-							<i class="fas fa-comment-alt"></i>
-							Message
-						</FormButton>
-
-						<FormButton v-show="canEditProfile">
+						<FormButton v-if="canEditProfile">
 							<i class="fas fa-user-edit"></i>
 							Edit Profile
+						</FormButton>
+						<FormButton v-else @click="openConversation">
+							<i class="fas fa-comment-alt"></i>
+							Message
 						</FormButton>
 					</div>
 				</div>
@@ -87,6 +85,14 @@
 			...mapActions('modals', [
 				'hideProfileModal'
 			]),
+			...mapActions('chat', [
+				'openConversationWithUser'
+			]),
+			openConversation() {
+				this.openConversationWithUser(this.userProfile.id).then(() => {
+					this.hideProfileModal();
+				});
+			},
 			/**
 			 * Resets the data/state back to it's default/initial value
 			 */
@@ -125,10 +131,6 @@
 
 				.form-button {
 					flex: 1;
-
-					+ .form-button {
-						margin-left: 10px;
-					}
 				}
 			}
 		}
