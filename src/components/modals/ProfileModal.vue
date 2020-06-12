@@ -19,18 +19,19 @@
 						{{ userProfile.displayName }}
 					</div>
 
-					<!-- TODO: apply some limit to this field or add a scroll for it -->
 					<p class="bio">
 						{{ bio }}
 					</p>
 
-					<!-- TODO: show a "send message" button in the user modal (if the conversation with this user exists open it - otherwise create it) -->
+					<!-- TODO: (if the conversation with this user exists open it - otherwise create it) -->
 					<div class="buttons-wrapper">
 						<FormButton>
+							<i class="fas fa-comment-alt"></i>
 							Message
 						</FormButton>
 
-						<FormButton>
+						<FormButton v-show="canEditProfile">
+							<i class="fas fa-user-edit"></i>
 							Edit Profile
 						</FormButton>
 					</div>
@@ -58,7 +59,8 @@
 				visible: 'profileModalOpened'
 			}),
 			...mapState('auth', [
-				'server'
+				'server',
+				'userSession'
 			]),
 			...mapGetters('chat', [
 				'userProfile'
@@ -68,6 +70,9 @@
 			},
 			bio() {
 				return this.userProfile.bio ? this.userProfile.bio : 'Apparently, this user prefers to keep an air of mystery about them.';
+			},
+			canEditProfile() {
+				return this.userSession.id === this.userProfile.id;
 			}
 		},
 		watch: {
