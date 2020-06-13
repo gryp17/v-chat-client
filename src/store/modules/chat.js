@@ -20,8 +20,12 @@ const getters = {
 		const currentUser = rootState.auth.userSession;
 
 		return state.conversations.filter((conversation) => {
-			//show only conversations that have messages OR were initiated/created by the current user
-			return (currentUser && currentUser.id === conversation.createdBy) || conversation.messages.length > 0;
+			//show only conversations that have messages
+			//OR were initiated/created by the current user
+			//OR the conversation is the selectedConversation (corner case check for when both users tried to start the conversation at the same time)
+			return conversation.messages.length > 0
+				|| (currentUser && currentUser.id === conversation.createdBy)
+				|| state.selectedConversation === conversation.id;
 		}).map((conversation) => {
 			const users = conversation.users.map((userId) => {
 				return state.users[userId];
