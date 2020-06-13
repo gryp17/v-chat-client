@@ -88,6 +88,7 @@
 				'getUsers',
 				'updateOnlineUsers',
 				'newUserReceived',
+				'newConversationReceived',
 				'messageReceived'
 			]),
 			...mapActions('auth', [
@@ -115,6 +116,10 @@
 
 				this.socket.on('newUser', (user) => {
 					this.newUserReceived(user);
+				});
+
+				this.socket.on('newConversation', (conversation) => {
+					this.newConversationReceived(conversation);
 				});
 
 				this.socket.on('message', (message) => {

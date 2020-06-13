@@ -16,8 +16,13 @@ const getDefaultState = () => {
 const state = getDefaultState();
 
 const getters = {
-	conversations(state) {
-		return state.conversations.map((conversation) => {
+	conversations(state, getters, rootState) {
+		const currentUser = rootState.auth.userSession;
+
+		return state.conversations.filter((conversation) => {
+			//show only conversations that have messages OR were initiated/created by the current user
+			return (currentUser && currentUser.id === conversation.createdBy) || conversation.messages.length > 0;
+		}).map((conversation) => {
 			const users = conversation.users.map((userId) => {
 				return state.users[userId];
 			});
@@ -49,6 +54,9 @@ const mutations = {
 	},
 	SET_CONVERSATIONS(state, conversations) {
 		state.conversations = conversations;
+	},
+	ADD_CONVERSATION(state, conversation) {
+		state.conversations.push(conversation);
 	},
 	SET_SELECTED_CONVERSATION(state, conversationId) {
 		state.selectedConversation = conversationId;
@@ -146,10 +154,23 @@ const actions = {
 			return conversation.isPrivate && conversation.users.includes(userId);
 		});
 
-		//TODO: if the conversation with this user exists open it - otherwise create it and open it
-		//TODO: figure out how to show the newly created conversation only to the first user until a message is sent
+		//TODO:
+		//fix the corner case where one user initiates the conversation but doesn't send a message
+		//while the other user also tries to create a conversation... the conversation is in the list but isn't visible
+
+		//if a conversation with this user exists - open it
 		if (conversation) {
 			context.dispatch('setSelectedConversation', conversation.id);
+		} else {
+			//otherwise create the conversation and then open it
+			ConversationHttpService.addConversation(userId).then((res) => {
+				const conversation = res.data;
+				context.dispatch('setSelectedConversation', conversation.id);
+			}).catch(() => {
+				Vue.toasted.global.apiError({
+					message: 'Failed to create conversation'
+				});
+			});
 		}
 	},
 	updateOnlineUsers(context, onlineUsers) {
@@ -164,6 +185,9 @@ const actions = {
 				userId: user.id
 			});
 		});
+	},
+	newConversationReceived(context, conversation) {
+		context.commit('ADD_CONVERSATION', conversation);
 	},
 	sendMessage(context, { conversationId, content }) {
 		return MessageHttpService.sendMessage(conversationId, content).catch(() => {
