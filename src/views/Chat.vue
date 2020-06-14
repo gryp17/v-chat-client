@@ -1,5 +1,5 @@
 <template>
-	<div class="chat-page">
+	<div v-if="!loading" class="chat-page">
 		<div class="page-header">
 			page header
 
@@ -59,6 +59,9 @@
 			...mapState('auth', [
 				'server',
 				'token'
+			]),
+			...mapGetters('ui', [
+				'loading'
 			]),
 			...mapGetters('chat', [
 				'conversation',

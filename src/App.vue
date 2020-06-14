@@ -40,45 +40,63 @@
 			])
 		},
 		created() {
-			ipcRenderer.on('change-server', () => {
-				//reset the auth state
-				this.resetState();
+			this.listenForElectronEvents();
+			this.initializeApp();
+		},
+		methods: {
+			...mapActions('ui', [
+				'setLoading'
+			]),
+			...mapActions('auth', [
+				'getUserSession',
+				'resetState'
+			]),
+			listenForElectronEvents() {
+				ipcRenderer.on('change-server', () => {
+					//reset the auth state
+					this.resetState();
 
-				this.redirectTo({
-					name: 'initial-setup'
+					this.redirectTo({
+						name: 'initial-setup'
+					});
 				});
-			});
 
-			ipcRenderer.on('reset-settings', () => {
-				//reset the auth state
-				this.resetState();
-				//TODO: reset the rest of the settings state
+				ipcRenderer.on('reset-settings', () => {
+					//reset the auth state
+					this.resetState();
+					//TODO: reset the rest of the settings state
 
-				this.redirectTo({
-					name: 'initial-setup'
+					this.redirectTo({
+						name: 'initial-setup'
+					});
 				});
-			});
+			},
+			/**
+			 * Initializes the app by figuring out which page to show and setting the axios URL and token
+			 */
+			async initializeApp() {
+				this.setLoading(true);
 
-			this.setLoading(true);
+				if (!this.server) {
+					//redirect to the initial setup page
+					this.redirectTo({
+						name: 'initial-setup'
+					});
+					this.setLoading(false);
+					return;
+				}
 
-			if (!this.server) {
-				//redirect to the initial setup page
-				this.redirectTo({
-					name: 'initial-setup'
-				});
-				this.setLoading(false);
-				return;
-			}
+				//set the axios base URL
+				setApiBaseURL(this.server);
 
-			//set the axios base URL
-			setApiBaseURL(this.server);
+				//set the axios token header
+				if (this.token) {
+					setApiToken(this.token);
+				}
 
-			//set the axios token header
-			if (this.token) {
-				setApiToken(this.token);
-			}
+				//get the user session
+				await this.getUserSession();
 
-			this.getUserSession().then(() => {
 				if (!this.isLoggedIn) {
 					this.redirectTo({
 						name: 'authentication'
@@ -90,16 +108,7 @@
 				}
 
 				this.setLoading(false);
-			});
-		},
-		methods: {
-			...mapActions('ui', [
-				'setLoading'
-			]),
-			...mapActions('auth', [
-				'getUserSession',
-				'resetState'
-			]),
+			},
 			/**
 			 * Proxy function redirects to the specified path
 			 * It's used in order to catch any NavigationDuplicated exceptions
