@@ -80,7 +80,7 @@
 				'clearFormError',
 				'resetFormErrors'
 			]),
-			submit() {
+			async submit() {
 				if (this.submitting) {
 					return;
 				}
@@ -94,22 +94,20 @@
 					repeatPassword: this.repeatPassword
 				};
 
-				this.signup(params).then((res) => {
-					const data = res.data;
+				const { data } = await this.signup(params);
 
-					if (data.user) {
-						this.$router.push({
-							name: 'chat'
-						});
-					} else if (data.errors) {
-						this.setFormErrors({
-							errors: data.errors,
-							form: formName
-						});
-					}
+				if (data.user) {
+					this.$router.push({
+						name: 'chat'
+					});
+				} else if (data.errors) {
+					this.setFormErrors({
+						errors: data.errors,
+						form: formName
+					});
+				}
 
-					this.submitting = false;
-				});
+				this.submitting = false;
 			},
 			/**
 			 * Clears the form error related to this input

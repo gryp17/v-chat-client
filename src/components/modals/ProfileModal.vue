@@ -88,10 +88,9 @@
 			...mapActions('chat', [
 				'openConversationWithUser'
 			]),
-			openConversation() {
-				this.openConversationWithUser(this.userProfile.id).then(() => {
-					this.hideProfileModal();
-				});
+			async openConversation() {
+				await this.openConversationWithUser(this.userProfile.id);
+				this.hideProfileModal();
 			},
 			/**
 			 * Resets the data/state back to it's default/initial value

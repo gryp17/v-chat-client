@@ -36,7 +36,7 @@
 			...mapActions('auth', [
 				'setServer'
 			]),
-			submit() {
+			async submit() {
 				if (this.submitting) {
 					return;
 				}
@@ -44,16 +44,16 @@
 				this.submitting = true;
 
 				//try to set the server URL
-				this.setServer(this.url).then((success) => {
-					if (success) {
-						//redirect to the authentication page
-						this.$router.push({
-							name: 'authentication'
-						});
-					}
+				const success = await this.setServer(this.url);
 
-					this.submitting = false;
-				});
+				if (success) {
+					//redirect to the authentication page
+					this.$router.push({
+						name: 'authentication'
+					});
+				}
+
+				this.submitting = false;
 			}
 		}
 	};

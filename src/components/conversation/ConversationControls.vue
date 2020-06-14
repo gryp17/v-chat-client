@@ -57,9 +57,7 @@
 			...mapActions('chat', [
 				'sendMessage'
 			]),
-			onSubmit(e) {
-				//TODO: check the message length
-
+			async onSubmit(e) {
 				if (!e.shiftKey) {
 					e.preventDefault();
 				}
@@ -77,10 +75,10 @@
 				};
 
 				this.submitting = true;
-				this.sendMessage(params).then(() => {
-					this.message = '';
-					this.submitting = false;
-				});
+
+				await this.sendMessage(params);
+				this.message = '';
+				this.submitting = false;
 			}
 		}
 	};

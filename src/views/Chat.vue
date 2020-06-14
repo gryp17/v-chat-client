@@ -68,16 +68,16 @@
 				'conversationMessages'
 			])
 		},
-		mounted() {
+		async mounted() {
 			this.setLoading(true);
 
-			Promise.all([
+			await Promise.all([
 				this.getConversations(),
 				this.getUsers()
-			]).then((results) => {
-				this.connectToSocket();
-				this.setLoading(false);
-			});
+			]);
+
+			this.connectToSocket();
+			this.setLoading(false);
 		},
 		beforeDestroy() {
 			this.disconnectFromSocket();

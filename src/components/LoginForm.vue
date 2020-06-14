@@ -62,7 +62,7 @@
 				'clearFormError',
 				'resetFormErrors'
 			]),
-			submit() {
+			async submit() {
 				if (this.submitting) {
 					return;
 				}
@@ -74,22 +74,20 @@
 					password: this.password
 				};
 
-				this.login(params).then((res) => {
-					const data = res.data;
+				const { data } = await this.login(params);
 
-					if (data.user) {
-						this.$router.push({
-							name: 'chat'
-						});
-					} else if (data.errors) {
-						this.setFormErrors({
-							errors: data.errors,
-							form: formName
-						});
-					}
+				if (data.user) {
+					this.$router.push({
+						name: 'chat'
+					});
+				} else if (data.errors) {
+					this.setFormErrors({
+						errors: data.errors,
+						form: formName
+					});
+				}
 
-					this.submitting = false;
-				});
+				this.submitting = false;
 			},
 			/**
 			 * Clears the form error related to this input
