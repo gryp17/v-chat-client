@@ -40,15 +40,17 @@ const actions = {
 		setApiBaseURL('');
 		setApiToken('');
 	},
-	setServer(context, server) {
+	async setServer(context, server) {
 		let url = server;
 
 		if (url && !/^(https?:\/\/|\/\/)/i.test(url)) {
 			url = `http://${url}`;
 		}
 
-		return MiscHttpService.handshake(url).then((res) => {
-			if (!res.data || !res.data.success) {
+		try {
+			const { data } = await MiscHttpService.handshake(url);
+
+			if (!data || !data.success) {
 				return false;
 			}
 
@@ -57,57 +59,60 @@ const actions = {
 
 			context.commit('SET_SERVER', url);
 			return true;
-		}).catch(() => {
+		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: 'Failed to connect to the specified server'
 			});
 
 			return false;
-		});
+		}
 	},
-	getUserSession(context) {
+	async getUserSession(context) {
 		context.commit('SET_USER_SESSION', null);
 
-		return UserHttpService.getSession().then((res) => {
-			if (res.data && res.data.user) {
-				context.commit('SET_USER_SESSION', res.data.user);
+		try {
+			const { data } = await UserHttpService.getSession();
+			if (data && data.user) {
+				context.commit('SET_USER_SESSION', data.user);
 			}
-			return res;
-		}).catch(() => {
+			return data;
+		} catch (err) {
 			return false;
-		});
+		}
 	},
-	login(context, { email, password }) {
-		return UserHttpService.login(email, password).then((res) => {
-			if (res.data && res.data.token) {
+	async login(context, { email, password }) {
+		try {
+			const { data } = await UserHttpService.login(email, password);
+			if (data && data.token) {
 				//set the axios token header
-				setApiToken(res.data.token);
+				setApiToken(data.token);
 
-				context.commit('SET_TOKEN', res.data.token);
-				context.commit('SET_USER_SESSION', res.data.user);
+				context.commit('SET_TOKEN', data.token);
+				context.commit('SET_USER_SESSION', data.user);
 			}
-			return res;
-		}).catch((error) => {
+			return data;
+		} catch (error) {
 			Vue.toasted.global.apiError({
 				message: `login failed - ${error}`
 			});
-		});
+		}
 	},
-	signup(context, { email, displayName, password, repeatPassword }) {
-		return UserHttpService.signup(email, displayName, password, repeatPassword).then((res) => {
-			if (res.data && res.data.token) {
+	async signup(context, { email, displayName, password, repeatPassword }) {
+		try {
+			const { data } = await UserHttpService.signup(email, displayName, password, repeatPassword);
+			if (data && data.token) {
 				//set the axios token header
-				setApiToken(res.data.token);
+				setApiToken(data.token);
 
-				context.commit('SET_TOKEN', res.data.token);
-				context.commit('SET_USER_SESSION', res.data.user);
+				context.commit('SET_TOKEN', data.token);
+				context.commit('SET_USER_SESSION', data.user);
 			}
-			return res;
-		}).catch((error) => {
+			return data;
+		} catch (error) {
 			Vue.toasted.global.apiError({
 				message: `signup failed - ${error}`
 			});
-		});
+		}
 	},
 	logout(context) {
 		context.commit('SET_USER_SESSION', null);

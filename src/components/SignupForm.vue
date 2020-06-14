@@ -94,7 +94,7 @@
 					repeatPassword: this.repeatPassword
 				};
 
-				const { data } = await this.signup(params);
+				const data = await this.signup(params);
 
 				if (data.user) {
 					this.$router.push({

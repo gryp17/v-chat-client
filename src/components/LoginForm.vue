@@ -74,7 +74,7 @@
 					password: this.password
 				};
 
-				const { data } = await this.login(params);
+				const data = await this.login(params);
 
 				if (data.user) {
 					this.$router.push({
