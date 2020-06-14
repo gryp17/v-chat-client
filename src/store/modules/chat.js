@@ -112,24 +112,26 @@ const mutations = {
 };
 
 const actions = {
-	getConversations(context) {
-		return ConversationHttpService.getConversations().then((res) => {
-			const conversations = res.data;
+	async getConversations(context) {
+		try {
+			const { data } = await ConversationHttpService.getConversations();
+			const conversations = data;
 
 			context.commit('SET_CONVERSATIONS', conversations);
 
 			if (conversations && conversations.length > 0) {
 				context.dispatch('setSelectedConversation', conversations[0].id);
 			}
-		}).catch(() => {
+		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: 'Failed to fetch the conversations'
 			});
-		});
+		}
 	},
-	getUsers(context) {
-		return UserHttpService.getUsers().then((res) => {
-			const users = res.data ? res.data : [];
+	async getUsers(context) {
+		try {
+			const { data } = await UserHttpService.getUsers();
+			const users = data || [];
 			const usersMap = {};
 
 			users.forEach((user) => {
@@ -137,11 +139,11 @@ const actions = {
 			});
 
 			context.commit('SET_USERS', usersMap);
-		}).catch(() => {
+		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: 'Failed to fetch the users'
 			});
-		});
+		}
 	},
 	setSelectedConversation(context, conversationId) {
 		context.commit('SET_SELECTED_CONVERSATION', conversationId);
@@ -153,28 +155,25 @@ const actions = {
 			context.dispatch('markAsRead', conversationId);
 		}
 	},
-	openConversationWithUser(context, userId) {
+	async openConversationWithUser(context, userId) {
 		const conversation = context.state.conversations.find((conversation) => {
 			return conversation.isPrivate && conversation.users.includes(userId);
 		});
-
-		//TODO:
-		//fix the corner case where one user initiates the conversation but doesn't send a message
-		//while the other user also tries to create a conversation... the conversation is in the list but isn't visible
 
 		//if a conversation with this user exists - open it
 		if (conversation) {
 			context.dispatch('setSelectedConversation', conversation.id);
 		} else {
 			//otherwise create the conversation and then open it
-			ConversationHttpService.addConversation(userId).then((res) => {
-				const conversation = res.data;
+			try {
+				const { data } = await ConversationHttpService.addConversation(userId);
+				const conversation = data;
 				context.dispatch('setSelectedConversation', conversation.id);
-			}).catch(() => {
+			} catch (err) {
 				Vue.toasted.global.apiError({
 					message: 'Failed to create conversation'
 				});
-			});
+			}
 		}
 	},
 	updateOnlineUsers(context, onlineUsers) {
@@ -193,12 +192,14 @@ const actions = {
 	newConversationReceived(context, conversation) {
 		context.commit('ADD_CONVERSATION', conversation);
 	},
-	sendMessage(context, { conversationId, content }) {
-		return MessageHttpService.sendMessage(conversationId, content).catch(() => {
+	async sendMessage(context, { conversationId, content }) {
+		try {
+			await MessageHttpService.sendMessage(conversationId, content);
+		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: 'Failed to send the message'
 			});
-		});
+		}
 	},
 	messageReceived(context, message) {
 		context.commit('ADD_CONVERSATION_MESSAGE', message);
@@ -220,17 +221,18 @@ const actions = {
 			context.dispatch('markAsRead', message.conversationId);
 		}
 	},
-	markAsRead(context, conversationId) {
-		ConversationHttpService.markAsRead(conversationId).then(() => {
+	async markAsRead(context, conversationId) {
+		try {
+			await ConversationHttpService.markAsRead(conversationId);
 			context.commit('SET_CONVERSATION_UNREAD_STATUS', {
 				conversationId,
 				status: false
 			});
-		}).catch(() => {
+		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: 'Failed to mark as read'
 			});
-		});
+		}
 	},
 	setSelectedUser(context, userId) {
 		context.commit('SET_SELECTED_USER', userId);
