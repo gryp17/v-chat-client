@@ -18,15 +18,7 @@
 					</FormButton>
 				</div>
 
-				<div class="messages-list">
-					<div
-						v-for="message in conversationMessages"
-						:key="message.id"
-						class="message"
-					>
-						{{ message.content }}
-					</div>
-				</div>
+				<MessagesList />
 
 				<ConversationControls />
 			</div>
@@ -42,12 +34,14 @@
 	import ConversationsList from '@/components/conversations/ConversationsList';
 	import ConversationDetails from '@/components/conversation/ConversationDetails';
 	import ConversationControls from '@/components/conversation/ConversationControls';
+	import MessagesList from '@/components/conversation/MessagesList';
 
 	export default {
 		components: {
 			ConversationsList,
 			ConversationDetails,
-			ConversationControls
+			ConversationControls,
+			MessagesList
 		},
 		data() {
 			return {
@@ -64,8 +58,7 @@
 				'loading'
 			]),
 			...mapGetters('chat', [
-				'conversation',
-				'conversationMessages'
+				'conversation'
 			])
 		},
 		async mounted() {
@@ -167,6 +160,7 @@
 			.chat-wrapper {
 				display: flex;
 				flex-direction: column;
+				height: 100%;
 				flex: 1;
 
 				.header {
@@ -178,11 +172,6 @@
 						float: right;
 						color: $text-color;
 					}
-				}
-
-				.messages-list {
-					height: 100%;
-					overflow-y: auto;
 				}
 			}
 		}

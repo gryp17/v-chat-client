@@ -58,6 +58,8 @@
 
 <style lang="scss">
 	.conversation-item {
+		overflow-x: hidden;
+
 		.conversation-item-inner {
 			display: flex;
 			align-items: center;
