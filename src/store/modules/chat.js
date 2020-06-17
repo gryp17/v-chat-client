@@ -44,7 +44,7 @@ const getters = {
 	},
 	conversationMessages(state, getters) {
 		return [...getters.conversation.messages].sort((a, b) => {
-			return moment(a.createdAt) - moment(b.createdAt);
+			return moment(b.createdAt) - moment(a.createdAt);
 		});
 	},
 	userProfile(state) {
@@ -94,6 +94,13 @@ const mutations = {
 		state.conversations.forEach((conversation) => {
 			if (conversation.id === message.conversationId) {
 				conversation.messages.push(message);
+			}
+		});
+	},
+	ADD_CONVERSATION_MESSAGES(state, { conversationId, messages }) {
+		state.conversations.forEach((conversation) => {
+			if (conversation.id === conversationId) {
+				conversation.messages = conversation.messages.concat(messages);
 			}
 		});
 	},
@@ -231,6 +238,22 @@ const actions = {
 		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: 'Failed to mark as read'
+			});
+		}
+	},
+	async getMessages(context, { conversationId, limit, offset }) {
+		try {
+			const { data } = await MessageHttpService.getMessages(conversationId, limit, offset);
+
+			context.commit('ADD_CONVERSATION_MESSAGES', {
+				conversationId,
+				messages: data
+			});
+
+			return data;
+		} catch (err) {
+			Vue.toasted.global.apiError({
+				message: 'Failed to fetch messages'
 			});
 		}
 	},

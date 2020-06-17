@@ -7,5 +7,8 @@ export default {
 			conversationId,
 			content
 		});
+	},
+	getMessages(conversationId, limit, offset) {
+		return API.get(`/message?conversationId=${conversationId}&limit=${limit}&offset=${offset}`);
 	}
 };
