@@ -1,19 +1,23 @@
 <template>
 	<div class="messages-list" ref="list">
-		<div
+		<Message
 			v-for="message in conversationMessages"
 			:key="message.id"
-			class="message"
-		>
-			{{ message.content }}
-		</div>
+			:message="message"
+			:own="message.userId === userSession.id"
+			@openProfile="showProfileModal($event)"
+		/>
 	</div>
 </template>
 
 <script>
-	import { mapGetters, mapActions } from 'vuex';
+	import { mapState, mapGetters, mapActions } from 'vuex';
+	import Message from '@/components/conversation/Message';
 
 	export default {
+		components: {
+			Message
+		},
 		data() {
 			return {
 				limit: 10,
@@ -21,6 +25,9 @@
 			};
 		},
 		computed: {
+			...mapState('auth', [
+				'userSession'
+			]),
 			...mapGetters('chat', [
 				'conversation',
 				'conversationMessages'
@@ -49,6 +56,9 @@
 		methods: {
 			...mapActions('chat', [
 				'getMessages'
+			]),
+			...mapActions('modals', [
+				'showProfileModal'
 			]),
 			scrollToBottom() {
 				const list = this.$refs.list;
@@ -85,12 +95,5 @@
 		flex-direction: column-reverse;
 		height: 100%;
 		overflow-y: auto;
-
-		.message {
-			background-color: $white;
-			border: solid 1px $gray;
-			margin: 5px;
-			padding: 20px;
-		}
 	}
 </style>

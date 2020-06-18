@@ -9,7 +9,7 @@
 			@hidden="hideProfileModal"
 		>
 			<template v-if="userProfile">
-				<img :src="avatar" class="avatar" />
+				<img :src="userProfile.avatar" class="avatar" />
 
 				<div class="content">
 					<div class="display-name">
@@ -57,15 +57,11 @@
 				visible: 'profileModalOpened'
 			}),
 			...mapState('auth', [
-				'server',
 				'userSession'
 			]),
 			...mapGetters('chat', [
 				'userProfile'
 			]),
-			avatar() {
-				return `${this.server}/avatars/${this.userProfile.avatar}`;
-			},
 			bio() {
 				return this.userProfile.bio ? this.userProfile.bio : 'Apparently, this user prefers to keep an air of mystery about them.';
 			},

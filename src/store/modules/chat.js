@@ -16,6 +16,21 @@ const getDefaultState = () => {
 const state = getDefaultState();
 
 const getters = {
+	users(state, getters, rootState) {
+		const users = {};
+
+		//set the full avatar URL for each user
+		Object.keys(state.users).forEach((userId) => {
+			const user = state.users[userId];
+
+			users[userId] = {
+				...user,
+				avatar: `${rootState.auth.server}/avatars/${user.avatar}`
+			};
+		});
+
+		return users;
+	},
 	conversations(state, getters, rootState) {
 		const currentUser = rootState.auth.userSession;
 
@@ -28,7 +43,7 @@ const getters = {
 				|| state.selectedConversation === conversation.id;
 		}).map((conversation) => {
 			const users = conversation.users.map((userId) => {
-				return state.users[userId];
+				return getters.users[userId];
 			});
 
 			return {
@@ -43,12 +58,18 @@ const getters = {
 		});
 	},
 	conversationMessages(state, getters) {
-		return [...getters.conversation.messages].sort((a, b) => {
+		return [...getters.conversation.messages].map((message) => {
+			//set the user/author field for each message
+			return {
+				...message,
+				user: getters.users[message.userId]
+			};
+		}).sort((a, b) => {
 			return moment(b.createdAt) - moment(a.createdAt);
 		});
 	},
-	userProfile(state) {
-		return state.users[state.selectedUser];
+	userProfile(state, getters) {
+		return getters.users[state.selectedUser];
 	}
 };
 
