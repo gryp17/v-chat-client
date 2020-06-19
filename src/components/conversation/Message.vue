@@ -45,7 +45,7 @@
 <style lang="scss">
 	.message {
 		display: flex;
-		padding: 15px;
+		padding: 5px 15px;
 
 		.avatar-wrapper {
 			max-width: 120px;

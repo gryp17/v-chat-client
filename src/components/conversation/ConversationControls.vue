@@ -7,16 +7,12 @@
 			tag="textarea"
 			placeholder="Write a message..."
 			class="message-input"
+			ref="messageInput"
 		/>
 
 		<div class="controls-wrapper">
-			<FormButton
-				transparent
-				title="Add emoticon"
-				class="emoticons-btn"
-			>
-				<i class="fas fa-smile"></i>
-			</FormButton>
+			<EmojiPicker @select="addEmoji" />
+
 			<FormButton
 				transparent
 				title="Add attachment"
@@ -40,8 +36,12 @@
 
 <script>
 	import { mapGetters, mapActions } from 'vuex';
+	import EmojiPicker from '@/components/conversation/EmojiPicker';
 
 	export default {
+		components: {
+			EmojiPicker
+		},
 		data() {
 			return {
 				message: '',
@@ -57,6 +57,12 @@
 			...mapActions('chat', [
 				'sendMessage'
 			]),
+			addEmoji(emoji) {
+				this.message = `${this.message}${emoji.native}`;
+				//focus the message input once the emoticon has been added
+				//...look at me mom - no jquery!
+				this.$refs.messageInput.$el.querySelector('textarea').focus();
+			},
 			async onSubmit(e) {
 				if (!e.shiftKey) {
 					e.preventDefault();
@@ -97,10 +103,6 @@
 
 		.controls-wrapper {
 			background-color: $gray-very-light;
-
-			.emoticons-btn {
-				color: $yellow;
-			}
 
 			.attachment-btn {
 				color: $text-color;
