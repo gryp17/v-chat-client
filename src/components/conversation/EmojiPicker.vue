@@ -12,10 +12,10 @@
 
 		<Picker
 			v-show="opened"
-			set="twitter"
+			:native="true"
+			@select="onSelectEmoji"
 			title="Pick an emoji"
 			color="#0e9dec"
-			@select="onSelectEmoji"
 			ref="picker"
 		/>
 	</div>

@@ -1,11 +1,10 @@
 <template>
 	<div v-if="!loading" class="chat-page">
 		<div class="page-header">
-			page header
-
-			<FormButton @click="onLogout">
-				Logout
-			</FormButton>
+			<UserMenu
+				@logout="onLogout"
+				@editProfile="onEditProfile"
+			/>
 		</div>
 		<div v-if="conversation" class="page-content">
 			<ConversationsList />
@@ -31,6 +30,7 @@
 <script>
 	import SocketIO from 'socket.io-client';
 	import { mapState, mapGetters, mapActions } from 'vuex';
+	import UserMenu from '@/components/UserMenu';
 	import ConversationsList from '@/components/conversations/ConversationsList';
 	import ConversationDetails from '@/components/conversation/ConversationDetails';
 	import ConversationControls from '@/components/conversation/ConversationControls';
@@ -38,6 +38,7 @@
 
 	export default {
 		components: {
+			UserMenu,
 			ConversationsList,
 			ConversationDetails,
 			ConversationControls,
@@ -123,13 +124,18 @@
 				});
 			},
 			disconnectFromSocket() {
-				this.socket.disconnect();
+				if (this.socket) {
+					this.socket.disconnect();
+				}
 			},
 			onLogout() {
 				this.logout();
 				this.$router.push({
 					name: 'authentication'
 				});
+			},
+			onEditProfile() {
+				console.log('OPEN PROFILE MODAL');
 			},
 			toggleDetails() {
 				this.detailsAreVisible = !this.detailsAreVisible;
@@ -147,8 +153,11 @@
 		$page-header-height: 50px;
 
 		.page-header {
+			display: flex;
+			flex-direction: row-reverse;
+			align-items: center;
 			height: $page-header-height;
-			line-height: $page-header-height;
+			padding: 0px 5px;
 			background-color: $white;
 			border-bottom: solid 1px $gray;
 		}
