@@ -72,7 +72,7 @@
 	.conversations-list {
 		width: 200px;
 		overflow-y: auto;
-		background-color: $gray-very-dark;
+		background-color: darken($gray-very-dark, 1%);
 		color: $white;
 
 		.conversations-title {

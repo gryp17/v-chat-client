@@ -6,6 +6,7 @@
 			@click="toggleActions"
 		>
 			<i class="fas fa-cog"></i>
+			User Settings
 		</FormButton>
 
 		<div
@@ -79,15 +80,11 @@
 			display: block;
 			color: $text-color;
 			cursor: pointer;
-
-			> svg {
-				margin: 0px;
-			}
 		}
 
 		.actions {
 			position: absolute;
-			right: 0px;
+			left: 0px;
 			padding: 5px 0px;
 			min-width: 200px;
 			background-color: $white;
@@ -95,7 +92,7 @@
 			border: solid 1px $gray;
 			border-bottom-left-radius: 5px;
 			border-bottom-right-radius: 5px;
-			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
 
 			.action {
 				padding: 10px;

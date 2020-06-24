@@ -1,17 +1,21 @@
 <template>
 	<div v-if="!loading" class="chat-page">
-		<div class="page-header">
-			<UserMenu
-				@logout="onLogout"
-				@editProfile="onEditProfile"
-			/>
-		</div>
 		<div v-if="conversation" class="page-content">
 			<ConversationsList />
 
 			<div class="chat-wrapper">
 				<div class="header">
-					<FormButton transparent :active="detailsAreVisible" @click="toggleDetails">
+					<UserMenu
+						@logout="onLogout"
+						@editProfile="onEditProfile"
+					/>
+
+					<FormButton
+						transparent
+						class="details-btn"
+						:active="detailsAreVisible"
+						@click="toggleDetails"
+					>
 						<i class="fas fa-info-circle"></i>
 						Details
 					</FormButton>
@@ -150,21 +154,9 @@
 		flex-direction: column;
 		height: 100%;
 
-		$page-header-height: 50px;
-
-		.page-header {
-			display: flex;
-			flex-direction: row-reverse;
-			align-items: center;
-			height: $page-header-height;
-			padding: 0px 5px;
-			background-color: $white;
-			border-bottom: solid 1px $gray;
-		}
-
 		.page-content {
 			display: flex;
-			height: calc(100% - #{$page-header-height});
+			height: 100%;
 
 			.chat-wrapper {
 				display: flex;
@@ -177,7 +169,11 @@
 					background-color: $white;
 					border-bottom: solid 1px $gray;
 
-					.form-button {
+					.user-menu {
+						float: left;
+					}
+
+					.details-btn {
 						float: right;
 						color: $text-color;
 					}
