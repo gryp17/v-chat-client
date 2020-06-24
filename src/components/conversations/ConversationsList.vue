@@ -14,10 +14,13 @@
 		/>
 
 		<div
-			v-show="privateMessages.length > 0"
 			class="conversations-title"
 		>
 			Private messages
+
+			<StartConversationButton
+				@click="openStartConversationModal"
+			/>
 		</div>
 
 		<ConversationItem
@@ -34,10 +37,12 @@
 <script>
 	import { mapState, mapGetters, mapActions } from 'vuex';
 	import ConversationItem from '@/components/conversations/ConversationItem';
+	import StartConversationButton from '@/components/conversations/StartConversationButton';
 
 	export default {
 		components: {
-			ConversationItem
+			ConversationItem,
+			StartConversationButton
 		},
 		computed: {
 			...mapState('chat', [
@@ -63,19 +68,25 @@
 		methods: {
 			...mapActions('chat', [
 				'setSelectedConversation'
-			])
+			]),
+			openStartConversationModal() {
+				console.log('OPEN THE CONVERSATION MODAL');
+			}
 		}
 	};
 </script>
 
 <style lang="scss">
 	.conversations-list {
-		width: 200px;
+		width: 225px;
 		overflow-y: auto;
 		background-color: darken($gray-very-dark, 1%);
 		color: $white;
 
 		.conversations-title {
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
 			padding: 5px;
 			margin-top: 15px;
 			font-weight: bold;
