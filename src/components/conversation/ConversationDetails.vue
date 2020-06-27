@@ -9,19 +9,15 @@
 				@click="showProfileModal($event)"
 			/>
 		</div>
-
-		<ProfileModal />
 	</div>
 </template>
 
 <script>
 	import { mapGetters, mapActions } from 'vuex';
-	import ProfileModal from '@/components/modals/ProfileModal';
 	import ConversationMember from '@/components/conversation/ConversationMember';
 
 	export default {
 		components: {
-			ProfileModal,
 			ConversationMember
 		},
 		props: {
@@ -33,9 +29,13 @@
 			])
 		},
 		methods: {
-			...mapActions('modals', [
-				'showProfileModal'
-			])
+			...mapActions('chat', [
+				'setSelectedUser'
+			]),
+			showProfileModal(userId) {
+				this.setSelectedUser(userId);
+				this.$modal.show('profile-modal');
+			}
 		}
 	};
 </script>

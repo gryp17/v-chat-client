@@ -28,6 +28,9 @@
 
 			<ConversationDetails :opened="detailsAreVisible" />
 		</div>
+
+		<ProfileModal />
+		<EditProfileModal />
 	</div>
 </template>
 
@@ -39,6 +42,8 @@
 	import ConversationDetails from '@/components/conversation/ConversationDetails';
 	import ConversationControls from '@/components/conversation/ConversationControls';
 	import MessagesList from '@/components/conversation/MessagesList';
+	import ProfileModal from '@/components/modals/ProfileModal';
+	import EditProfileModal from '@/components/modals/EditProfileModal';
 
 	export default {
 		components: {
@@ -46,7 +51,9 @@
 			ConversationsList,
 			ConversationDetails,
 			ConversationControls,
-			MessagesList
+			MessagesList,
+			ProfileModal,
+			EditProfileModal
 		},
 		data() {
 			return {
@@ -139,7 +146,7 @@
 				});
 			},
 			onEditProfile() {
-				console.log('OPEN PROFILE MODAL');
+				this.$modal.show('edit-profile-modal');
 			},
 			toggleDetails() {
 				this.detailsAreVisible = !this.detailsAreVisible;

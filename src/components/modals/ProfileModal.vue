@@ -1,12 +1,11 @@
 <template>
 	<div class="profile-modal">
-		<BaseModal
+		<modal
 			:adaptive="true"
 			:width="'100%'"
 			:maxWidth="320"
 			:height="'auto'"
-			:visible="visible"
-			@hidden="hideProfileModal"
+			name="profile-modal"
 		>
 			<template v-if="userProfile">
 				<img :src="userProfile.avatar" class="avatar" />
@@ -35,27 +34,19 @@
 					</div>
 				</div>
 			</template>
-		</BaseModal>
+		</modal>
 	</div>
 </template>
 
 <script>
 	import { mapState, mapGetters, mapActions } from 'vuex';
-	import BaseModal from '@/components/modals/BaseModal';
 	import OnlineIndicator from '@/components/OnlineIndicator';
 
 	export default {
 		components: {
-			BaseModal,
 			OnlineIndicator
 		},
-		data() {
-			return {};
-		},
 		computed: {
-			...mapState('modals', {
-				visible: 'profileModalOpened'
-			}),
 			...mapState('auth', [
 				'userSession'
 			]),
@@ -69,30 +60,13 @@
 				return this.userSession.id === this.userProfile.id;
 			}
 		},
-		watch: {
-			/**
-			 * Watches the visible status and resets the data/state/errors
-			 */
-			visible(value) {
-				this.resetState();
-			}
-		},
 		methods: {
-			...mapActions('modals', [
-				'hideProfileModal'
-			]),
 			...mapActions('chat', [
 				'openConversationWithUser'
 			]),
 			async openConversation() {
 				await this.openConversationWithUser(this.userProfile.id);
-				this.hideProfileModal();
-			},
-			/**
-			 * Resets the data/state back to it's default/initial value
-			 */
-			resetState() {
-				Object.assign(this.$data, this.$options.data.call(this));
+				this.$modal.hide('profile-modal');
 			}
 		}
 	};

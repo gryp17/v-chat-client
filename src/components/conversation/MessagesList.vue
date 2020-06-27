@@ -59,11 +59,13 @@
 		},
 		methods: {
 			...mapActions('chat', [
-				'getMessages'
+				'getMessages',
+				'setSelectedUser'
 			]),
-			...mapActions('modals', [
-				'showProfileModal'
-			]),
+			showProfileModal(userId) {
+				this.setSelectedUser(userId);
+				this.$modal.show('profile-modal');
+			},
 			scrollToBottom() {
 				const list = this.$refs.list;
 				list.scrollTop = list.scrollHeight;
