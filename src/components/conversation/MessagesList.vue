@@ -46,7 +46,9 @@
 			conversationMessages: {
 				handler(newMessages, oldMessages) {
 					//scroll to the bottom only when a new message arrives or a new conversation is opened
-					if (!oldMessages || (newMessages.length > 0 && newMessages[0].id !== oldMessages[0].id)) {
+					if (!oldMessages || (
+						newMessages.length > 0 && oldMessages.length > 0 && newMessages[0].id !== oldMessages[0].id)
+					) {
 						this.$nextTick(() => {
 							this.scrollToBottom();
 						});
