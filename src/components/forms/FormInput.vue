@@ -143,7 +143,9 @@
 			background-color: $white;
 			border: solid 1px $gray;
 			font-size: inherit;
+			font-family: $font-family;
 			box-sizing: border-box;
+			resize: none;
 			transition: all 300ms;
 
 			&:focus {

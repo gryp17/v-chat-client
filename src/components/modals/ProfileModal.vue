@@ -23,7 +23,7 @@
 					</p>
 
 					<div class="buttons-wrapper">
-						<FormButton v-if="canEditProfile">
+						<FormButton v-if="canEditProfile" @click="showEditProfileModal">
 							<i class="fas fa-user-edit"></i>
 							Edit Profile
 						</FormButton>
@@ -67,6 +67,12 @@
 			async openConversation() {
 				await this.openConversationWithUser(this.userProfile.id);
 				this.$modal.hide('profile-modal');
+			},
+			showEditProfileModal() {
+				this.$modal.hide('profile-modal');
+				setTimeout(() => {
+					this.$modal.show('edit-profile-modal');
+				}, 200);
 			}
 		}
 	};

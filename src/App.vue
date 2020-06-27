@@ -13,6 +13,7 @@
 
 	import errorsMap from '@/filters/errorsMap';
 	import FormInput from '@/components/forms/FormInput';
+	import FormFileInput from '@/components/forms/FormFileInput';
 	import FormButton from '@/components/forms/FormButton';
 	import LoadingIndicator from '@/components/LoadingIndicator';
 
@@ -21,6 +22,7 @@
 
 	//global components
 	Vue.component('FormInput', FormInput);
+	Vue.component('FormFileInput', FormFileInput);
 	Vue.component('FormButton', FormButton);
 
 	export default {
@@ -133,6 +135,12 @@
 			url(~@/assets/fonts/RobotoMono-Regular.ttf) format("truetype");
 		font-weight: normal;
 		font-style: normal;
+	}
+
+	*,
+	:after,
+	:before {
+		box-sizing:border-box;
 	}
 
 	body, html {
