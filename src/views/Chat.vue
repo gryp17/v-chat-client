@@ -97,7 +97,8 @@
 				'updateOnlineUsers',
 				'newUserReceived',
 				'newConversationReceived',
-				'messageReceived'
+				'messageReceived',
+				'updateUser'
 			]),
 			...mapActions('auth', [
 				'logout'
@@ -132,6 +133,10 @@
 
 				this.socket.on('message', (message) => {
 					this.messageReceived(message);
+				});
+
+				this.socket.on('updateUser', (user) => {
+					this.updateUser(user);
 				});
 			},
 			disconnectFromSocket() {

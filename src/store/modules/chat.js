@@ -92,6 +92,15 @@ const mutations = {
 	ADD_USER(state, user) {
 		Vue.set(state.users, user.id, user);
 	},
+	UPDATE_USER(state, user) {
+		//merge the current user data with the new data
+		const updatedUser = {
+			...state.users[user.id],
+			...user
+		};
+
+		Vue.set(state.users, user.id, updatedUser);
+	},
 	UPDATE_ONLINE_USERS(state, onlineUsers) {
 		Object.keys(state.users).forEach((userId) => {
 			const online = onlineUsers.includes(parseInt(userId));
@@ -280,6 +289,13 @@ const actions = {
 	},
 	setSelectedUser(context, userId) {
 		context.commit('SET_SELECTED_USER', userId);
+	},
+	updateUser(context, user) {
+		context.commit('UPDATE_USER', user);
+
+		if (user.id === context.rootState.auth.userSession.id) {
+			context.commit('auth/SET_USER_SESSION', user, { root: true });
+		}
 	}
 };
 

@@ -158,7 +158,7 @@
 
 				const data = await this.updateUser(formData);
 
-				if (data.errors) {
+				if (data && data.errors) {
 					this.setFormErrors({
 						form: formName,
 						errors: data.errors

@@ -70,7 +70,7 @@
 				'setSelectedConversation'
 			]),
 			openStartConversationModal() {
-				console.log('OPEN THE CONVERSATION MODAL');
+				//TODO: open the start conversation modal
 			}
 		}
 	};
