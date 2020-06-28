@@ -39,5 +39,13 @@ export default {
 	},
 	getUsers() {
 		return API.get('/user/all');
+	},
+	/**
+	 * Updates the user profile
+	 * @param {Object} data
+	 * @returns {Promise}
+	 */
+	updateUser(data) {
+		return API.put('/user', data);
 	}
 };

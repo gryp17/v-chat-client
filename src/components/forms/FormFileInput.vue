@@ -54,6 +54,7 @@
 <style scoped lang="scss">
 	.form-file-input {
 		position: relative;
+		padding-bottom: 15px;
 
 		.browse-btn{
 			display: block;
@@ -67,6 +68,11 @@
 
 		input {
 			display: none;
+		}
+
+		.form-input-error {
+			width: 100%;
+			text-align: center;
 		}
 	}
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="upload-image-preview">
+	<div :class="['upload-image-preview', { error }]">
 		<img :src="image" class="image" />
 
 		<div class="overlay">
@@ -11,7 +11,8 @@
 <script>
 	export default {
 		props: {
-			image: String
+			image: String,
+			error: Boolean
 		}
 	};
 </script>
@@ -22,6 +23,7 @@
 
 		position: relative;
 		border-radius: 100%;
+		border: solid 2px transparent;
 		overflow: hidden;
 		cursor: pointer;
 
@@ -30,6 +32,10 @@
 				height: $size;
 				padding-top: 40px;
 			}
+		}
+
+		&.error {
+			border-color: $red;
 		}
 
 		.image {
@@ -49,7 +55,7 @@
 			height: 30px;
 			padding-top: 5px;
 			text-align: center;
-			background-color: rgba(101, 92, 92, 0.5);
+			background-color: rgba($gray-very-dark, 0.5);
 			transition: all 200ms ease-in;
 
 			.fa-camera {

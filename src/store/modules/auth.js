@@ -114,6 +114,22 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Updates the user data
+	 * @param {Object} context
+	 * @param {Object} formData
+	 * @returns {Promise}
+	 */
+	async updateUser(context, formData) {
+		try {
+			const { data } = await UserHttpService.updateUser(formData);
+			return data;
+		} catch (error) {
+			Vue.toasted.global.apiError({
+				message: `update user failed - ${error}`
+			});
+		}
+	},
 	logout(context) {
 		context.commit('SET_USER_SESSION', null);
 		context.commit('SET_TOKEN', null);

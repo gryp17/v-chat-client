@@ -21,7 +21,7 @@
 						ref="avatar"
 						name="avatar"
 					>
-						<UploadImagePreview :image="avatarPreview"/>
+						<UploadImagePreview :image="avatarPreview" :error="!!errors.avatar"/>
 					</FormFileInput>
 
 					<div class="avatar-hint">
@@ -47,7 +47,7 @@
 					type="password"
 					name="password"
 					floating-label
-					placeholder="Password"
+					placeholder="New password"
 				></FormInput>
 
 				<FormInput
@@ -72,7 +72,10 @@
 				></FormInput>
 
 				<div class="buttons-wrapper">
-					<FormButton>
+					<FormButton
+						:disabled="submitting"
+						@click="submit"
+					>
 						Save
 					</FormButton>
 				</div>
@@ -99,7 +102,8 @@
 				displayName: '',
 				password: '',
 				repeatPassword: '',
-				bio: ''
+				bio: '',
+				submitting: false
 			};
 		},
 		computed: {
@@ -122,6 +126,9 @@
 				'clearFormError',
 				'resetFormErrors'
 			]),
+			...mapActions('auth', [
+				'updateUser'
+			]),
 			onBeforeOpen() {
 				this.resetFormErrors(formName);
 				this.resetState();
@@ -135,7 +142,32 @@
 				this.avatarPreview = URL.createObjectURL(e.target.files[0]);
 			},
 			async submit() {
-				console.log('submit data');
+				if (this.submitting) {
+					return;
+				}
+
+				this.submitting = true;
+
+				const formData = new FormData();
+
+				['displayName', 'password', 'repeatPassword', 'avatar', 'bio'].forEach((field) => {
+					if (this[field]) {
+						formData.append(field, this[field]);
+					}
+				});
+
+				const data = await this.updateUser(formData);
+
+				if (data.errors) {
+					this.setFormErrors({
+						form: formName,
+						errors: data.errors
+					});
+				} else {
+					this.$modal.hide('edit-profile-modal');
+				}
+
+				this.submitting = false;
 			},
 			/**
 			 * Clears the form error related to this input
