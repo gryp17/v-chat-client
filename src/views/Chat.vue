@@ -31,6 +31,7 @@
 
 		<ProfileModal />
 		<EditProfileModal />
+		<StartConversationModal />
 	</div>
 </template>
 
@@ -44,6 +45,7 @@
 	import MessagesList from '@/components/conversation/MessagesList';
 	import ProfileModal from '@/components/modals/ProfileModal';
 	import EditProfileModal from '@/components/modals/EditProfileModal';
+	import StartConversationModal from '@/components/modals/StartConversationModal';
 
 	export default {
 		components: {
@@ -53,7 +55,8 @@
 			ConversationControls,
 			MessagesList,
 			ProfileModal,
-			EditProfileModal
+			EditProfileModal,
+			StartConversationModal
 		},
 		data() {
 			return {
