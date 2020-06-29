@@ -82,6 +82,7 @@
 	.profile-modal {
 		.avatar {
 			width: 100%;
+			max-height: 320px;
 		}
 
 		.content {
@@ -96,7 +97,7 @@
 			}
 
 			.bio {
-				max-height: 120px;
+				max-height: 100px;
 				margin-top: 0px;
 				overflow-y: auto;
 			}
