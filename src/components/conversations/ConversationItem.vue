@@ -1,6 +1,7 @@
 <template>
 	<div
 		:class="['conversation-item', { active, unread: conversation.unread }]"
+		:title="conversationName"
 		@click="$emit('open', conversation.id)"
 	>
 		<div class="conversation-item-inner">
@@ -8,8 +9,7 @@
 				v-show="conversation.isPrivate"
 				:online="online"
 				dark
-			/>
-			{{ conversationName }}
+			/>{{ conversationName }}
 		</div>
 	</div>
 </template>
@@ -61,9 +61,10 @@
 		overflow-x: hidden;
 
 		.conversation-item-inner {
-			display: flex;
-			align-items: center;
 			padding: 5px;
+			text-overflow: ellipsis;
+			overflow-x: hidden;
+			white-space: nowrap;
 			cursor: pointer;
 		}
 

@@ -1,7 +1,10 @@
 <template>
-	<div class="conversation-member" @click="onClick">
-		<OnlineIndicator :online="user.online" />
-		{{ user.displayName }}
+	<div
+		class="conversation-member"
+		:title="user.displayName"
+		@click="onClick"
+	>
+		<OnlineIndicator :online="user.online" />{{ user.displayName }}
 	</div>
 </template>
 
@@ -28,9 +31,10 @@
 
 <style lang="scss">
 	.conversation-member {
-		display: flex;
-		align-items: center;
 		padding: 5px;
+		text-overflow: ellipsis;
+		overflow-x: hidden;
+		white-space: nowrap;
 		cursor: pointer;
 
 		&:hover {

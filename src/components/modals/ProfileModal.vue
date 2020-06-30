@@ -11,11 +11,10 @@
 				<img :src="userProfile.avatar" class="avatar" />
 
 				<div class="content">
-					<div class="display-name">
+					<div :title="userProfile.displayName" class="display-name">
 						<OnlineIndicator
 							:online="userProfile.online"
-						/>
-						{{ userProfile.displayName }}
+						/>{{ userProfile.displayName }}
 					</div>
 
 					<p class="bio">
@@ -89,9 +88,10 @@
 			padding: 0px 10px 10px 10px;
 
 			.display-name {
-				display: flex;
-				align-items: center;
 				padding: 5px 0px;
+				text-overflow: ellipsis;
+				overflow-x: hidden;
+				white-space: nowrap;
 				font-size: 20px;
 				font-weight: bold;
 			}

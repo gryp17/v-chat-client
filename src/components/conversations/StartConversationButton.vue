@@ -12,6 +12,7 @@
 <style scoped lang="scss">
 	.start-conversation-button {
 		&.transparent {
+			margin: -7px 0px;
 			padding: 5px;
 			color: $white;
 			font-size: 18px;
