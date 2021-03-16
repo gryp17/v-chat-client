@@ -4,16 +4,17 @@
 			:adaptive="true"
 			:width="'100%'"
 			:maxWidth="450"
-			:height="'400px'"
+			:height="'470px'"
 			@before-open="onBeforeOpen"
 			name="start-conversation-modal"
 		>
 			<div class="modal-inner-wrapper">
 				<div class="header">
-					Start conversation
+					Start a conversation
 				</div>
 				<div class="content">
 					<FormInput
+						v-model="text"
 						placeholder="Find or start a conversation"
 					/>
 
@@ -22,26 +23,19 @@
 					<hr />
 
 					<div class="users-list">
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
-						<div>user</div>
+						<div
+							v-if="searchResults.length === 0"
+							class="no-results"
+						>
+							No results
+						</div>
+
+						<ConversationMember
+							v-for="user in searchResults"
+							:key="user.id"
+							:user="user"
+							@click="openConversation($event)"
+						/>
 					</div>
 				</div>
 			</div>
@@ -50,11 +44,37 @@
 </template>
 
 <script>
+	import { mapState, mapGetters, mapActions } from 'vuex';
+	import ConversationMember from '@/components/conversation/ConversationMember';
+
 	export default {
+		components: {
+			ConversationMember
+		},
 		data() {
-			return {};
+			return {
+				text: ''
+			};
+		},
+		computed: {
+			...mapState('auth', [
+				'userSession'
+			]),
+			...mapGetters('chat', [
+				'users'
+			]),
+			searchResults() {
+				const users = Object.values(this.users);
+				return users.filter(({ id, displayName }) => {
+					return this.userSession.id !== id
+						&& displayName.toLowerCase().indexOf(this.text.toLowerCase()) !== -1;
+				});
+			}
 		},
 		methods: {
+			...mapActions('chat', [
+				'openConversationWithUser'
+			]),
 			onBeforeOpen() {
 				this.resetState();
 			},
@@ -63,6 +83,10 @@
 			 */
 			resetState() {
 				Object.assign(this.$data, this.$options.data.call(this));
+			},
+			async openConversation(userId) {
+				await this.openConversationWithUser(userId);
+				this.$modal.hide('start-conversation-modal');
 			}
 		}
 	};
@@ -97,6 +121,14 @@
 				.users-list {
 					height: 100%;
 					overflow-y: auto;
+
+					.no-results {
+						display: flex;
+						padding-bottom: 15px;
+						height: 100%;
+						justify-content: center;
+						align-items: center;
+					}
 				}
 			}
 		}
