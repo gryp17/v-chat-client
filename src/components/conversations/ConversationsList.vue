@@ -78,6 +78,7 @@
 
 <style lang="scss">
 	.conversations-list {
+		flex-shrink: 0;
 		width: 225px;
 		overflow-y: auto;
 		background-color: darken($gray-very-dark, 1%);

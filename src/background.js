@@ -1,9 +1,10 @@
 
-import { app, protocol, BrowserWindow, Menu } from 'electron';
+import { app, protocol, BrowserWindow, Menu, ipcMain } from 'electron';
 import {
 	createProtocol,
 	installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib';
+import { download } from 'electron-dl';
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
@@ -69,6 +70,15 @@ function createWindow() {
 	]);
 
 	Menu.setApplicationMenu(menu);
+
+	ipcMain.on('download-url', async (event, { url, filename }) => {
+		const dl = await download(BrowserWindow.getFocusedWindow(), url, {
+			saveAs: true,
+			filename
+		});
+
+		win.webContents.send('download-complete', dl.getSavePath());
+	});
 
 	win.on('closed', () => {
 		win = null;

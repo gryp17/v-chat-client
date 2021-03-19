@@ -46,6 +46,12 @@
 			 */
 			openFileBrowser() {
 				this.$refs.file.click();
+			},
+			/**
+			 * Resets the selected file value
+			 */
+			resetValue() {
+				this.$refs.file.value = '';
 			}
 		}
 	};

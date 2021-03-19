@@ -15,14 +15,25 @@
 		</div>
 		<div class="message-wrapper">
 			<div class="message-content">
-				{{ message.content }}
+				<MessageFile
+					v-if="isFileMessage"
+					:file="message.file"
+				/>
+				<template v-else>
+					{{ message.content }}
+				</template>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import MessageFile from '@/components/conversation/MessageFile';
+
 	export default {
+		components: {
+			MessageFile
+		},
 		props: {
 			message: {
 				type: Object,
@@ -39,6 +50,9 @@
 			},
 			avatarTitle() {
 				return this.online ? 'Online' : 'Offline';
+			},
+			isFileMessage() {
+				return this.message.type === 'file';
 			}
 		}
 	};
@@ -104,6 +118,9 @@
 			}
 
 			.message-wrapper {
+				//fixes an issue with the text ellipsis? wtf?
+				width: 1px;
+
 				.message-content {
 					margin-right: 15px;
 

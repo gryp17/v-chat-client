@@ -57,12 +57,21 @@ const getters = {
 			return conversation.id === state.selectedConversation;
 		});
 	},
-	conversationMessages(state, getters) {
+	conversationMessages(state, getters, rootState) {
 		return [...getters.conversation.messages].map((message) => {
+			let file = null;
+
+			//set the file path for each message
+			if (message.type === 'file' && message.file) {
+				file = message.file;
+				file.path = `${rootState.auth.server}/attachments/${file.name}`;
+			}
+
 			//set the user/author field for each message
 			return {
 				...message,
-				user: getters.users[message.userId]
+				user: getters.users[message.userId],
+				file
 			};
 		}).sort((a, b) => {
 			return moment(b.createdAt) - moment(a.createdAt);
@@ -235,6 +244,15 @@ const actions = {
 		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: 'Failed to send the message'
+			});
+		}
+	},
+	async sendFileMessage(context, formData) {
+		try {
+			return await MessageHttpService.sendFileMessage(formData);
+		} catch (err) {
+			Vue.toasted.global.apiError({
+				message: 'Failed to send the file'
 			});
 		}
 	},

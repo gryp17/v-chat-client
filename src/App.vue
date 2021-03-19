@@ -7,7 +7,7 @@
 
 <script>
 	import Vue from 'vue';
-	import { ipcRenderer } from 'electron';
+	import { ipcRenderer, shell } from 'electron';
 	import { mapState, mapGetters, mapActions } from 'vuex';
 	import { setApiBaseURL, setApiToken } from '@/services/API';
 
@@ -71,6 +71,11 @@
 					this.redirectTo({
 						name: 'initial-setup'
 					});
+				});
+
+				//on download complete open the directory where the file was saved
+				ipcRenderer.on('download-complete', (event, path) => {
+					shell.showItemInFolder(path);
 				});
 			},
 			/**

@@ -13,13 +13,19 @@
 		<div class="controls-wrapper">
 			<EmojiPicker @select="addEmoji" />
 
-			<FormButton
-				transparent
-				title="Add attachment"
-				class="attachment-btn"
+			<FormFileInput
+				@change="fileSelected"
+				ref="file"
+				name="file"
+				class="send-file-btn"
 			>
-				<i class="fas fa-paperclip"></i>
-			</FormButton>
+				<FormButton
+					transparent
+					title="Send file"
+				>
+					<i class="fas fa-paperclip"></i>
+				</FormButton>
+			</FormFileInput>
 
 			<FormButton
 				@click="onSubmit"
@@ -45,6 +51,7 @@
 		data() {
 			return {
 				message: '',
+				file: null,
 				submitting: false
 			};
 		},
@@ -55,7 +62,8 @@
 		},
 		methods: {
 			...mapActions('chat', [
-				'sendMessage'
+				'sendMessage',
+				'sendFileMessage'
 			]),
 			addEmoji(emoji) {
 				this.message = `${this.message}${emoji.native}`;
@@ -85,6 +93,24 @@
 				await this.sendMessage(params);
 				this.message = '';
 				this.submitting = false;
+			},
+			async fileSelected(e) {
+				this.file = e.target.files[0];
+
+				const formData = new FormData();
+				formData.append('conversationId', this.conversation.id);
+				formData.append('file', this.file);
+
+				const { data } = await this.sendFileMessage(formData);
+
+				//handle file errors manually
+				if (data.errors && data.errors.file) {
+					this.$toasted.global.apiError({
+						message: data.errors.file
+					});
+				}
+
+				this.$refs.file.resetValue();
 			}
 		}
 	};
@@ -104,8 +130,13 @@
 		.controls-wrapper {
 			background-color: $gray-very-light;
 
-			.attachment-btn {
-				color: $text-color;
+			.send-file-btn {
+				display: inline-block;
+				padding-bottom: 0px;
+
+				.form-button {
+					color: $text-color;
+				}
 			}
 
 			.send-btn {

@@ -8,6 +8,9 @@ export default {
 			content
 		});
 	},
+	sendFileMessage(formData) {
+		return API.post('/message/file', formData);
+	},
 	getMessages(conversationId, limit, offset) {
 		return API.get(`/message?conversationId=${conversationId}&limit=${limit}&offset=${offset}`);
 	}
