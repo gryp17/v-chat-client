@@ -5,7 +5,7 @@
 			class="avatar-wrapper"
 		>
 			<img
-				:src="message.user.avatarPath"
+				:src="message.user.avatarLink"
 				:title="avatarTitle"
 				:class="['avatar', { online }]"
 			/>

@@ -188,7 +188,7 @@
 
 				this.displayName = this.user.displayName;
 				this.bio = this.user.bio;
-				this.avatarPreview = this.user.avatarPath;
+				this.avatarPreview = this.user.avatarLink;
 			}
 		}
 	};

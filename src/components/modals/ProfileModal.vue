@@ -8,7 +8,7 @@
 			name="profile-modal"
 		>
 			<template v-if="userProfile">
-				<img :src="userProfile.avatarPath" class="avatar" />
+				<img :src="userProfile.avatarLink" class="avatar" />
 
 				<div class="content">
 					<div :title="userProfile.displayName" class="display-name">
