@@ -44,7 +44,7 @@
 </template>
 
 <script>
-	import { mapState, mapGetters, mapActions } from 'vuex';
+	import { mapState, mapActions } from 'vuex';
 	import ConversationMember from '@/components/conversation/ConversationMember';
 
 	export default {
@@ -60,7 +60,7 @@
 			...mapState('auth', [
 				'userSession'
 			]),
-			...mapGetters('chat', [
+			...mapState('chat', [
 				'users'
 			]),
 			searchResults() {

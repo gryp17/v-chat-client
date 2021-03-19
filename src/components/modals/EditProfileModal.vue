@@ -85,7 +85,7 @@
 </template>
 
 <script>
-	import { mapState, mapGetters, mapActions } from 'vuex';
+	import { mapState, mapActions } from 'vuex';
 
 	import UploadImagePreview from '@/components/UploadImagePreview';
 
@@ -110,7 +110,7 @@
 			...mapState('forms', {
 				errors: (state) => state.errors[formName]
 			}),
-			...mapGetters('chat', [
+			...mapState('chat', [
 				'users'
 			]),
 			...mapState('auth', [
@@ -188,7 +188,7 @@
 
 				this.displayName = this.user.displayName;
 				this.bio = this.user.bio;
-				this.avatarPreview = this.user.avatar;
+				this.avatarPreview = this.user.avatarPath;
 			}
 		}
 	};
