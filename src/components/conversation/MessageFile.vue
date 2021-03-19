@@ -6,7 +6,7 @@
 		>
 			<img
 				title="Open image"
-				:src="file.path"
+				:src="file.link"
 				@click="openFile"
 			/>
 
@@ -64,12 +64,12 @@
 		methods: {
 			async download() {
 				ipcRenderer.send('download-url', {
-					url: this.file.path,
+					url: this.file.link,
 					filename: this.file.originalName
 				});
 			},
 			openFile() {
-				window.open(this.file.path, '_blank', 'frame=true,nodeIntegration=no');
+				window.open(this.file.link, '_blank', 'frame=true,nodeIntegration=no');
 			}
 		}
 	};

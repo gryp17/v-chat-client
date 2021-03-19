@@ -42,21 +42,12 @@ const getters = {
 			return conversation.id === state.selectedConversation;
 		});
 	},
-	conversationMessages(state, getters, rootState) {
+	conversationMessages(state, getters) {
 		return [...getters.conversation.messages].map((message) => {
-			let file = null;
-
-			//set the file path for each message
-			if (message.type === 'file' && message.file) {
-				file = message.file;
-				file.path = `${rootState.auth.server}/attachments/${file.name}`;
-			}
-
 			//set the user/author field for each message
 			return {
 				...message,
-				user: state.users[message.userId],
-				file
+				user: state.users[message.userId]
 			};
 		}).sort((a, b) => {
 			return moment(b.createdAt) - moment(a.createdAt);
