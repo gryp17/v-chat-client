@@ -171,6 +171,10 @@
 			outline: none;
 		}
 
+		a {
+			color: $blue-light;
+		}
+
 		#app {
 			display: flex;
 			flex-direction: column;

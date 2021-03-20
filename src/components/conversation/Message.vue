@@ -19,15 +19,18 @@
 					v-if="isFileMessage"
 					:file="message.file"
 				/>
-				<template v-else>
-					{{ message.content }}
-				</template>
+				<div
+					v-else
+					v-html="message.content"
+					v-linkified:options="linkifiedOptions"
+				/>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+	import { shell } from 'electron';
 	import MessageFile from '@/components/conversation/MessageFile';
 
 	export default {
@@ -40,6 +43,18 @@
 				required: true
 			},
 			own: Boolean
+		},
+		data() {
+			return {
+				linkifiedOptions: {
+					className: 'linkified-link',
+					attributes(href) {
+						return {
+							title: href
+						};
+					}
+				}
+			};
 		},
 		computed: {
 			displayName() {
@@ -54,6 +69,18 @@
 			isFileMessage() {
 				return this.message.type === 'file';
 			}
+		},
+		mounted() {
+			//manually add a click event listener to all linkified links in order to open them in the browser instead of new electron window
+			this.$el.addEventListener('click', (e) => {
+				if (e.target.tagName === 'A'
+					&& e.target.classList.contains('linkified-link')
+					&& e.target.href.startsWith('http')) {
+					e.stopPropagation();
+					e.preventDefault();
+					shell.openExternal(e.target.href);
+				}
+			});
 		}
 	};
 </script>
