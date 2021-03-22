@@ -150,6 +150,7 @@
 
 				.message-content {
 					margin-right: 15px;
+					word-break: break-word;
 
 					&::before {
 						left: 100%;
