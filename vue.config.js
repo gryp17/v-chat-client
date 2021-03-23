@@ -6,6 +6,16 @@ module.exports = {
 			return args;
 		});
 	},
+	pluginOptions: {
+		electronBuilder: {
+			builderOptions: {
+				appId: 'com.plamen.vchat',
+				win: {
+					icon: './public/icon.ico'
+				}
+			}
+		}
+	},
 	css: {
 		loaderOptions: {
 			sass: {

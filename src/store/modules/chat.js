@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import moment from 'moment';
+import { remote } from 'electron';
 import ConversationHttpService from '@/services/conversation';
 import UserHttpService from '@/services/user';
 import MessageHttpService from '@/services/message';
+import { showNewMessageNotification } from '@/utils/notifications';
 
 const getDefaultState = () => {
 	return {
@@ -241,12 +243,24 @@ const actions = {
 			return;
 		}
 
-		//if the conversation is not opened mark it as unread
+		//if the conversation is not opened mark it as unread and send a notification
 		if (message.conversationId !== context.state.selectedConversation) {
 			context.commit('SET_CONVERSATION_UNREAD_STATUS', {
 				conversationId: message.conversationId,
 				status: true
 			});
+
+			const [mainWindow] = remote.BrowserWindow.getAllWindows();
+
+			//show the new message notification only if the application is not focused
+			if (!mainWindow.isFocused()) {
+				const author = context.state.users[message.userId];
+				const conversation = context.state.conversations.find((conversation) => {
+					return conversation.id === message.conversationId;
+				});
+
+				showNewMessageNotification(message, author, conversation);
+			}
 		} else {
 			//otherwise mark it as read automatically
 			context.dispatch('markAsRead', message.conversationId);
