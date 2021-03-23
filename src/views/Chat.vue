@@ -8,6 +8,7 @@
 					<UserMenu
 						@logout="onLogout"
 						@editProfile="onEditProfile"
+						@openSettings="onOpenSettings"
 					/>
 
 					<FormButton
@@ -32,6 +33,7 @@
 		<ProfileModal />
 		<EditProfileModal />
 		<StartConversationModal />
+		<SettingsModal />
 	</div>
 </template>
 
@@ -46,6 +48,7 @@
 	import ProfileModal from '@/components/modals/ProfileModal';
 	import EditProfileModal from '@/components/modals/EditProfileModal';
 	import StartConversationModal from '@/components/modals/StartConversationModal';
+	import SettingsModal from '@/components/modals/SettingsModal';
 
 	export default {
 		components: {
@@ -56,7 +59,8 @@
 			MessagesList,
 			ProfileModal,
 			EditProfileModal,
-			StartConversationModal
+			StartConversationModal,
+			SettingsModal
 		},
 		data() {
 			return {
@@ -162,6 +166,9 @@
 			},
 			onEditProfile() {
 				this.$modal.show('edit-profile-modal');
+			},
+			onOpenSettings() {
+				this.$modal.show('settings-modal');
 			},
 			toggleDetails() {
 				this.detailsAreVisible = !this.detailsAreVisible;

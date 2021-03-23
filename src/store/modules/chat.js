@@ -204,10 +204,14 @@ const actions = {
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
 	},
 	updateOnlineUsers(context, onlineUsers) {
+		const userSession = context.rootState.auth.userSession;
+
 		//show notification when a user comes online
 		onlineUsers.forEach((userId) => {
 			const currentUserState = context.state.users[userId];
-			if (currentUserState && !currentUserState.online) {
+			if (currentUserState
+					&& currentUserState.id !== userSession.id
+					&& !currentUserState.online) {
 				showOnlineUserNotification(currentUserState);
 			}
 		});

@@ -6,7 +6,7 @@
 			@click="toggleActions"
 		>
 			<i class="fas fa-cog"></i>
-			User Settings
+			User Menu
 		</FormButton>
 
 		<div
@@ -20,6 +20,13 @@
 			>
 				<i class="fas fa-user-edit"></i>
 				Edit Profile
+			</div>
+			<div
+				@click="onOpenSettings"
+				class="action"
+			>
+				<i class="fas fa-cog"></i>
+				Settings
 			</div>
 			<div
 				@click="onLogout"
@@ -60,6 +67,10 @@
 			},
 			onEditProfile() {
 				this.$emit('editProfile');
+				this.hideActions();
+			},
+			onOpenSettings() {
+				this.$emit('openSettings');
 				this.hideActions();
 			},
 			hideActions() {
