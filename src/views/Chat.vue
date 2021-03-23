@@ -61,7 +61,8 @@
 		data() {
 			return {
 				socket: null,
-				detailsAreVisible: false
+				detailsAreVisible: false,
+				onlineUsersSet: false
 			};
 		},
 		computed: {
@@ -97,6 +98,7 @@
 			...mapActions('chat', [
 				'getConversations',
 				'getUsers',
+				'setOnlineUsers',
 				'updateOnlineUsers',
 				'newUserReceived',
 				'newConversationReceived',
@@ -123,7 +125,12 @@
 				});
 
 				this.socket.on('updateOnlineUsers', (onlineUsers) => {
-					this.updateOnlineUsers(onlineUsers);
+					if (this.onlineUsersSet) {
+						this.updateOnlineUsers(onlineUsers);
+					} else {
+						this.setOnlineUsers(onlineUsers);
+						this.onlineUsersSet = true;
+					}
 				});
 
 				this.socket.on('newUser', (user) => {

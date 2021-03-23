@@ -4,7 +4,7 @@ import { remote } from 'electron';
 import ConversationHttpService from '@/services/conversation';
 import UserHttpService from '@/services/user';
 import MessageHttpService from '@/services/message';
-import { showNewMessageNotification } from '@/utils/notifications';
+import { showNewMessageNotification, showOnlineUserNotification } from '@/utils/notifications';
 
 const getDefaultState = () => {
 	return {
@@ -200,7 +200,18 @@ const actions = {
 			}
 		}
 	},
+	setOnlineUsers(context, onlineUsers) {
+		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
+	},
 	updateOnlineUsers(context, onlineUsers) {
+		//show notification when a user comes online
+		onlineUsers.forEach((userId) => {
+			const currentUserState = context.state.users[userId];
+			if (currentUserState && !currentUserState.online) {
+				showOnlineUserNotification(currentUserState);
+			}
+		});
+
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
 	},
 	newUserReceived(context, user) {

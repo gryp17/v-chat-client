@@ -13,7 +13,13 @@ function showNewMessageNotification(message, author, conversation) {
 	showNotification(title, body, author.avatarLink);
 }
 
+function showOnlineUserNotification(user) {
+	const title = `${user.displayName} has come online`;
+	showNotification(title, '', user.avatarLink);
+}
+
 export {
 	showNotification,
-	showNewMessageNotification
+	showNewMessageNotification,
+	showOnlineUserNotification
 };
