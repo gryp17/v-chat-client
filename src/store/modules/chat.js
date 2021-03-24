@@ -205,16 +205,19 @@ const actions = {
 	},
 	updateOnlineUsers(context, onlineUsers) {
 		const userSession = context.rootState.auth.userSession;
+		const showOnlineStatusNotifications = context.rootState.settings.showOnlineStatusNotifications;
 
-		//show notification when a user comes online
-		onlineUsers.forEach((userId) => {
-			const currentUserState = context.state.users[userId];
-			if (currentUserState
-					&& currentUserState.id !== userSession.id
-					&& !currentUserState.online) {
-				showOnlineUserNotification(currentUserState);
-			}
-		});
+		if (showOnlineStatusNotifications) {
+			//show notification when a user comes online
+			onlineUsers.forEach((userId) => {
+				const currentUserState = context.state.users[userId];
+				if (currentUserState
+						&& currentUserState.id !== userSession.id
+						&& !currentUserState.online) {
+					showOnlineUserNotification(currentUserState);
+				}
+			});
+		}
 
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
 	},
@@ -266,9 +269,10 @@ const actions = {
 			});
 
 			const [mainWindow] = remote.BrowserWindow.getAllWindows();
+			const showMessageNotifications = context.rootState.settings.showMessageNotifications;
 
 			//show the new message notification only if the application is not focused
-			if (!mainWindow.isFocused()) {
+			if (showMessageNotifications && !mainWindow.isFocused()) {
 				const author = context.state.users[message.userId];
 				const conversation = context.state.conversations.find((conversation) => {
 					return conversation.id === message.conversationId;
