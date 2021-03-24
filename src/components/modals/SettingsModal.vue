@@ -11,7 +11,18 @@
 				Settings
 			</div>
 			<div class="content">
-				content
+
+				Notifications
+
+				<hr />
+
+				<FormSwitch v-model="showMessageNotifications">
+					Show new message notifications
+				</FormSwitch>
+
+				<FormSwitch v-model="showOnlineStatusNotifications">
+					Show online status notifications
+				</FormSwitch>
 
 				<div class="buttons-wrapper">
 					<FormButton
@@ -30,6 +41,8 @@
 	export default {
 		data() {
 			return {
+				showMessageNotifications: false,
+				showOnlineStatusNotifications: false,
 				submitting: false
 			};
 		},
@@ -51,9 +64,16 @@
 		}
 
 		.content {
-			padding: 10px;
+			padding: 20px 10px 10px 10px;
+
+			hr {
+				width: 100%;
+				border: none;
+				border-top: solid 1px $gray;
+			}
 
 			.buttons-wrapper {
+				padding-top: 5px;
 				text-align: center;
 			}
 		}
