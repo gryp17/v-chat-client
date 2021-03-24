@@ -5,6 +5,7 @@
 			:width="'100%'"
 			:maxWidth="560"
 			:height="'auto'"
+			@before-open="onBeforeOpen"
 			name="settings-modal"
 		>
 			<div class="header">
@@ -16,11 +17,11 @@
 
 				<hr />
 
-				<FormSwitch v-model="showMessageNotifications">
+				<FormSwitch v-model="messageNotifications">
 					Show new message notifications
 				</FormSwitch>
 
-				<FormSwitch v-model="showOnlineStatusNotifications">
+				<FormSwitch v-model="onlineStatusNotifications">
 					Show online status notifications
 				</FormSwitch>
 
@@ -38,17 +39,44 @@
 </template>
 
 <script>
+	import { mapState, mapActions } from 'vuex';
+
 	export default {
 		data() {
 			return {
-				showMessageNotifications: false,
-				showOnlineStatusNotifications: false,
+				messageNotifications: false,
+				onlineStatusNotifications: false,
 				submitting: false
 			};
 		},
+		computed: {
+			...mapState('settings', [
+				'showMessageNotifications',
+				'showOnlineStatusNotifications'
+			])
+		},
 		methods: {
-			submit() {
+			...mapActions('settings', [
+				'updateSettings'
+			]),
+			onBeforeOpen() {
+				this.messageNotifications = this.showMessageNotifications;
+				this.onlineStatusNotifications = this.showOnlineStatusNotifications;
+			},
+			async submit() {
+				if (this.submitting) {
+					return;
+				}
 
+				this.submitting = true;
+
+				await this.updateSettings({
+					showMessageNotifications: this.messageNotifications,
+					showOnlineStatusNotifications: this.onlineStatusNotifications
+				});
+
+				this.submitting = false;
+				this.$modal.hide('settings-modal');
 			}
 		}
 	};

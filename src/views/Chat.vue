@@ -86,7 +86,8 @@
 
 			await Promise.all([
 				this.getConversations(),
-				this.getUsers()
+				this.getUsers(),
+				this.getSettings()
 			]);
 
 			this.connectToSocket();
@@ -111,6 +112,9 @@
 			]),
 			...mapActions('auth', [
 				'logout'
+			]),
+			...mapActions('settings', [
+				'getSettings'
 			]),
 			connectToSocket() {
 				//initialize the socket connection
