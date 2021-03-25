@@ -27,9 +27,9 @@ const actions = {
 			context.commit('SET_SHOW_ONLINE_STATUS_NOTIFICATIONS', data.showOnlineStatusNotifications);
 
 			return data;
-		} catch (error) {
+		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: `get settings failed - ${error}`
+				message: `Failed to get settings: ${err}`
 			});
 		}
 	},
@@ -40,9 +40,9 @@ const actions = {
 			context.commit('SET_SHOW_ONLINE_STATUS_NOTIFICATIONS', data.showOnlineStatusNotifications);
 
 			return data;
-		} catch (error) {
+		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: `update settings failed - ${error}`
+				message: `Failed to update settings: ${err}`
 			});
 		}
 	}

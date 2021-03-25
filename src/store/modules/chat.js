@@ -148,7 +148,7 @@ const actions = {
 			}
 		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: 'Failed to fetch the conversations'
+				message: `Failed to fetch the conversations: ${err}`
 			});
 		}
 	},
@@ -165,7 +165,7 @@ const actions = {
 			context.commit('SET_USERS', usersMap);
 		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: 'Failed to fetch the users'
+				message: `Failed to fetch the users: ${err}`
 			});
 		}
 	},
@@ -195,7 +195,7 @@ const actions = {
 				context.dispatch('setSelectedConversation', conversation.id);
 			} catch (err) {
 				Vue.toasted.global.apiError({
-					message: 'Failed to create conversation'
+					message: `Failed to create conversation: ${err}`
 				});
 			}
 		}
@@ -239,7 +239,7 @@ const actions = {
 			await MessageHttpService.sendMessage(conversationId, content);
 		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: 'Failed to send the message'
+				message: `Failed to send the message: ${err}`
 			});
 		}
 	},
@@ -248,7 +248,7 @@ const actions = {
 			return await MessageHttpService.sendFileMessage(formData);
 		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: 'Failed to send the file'
+				message: `Failed to send the file: ${err}`
 			});
 		}
 	},
@@ -271,14 +271,20 @@ const actions = {
 			const [mainWindow] = remote.BrowserWindow.getAllWindows();
 			const showMessageNotifications = context.rootState.settings.showMessageNotifications;
 
-			//show the new message notification only if the application is not focused
-			if (showMessageNotifications && !mainWindow.isFocused()) {
-				const author = context.state.users[message.userId];
-				const conversation = context.state.conversations.find((conversation) => {
-					return conversation.id === message.conversationId;
-				});
+			//if the window is not focused...
+			if (!mainWindow.isFocused()) {
+				//flash the taskbar
+				mainWindow.flashFrame(true);
 
-				showNewMessageNotification(message, author, conversation);
+				//show the message notifications if they are enabled
+				if (showMessageNotifications) {
+					const author = context.state.users[message.userId];
+					const conversation = context.state.conversations.find((conversation) => {
+						return conversation.id === message.conversationId;
+					});
+
+					showNewMessageNotification(message, author, conversation);
+				}
 			}
 		} else {
 			//otherwise mark it as read automatically
@@ -294,7 +300,7 @@ const actions = {
 			});
 		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: 'Failed to mark as read'
+				message: `Failed to mark as read: ${err}`
 			});
 		}
 	},
@@ -310,7 +316,7 @@ const actions = {
 			return data;
 		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: 'Failed to fetch messages'
+				message: `Failed to fetch messages: ${err}`
 			});
 		}
 	},

@@ -91,9 +91,9 @@ const actions = {
 				context.commit('SET_USER_SESSION', data.user);
 			}
 			return data;
-		} catch (error) {
+		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: `login failed - ${error}`
+				message: `Login failed: ${err}`
 			});
 		}
 	},
@@ -108,9 +108,9 @@ const actions = {
 				context.commit('SET_USER_SESSION', data.user);
 			}
 			return data;
-		} catch (error) {
+		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: `signup failed - ${error}`
+				message: `Signup failed: ${err}`
 			});
 		}
 	},
@@ -124,9 +124,9 @@ const actions = {
 		try {
 			const { data } = await UserHttpService.updateUser(formData);
 			return data;
-		} catch (error) {
+		} catch (err) {
 			Vue.toasted.global.apiError({
-				message: `update user failed - ${error}`
+				message: `Update user failed: ${err}`
 			});
 		}
 	},

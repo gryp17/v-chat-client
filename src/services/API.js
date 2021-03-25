@@ -9,7 +9,7 @@ const API = axios.create({
 API.interceptors.response.use((res) => {
 	if (res.data && res.data.apiError) {
 		//trigger an exception if there is an API error
-		return Promise.reject(res.data.apiError);
+		return Promise.reject(errorsMap(res.data.apiError));
 	}
 
 	//translate the error codes into actual error messages

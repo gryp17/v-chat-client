@@ -128,7 +128,7 @@
 
 				this.socket.on('error', (error) => {
 					this.$toasted.global.apiError({
-						message: error
+						message: this.$options.filters.errorsMap(error)
 					});
 				});
 

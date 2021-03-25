@@ -11,7 +11,12 @@ export default (errorCode) => {
 		invalid_email: 'Invalid email',
 		fields_dont_match: 'The fields don\'t match',
 		already_in_use: 'Already in use',
-		wrong_password: 'Wrong password'
+		wrong_password: 'Wrong password',
+		// api errors
+		invalid_authentication_token: 'Invalid authentication token',
+		invalid_conversation_id: 'Invalid conversation id',
+		invalid_user_id: 'Invalid user id',
+		duplicate_conversation: 'Duplicate conversation'
 	};
 
 	if (!errors[errorCode]) {

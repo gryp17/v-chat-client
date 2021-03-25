@@ -123,6 +123,7 @@
 				background-color: $white;
 				padding: 20px;
 				box-shadow:	0px 0px 0px 2px $gray;
+				word-break: break-word;
 
 				&::before {
 					content: '';
@@ -150,7 +151,6 @@
 
 				.message-content {
 					margin-right: 15px;
-					word-break: break-word;
 
 					&::before {
 						left: 100%;
