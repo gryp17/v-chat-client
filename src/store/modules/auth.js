@@ -1,12 +1,11 @@
 import Vue from 'vue';
-import { setApiBaseURL, setApiToken } from '@/services/API';
+import { setApiBaseURL } from '@/services/API';
 import UserHttpService from '@/services/user';
 import MiscHttpService from '@/services/misc';
 
 const getDefaultState = () => {
 	return {
 		server: null,
-		token: null,
 		userSession: null
 	};
 };
@@ -38,7 +37,6 @@ const actions = {
 	resetState(context) {
 		context.commit('RESET_STATE');
 		setApiBaseURL('');
-		setApiToken('');
 	},
 	async setServer(context, server) {
 		let url = server;
@@ -83,11 +81,7 @@ const actions = {
 	async login(context, { email, password }) {
 		try {
 			const { data } = await UserHttpService.login(email, password);
-			if (data && data.token) {
-				//set the axios token header
-				setApiToken(data.token);
-
-				context.commit('SET_TOKEN', data.token);
+			if (data && data.user) {
 				context.commit('SET_USER_SESSION', data.user);
 			}
 			return data;
@@ -100,11 +94,7 @@ const actions = {
 	async signup(context, { email, displayName, password, repeatPassword }) {
 		try {
 			const { data } = await UserHttpService.signup(email, displayName, password, repeatPassword);
-			if (data && data.token) {
-				//set the axios token header
-				setApiToken(data.token);
-
-				context.commit('SET_TOKEN', data.token);
+			if (data && data.user) {
 				context.commit('SET_USER_SESSION', data.user);
 			}
 			return data;
@@ -130,9 +120,15 @@ const actions = {
 			});
 		}
 	},
-	logout(context) {
-		context.commit('SET_USER_SESSION', null);
-		context.commit('SET_TOKEN', null);
+	async logout(context) {
+		try {
+			await UserHttpService.logout();
+			context.commit('SET_USER_SESSION', null);
+		} catch (err) {
+			Vue.toasted.global.apiError({
+				message: `Logout failed: ${err}`
+			});
+		}
 	}
 };
 

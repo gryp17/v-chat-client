@@ -9,7 +9,7 @@
 	import Vue from 'vue';
 	import { ipcRenderer, shell } from 'electron';
 	import { mapState, mapGetters, mapActions } from 'vuex';
-	import { setApiBaseURL, setApiToken } from '@/services/API';
+	import { setApiBaseURL } from '@/services/API';
 
 	import errorsMap from '@/filters/errorsMap';
 	import FormInput from '@/components/forms/FormInput';
@@ -97,11 +97,6 @@
 
 				//set the axios base URL
 				setApiBaseURL(this.server);
-
-				//set the axios token header
-				if (this.token) {
-					setApiToken(this.token);
-				}
 
 				//get the user session
 				await this.getUserSession();

@@ -23,6 +23,7 @@ API.interceptors.response.use((res) => {
 	return res;
 });
 
+//not needed anymore
 export function setApiToken(token) {
 	API.defaults.headers.common.token = token;
 }

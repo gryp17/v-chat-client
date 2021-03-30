@@ -15,6 +15,13 @@ export default {
 		});
 	},
 	/**
+	 * Logs out the user
+	 * @returns {Promise}
+	 */
+	logout() {
+		return API.get('/auth/logout');
+	},
+	/**
 	 * Signs up the user
 	 * @param {String} email
 	 * @param {String} displayName

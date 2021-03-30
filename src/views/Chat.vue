@@ -162,8 +162,8 @@
 					this.socket.disconnect();
 				}
 			},
-			onLogout() {
-				this.logout();
+			async onLogout() {
+				await this.logout();
 				this.$router.push({
 					name: 'authentication'
 				});
