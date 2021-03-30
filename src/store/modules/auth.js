@@ -25,9 +25,6 @@ const mutations = {
 	SET_SERVER(state, server) {
 		state.server = server;
 	},
-	SET_TOKEN(state, token) {
-		state.token = token;
-	},
 	SET_USER_SESSION(state, userSession) {
 		state.userSession = userSession;
 	}

@@ -33,8 +33,7 @@
 		},
 		computed: {
 			...mapState('auth', [
-				'server',
-				'token'
+				'server'
 			]),
 			...mapGetters('ui', [
 				'loading'
@@ -81,7 +80,7 @@
 				});
 			},
 			/**
-			 * Initializes the app by figuring out which page to show and setting the axios URL and token
+			 * Initializes the app by figuring out which page to show and setting the axios URL
 			 */
 			async initializeApp() {
 				this.setLoading(true);

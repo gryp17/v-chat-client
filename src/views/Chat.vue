@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!loading" class="chat-page">
+	<div v-if="!loading && isLoggedIn" class="chat-page">
 		<div v-if="conversation" class="page-content">
 			<ConversationsList />
 
@@ -71,14 +71,16 @@
 		},
 		computed: {
 			...mapState('auth', [
-				'server',
-				'token'
+				'server'
 			]),
 			...mapGetters('ui', [
 				'loading'
 			]),
 			...mapGetters('chat', [
 				'conversation'
+			]),
+			...mapGetters('auth', [
+				'isLoggedIn'
 			])
 		},
 		async mounted() {
@@ -120,10 +122,7 @@
 				//initialize the socket connection
 				this.socket = SocketIO(this.server, {
 					transports: ['websocket'],
-					upgrade: false,
-					query: {
-						token: this.token
-					}
+					upgrade: false
 				});
 
 				this.socket.on('error', (error) => {
