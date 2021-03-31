@@ -13,12 +13,12 @@
 	.start-conversation-button {
 		&.transparent {
 			margin: -7px 0px;
-			padding: 5px;
+			padding: 3px;
 			color: $white;
 			font-size: 18px;
 
 			&:hover {
-				background-color: darken($gray-very-dark, 5%);
+				background-color: $gray-darkest;
 			}
 
 			> svg {

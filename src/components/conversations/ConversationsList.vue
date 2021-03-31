@@ -78,10 +78,8 @@
 
 <style lang="scss">
 	.conversations-list {
-		flex-shrink: 0;
-		width: 225px;
+		flex: 1;
 		overflow-y: auto;
-		background-color: darken($gray-very-dark, 1%);
 		color: $white;
 
 		.conversations-title {
@@ -93,7 +91,7 @@
 			font-weight: bold;
 
 			&:first-child {
-				margin-top: 0px;
+				margin-top: 8px;
 			}
 		}
 	}

@@ -1,16 +1,13 @@
 <template>
 	<div v-if="!loading && isLoggedIn" class="chat-page">
 		<div v-if="conversation" class="page-content">
-			<ConversationsList />
+			<div class="left-panel-wrapper">
+				<UserPanel />
+				<ConversationsList />
+			</div>
 
 			<div class="chat-wrapper">
 				<div class="header">
-					<UserMenu
-						@logout="onLogout"
-						@editProfile="onEditProfile"
-						@openSettings="onOpenSettings"
-					/>
-
 					<FormButton
 						transparent
 						class="details-btn"
@@ -40,7 +37,7 @@
 <script>
 	import SocketIO from 'socket.io-client';
 	import { mapState, mapGetters, mapActions } from 'vuex';
-	import UserMenu from '@/components/UserMenu';
+	import UserPanel from '@/components/UserPanel';
 	import ConversationsList from '@/components/conversations/ConversationsList';
 	import ConversationDetails from '@/components/conversation/ConversationDetails';
 	import ConversationControls from '@/components/conversation/ConversationControls';
@@ -52,7 +49,7 @@
 
 	export default {
 		components: {
-			UserMenu,
+			UserPanel,
 			ConversationsList,
 			ConversationDetails,
 			ConversationControls,
@@ -190,6 +187,15 @@
 			display: flex;
 			height: 100%;
 
+			.left-panel-wrapper {
+				display: flex;
+				flex-direction: column;
+				flex-shrink: 0;
+				width: 225px;
+				height: 100%;
+				background-color: $gray-darkest;
+			}
+
 			.chat-wrapper {
 				display: flex;
 				flex-direction: column;
@@ -200,10 +206,6 @@
 					padding: 10px;
 					background-color: $white;
 					border-bottom: solid 1px $gray;
-
-					.user-menu {
-						float: left;
-					}
 
 					.details-btn {
 						float: right;

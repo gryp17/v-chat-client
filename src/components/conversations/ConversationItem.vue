@@ -69,7 +69,7 @@
 		}
 
 		&.active {
-			background-color: darken($gray-very-dark, 5%);
+			background-color: $gray-medium-dark;
 		}
 
 		&.unread {
@@ -101,7 +101,7 @@
 		}
 
 		&:hover {
-			background-color: darken($gray-very-dark, 5%);
+			background-color: $gray-medium-dark;
 		}
 	}
 </style>
