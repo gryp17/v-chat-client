@@ -8,6 +8,8 @@
 
 			<div class="chat-wrapper">
 				<div class="header">
+					<MuteConversationButton />
+
 					<FormButton
 						transparent
 						class="details-btn"
@@ -42,6 +44,7 @@
 	import ConversationDetails from '@/components/conversation/ConversationDetails';
 	import ConversationControls from '@/components/conversation/ConversationControls';
 	import MessagesList from '@/components/conversation/MessagesList';
+	import MuteConversationButton from '@/components/conversation/MuteConversationButton';
 	import ProfileModal from '@/components/modals/ProfileModal';
 	import EditProfileModal from '@/components/modals/EditProfileModal';
 	import StartConversationModal from '@/components/modals/StartConversationModal';
@@ -54,6 +57,7 @@
 			ConversationDetails,
 			ConversationControls,
 			MessagesList,
+			MuteConversationButton,
 			ProfileModal,
 			EditProfileModal,
 			StartConversationModal,
@@ -157,18 +161,6 @@
 				if (this.socket) {
 					this.socket.disconnect();
 				}
-			},
-			async onLogout() {
-				await this.logout();
-				this.$router.push({
-					name: 'authentication'
-				});
-			},
-			onEditProfile() {
-				this.$modal.show('edit-profile-modal');
-			},
-			onOpenSettings() {
-				this.$modal.show('settings-modal');
 			},
 			toggleDetails() {
 				this.detailsAreVisible = !this.detailsAreVisible;

@@ -130,6 +130,15 @@ const mutations = {
 			return conversation;
 		});
 	},
+	SET_CONVERSATION_MUTED_STATUS(state, { conversationId, status }) {
+		state.conversations = state.conversations.map((conversation) => {
+			if (conversation.id === conversationId) {
+				conversation.muted = status;
+			}
+
+			return conversation;
+		});
+	},
 	SET_SELECTED_USER(state, userId) {
 		state.selectedUser = userId;
 	}
@@ -270,19 +279,18 @@ const actions = {
 
 			const [mainWindow] = remote.BrowserWindow.getAllWindows();
 			const showMessageNotifications = context.rootState.settings.showMessageNotifications;
+			const conversation = context.state.conversations.find((conversation) => {
+				return conversation.id === message.conversationId;
+			});
 
-			//if the window is not focused...
-			if (!mainWindow.isFocused()) {
+			//if the conversation is not muted and the window is not focused...
+			if (!conversation.muted && !mainWindow.isFocused()) {
 				//flash the taskbar
 				mainWindow.flashFrame(true);
 
 				//show the message notifications if they are enabled
 				if (showMessageNotifications) {
 					const author = context.state.users[message.userId];
-					const conversation = context.state.conversations.find((conversation) => {
-						return conversation.id === message.conversationId;
-					});
-
 					showNewMessageNotification(message, author, conversation);
 				}
 			}
@@ -301,6 +309,19 @@ const actions = {
 		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: `Failed to mark as read: ${err}`
+			});
+		}
+	},
+	async muteConversation(context, { conversationId, status }) {
+		try {
+			await ConversationHttpService.muteConversation(conversationId, status);
+			context.commit('SET_CONVERSATION_MUTED_STATUS', {
+				conversationId,
+				status
+			});
+		} catch (err) {
+			Vue.toasted.global.apiError({
+				message: `Failed to mute/unmute the conversation: ${err}`
 			});
 		}
 	},

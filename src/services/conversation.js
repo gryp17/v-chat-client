@@ -11,8 +11,11 @@ export default {
 		});
 	},
 	markAsRead(conversationId) {
-		return API.post('/conversation/markAsRead', {
-			conversationId
+		return API.post(`/conversation/${conversationId}/read`);
+	},
+	muteConversation(conversationId, status) {
+		return API.post(`/conversation/${conversationId}/muted`, {
+			status
 		});
 	}
 };
