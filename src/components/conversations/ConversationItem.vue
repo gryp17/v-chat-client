@@ -9,7 +9,13 @@
 				v-show="conversation.isPrivate"
 				:online="online"
 				dark
-			/>{{ conversationName }}
+			/>
+			<span v-if="conversation.muted">
+				<i
+					class="fas fa-bell-slash"
+					title="Muted"
+				/>
+			</span>{{ conversationName }}
 		</div>
 	</div>
 </template>
@@ -66,6 +72,12 @@
 			overflow-x: hidden;
 			white-space: nowrap;
 			cursor: pointer;
+
+			.fa-bell-slash {
+				font-size: 14px;
+				margin-left: 3px;
+				margin-right: 4px;
+			}
 		}
 
 		&.active {
