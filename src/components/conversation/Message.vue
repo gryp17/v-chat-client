@@ -116,6 +116,8 @@
 
 		.message-wrapper {
 			flex: 1;
+			//fixes an issue with the text ellipsis? wtf?
+			width: 1px;
 
 			.message-content {
 				position: relative;
@@ -146,9 +148,6 @@
 			}
 
 			.message-wrapper {
-				//fixes an issue with the text ellipsis? wtf?
-				width: 1px;
-
 				.message-content {
 					margin-right: 15px;
 
