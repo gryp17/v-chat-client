@@ -9,7 +9,7 @@ import '@fortawesome/fontawesome-free/js/all.js';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import menuIcon from './assets/img/icon.png';
+import menuIcon from './assets/img/logo.png';
 
 new Titlebar({
 	icon: menuIcon
