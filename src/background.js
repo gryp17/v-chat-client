@@ -57,9 +57,9 @@ function createWindow() {
 					}
 				},
 				{
-					label: 'Reset settings',
+					label: 'Open DevTools',
 					click() {
-						win.webContents.send('reset-settings');
+						win.webContents.openDevTools();
 					}
 				},
 				{

@@ -64,16 +64,6 @@
 					});
 				});
 
-				ipcRenderer.on('reset-settings', () => {
-					//reset the auth state
-					this.resetState();
-					//TODO: reset the rest of the settings state
-
-					this.redirectTo({
-						name: 'initial-setup'
-					});
-				});
-
 				//on download complete open the directory where the file was saved
 				ipcRenderer.on('download-complete', (event, path) => {
 					shell.showItemInFolder(path);

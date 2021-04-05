@@ -9,6 +9,7 @@ module.exports = {
 	pluginOptions: {
 		electronBuilder: {
 			builderOptions: {
+				productName: 'vChat',
 				appId: 'com.plamen.vchat',
 				win: {
 					icon: './public/icon.ico'
