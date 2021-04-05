@@ -20,6 +20,11 @@ const mutations = {
 };
 
 const actions = {
+	/**
+	 * Fetches the user settings
+	 * @param {Object} context
+	 * @returns {Promise}
+	 */
 	async getSettings(context) {
 		try {
 			const { data } = await SettingsHttpService.getSettings();
@@ -33,6 +38,12 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Updates the user settings
+	 * @param {Object} context
+	 * @param {Object} data
+	 * @returns {Promise}
+	 */
 	async updateSettings(context, { showMessageNotifications, showOnlineStatusNotifications }) {
 		try {
 			const { data } = await SettingsHttpService.updateSettings(showMessageNotifications, showOnlineStatusNotifications);

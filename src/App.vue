@@ -54,6 +54,9 @@
 				'getUserSession',
 				'resetState'
 			]),
+			/**
+			 * Listens for the electron (main window) events
+			 */
 			listenForElectronEvents() {
 				ipcRenderer.on('change-server', () => {
 					//reset the auth state

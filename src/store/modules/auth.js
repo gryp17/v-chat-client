@@ -31,10 +31,20 @@ const mutations = {
 };
 
 const actions = {
+	/**
+	 * Resets the module state
+	 * @param {Object} context
+	 */
 	resetState(context) {
 		context.commit('RESET_STATE');
 		setApiBaseURL('');
 	},
+	/**
+	 * Sets the chat server
+	 * @param {Object} context
+	 * @param {String} server
+	 * @returns {Promise}
+	 */
 	async setServer(context, server) {
 		let url = server;
 
@@ -62,6 +72,11 @@ const actions = {
 			return false;
 		}
 	},
+	/**
+	 * Returns the current user session
+	 * @param {Object} context
+	 * @returns {Promise}
+	 */
 	async getUserSession(context) {
 		context.commit('SET_USER_SESSION', null);
 
@@ -75,6 +90,12 @@ const actions = {
 			return false;
 		}
 	},
+	/**
+	 * Logs in the user
+	 * @param {Object} context
+	 * @param {Object} data
+	 * @returns {Promise}
+	 */
 	async login(context, { email, password }) {
 		try {
 			const { data } = await UserHttpService.login(email, password);
@@ -88,6 +109,12 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Signs up the user
+	 * @param {Object} context
+	 * @param {Object} data
+	 * @returns {Promise}
+	 */
 	async signup(context, { email, displayName, password, repeatPassword }) {
 		try {
 			const { data } = await UserHttpService.signup(email, displayName, password, repeatPassword);
@@ -117,6 +144,10 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Logs out the user
+	 * @param {Object} context
+	 */
 	async logout(context) {
 		try {
 			await UserHttpService.logout();

@@ -145,6 +145,10 @@ const mutations = {
 };
 
 const actions = {
+	/**
+	 * Fetches all user conversations
+	 * @param {Object} context
+	 */
 	async getConversations(context) {
 		try {
 			const { data } = await ConversationHttpService.getConversations();
@@ -161,6 +165,10 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Fetches all users
+	 * @param {Object} context
+	 */
 	async getUsers(context) {
 		try {
 			const { data } = await UserHttpService.getUsers();
@@ -178,6 +186,11 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Sets the current/selected conversation
+	 * @param {Object} context
+	 * @param {Number} conversationId
+	 */
 	setSelectedConversation(context, conversationId) {
 		context.commit('SET_SELECTED_CONVERSATION', conversationId);
 
@@ -188,6 +201,11 @@ const actions = {
 			context.dispatch('markAsRead', conversationId);
 		}
 	},
+	/**
+	 * Creates/opens a conversation with the provided user
+	 * @param {Object} context
+	 * @param {Number} userId
+	 */
 	async openConversationWithUser(context, userId) {
 		const conversation = context.state.conversations.find((conversation) => {
 			return conversation.isPrivate && conversation.users.includes(userId);
@@ -209,9 +227,19 @@ const actions = {
 			}
 		}
 	},
+	/**
+	 * Sets the online users
+	 * @param {Object} context
+	 * @param {Array} onlineUsers
+	 */
 	setOnlineUsers(context, onlineUsers) {
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
 	},
+	/**
+	 * Updates the online users
+	 * @param {Object} context
+	 * @param {Array} onlineUsers
+	 */
 	updateOnlineUsers(context, onlineUsers) {
 		const userSession = context.rootState.auth.userSession;
 		const showOnlineStatusNotifications = context.rootState.settings.showOnlineStatusNotifications;
@@ -230,6 +258,11 @@ const actions = {
 
 		context.commit('UPDATE_ONLINE_USERS', onlineUsers);
 	},
+	/**
+	 * Handles the new user event
+	 * @param {Object} context
+	 * @param {Object} user
+	 */
 	newUserReceived(context, user) {
 		context.commit('ADD_USER', user);
 
@@ -240,9 +273,19 @@ const actions = {
 			});
 		});
 	},
+	/**
+	 * Handles the new conversation event
+	 * @param {Object} context
+	 * @param {Object} conversation
+	 */
 	newConversationReceived(context, conversation) {
 		context.commit('ADD_CONVERSATION', conversation);
 	},
+	/**
+	 * Sends a new message
+	 * @param {Object} context
+	 * @param {Object} data
+	 */
 	async sendMessage(context, { conversationId, content }) {
 		try {
 			await MessageHttpService.sendMessage(conversationId, content);
@@ -252,6 +295,12 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Sends a new file message
+	 * @param {Object} context
+	 * @param {Object} formData
+	 * @returns {Promise}
+	 */
 	async sendFileMessage(context, formData) {
 		try {
 			return await MessageHttpService.sendFileMessage(formData);
@@ -261,6 +310,12 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Handles the message received event
+	 * @param {Object} context
+	 * @param {Object} message
+	 * @returns {Promise}
+	 */
 	messageReceived(context, message) {
 		context.commit('ADD_CONVERSATION_MESSAGE', message);
 
@@ -299,6 +354,11 @@ const actions = {
 			context.dispatch('markAsRead', message.conversationId);
 		}
 	},
+	/**
+	 * Marks the conversation as read
+	 * @param {Object} context
+	 * @param {Number} conversationId
+	 */
 	async markAsRead(context, conversationId) {
 		try {
 			await ConversationHttpService.markAsRead(conversationId);
@@ -312,6 +372,11 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Mutes/Unmutes the conversation
+	 * @param {Object} context
+	 * @param {Object} data
+	 */
 	async muteConversation(context, { conversationId, status }) {
 		try {
 			await ConversationHttpService.muteConversation(conversationId, status);
@@ -325,6 +390,12 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Fetches the conversation messages
+	 * @param {Object} context
+	 * @param {Object} data
+	 * @returns {Promise}
+	 */
 	async getMessages(context, { conversationId, limit, offset }) {
 		try {
 			const { data } = await MessageHttpService.getMessages(conversationId, limit, offset);
@@ -341,9 +412,19 @@ const actions = {
 			});
 		}
 	},
+	/**
+	 * Sets the selected user
+	 * @param {Object} context
+	 * @param {Number} userId
+	 */
 	setSelectedUser(context, userId) {
 		context.commit('SET_SELECTED_USER', userId);
 	},
+	/**
+	 * Handles the update user event
+	 * @param {Object} context
+	 * @param {Object} user
+	 */
 	updateUser(context, user) {
 		context.commit('UPDATE_USER', user);
 

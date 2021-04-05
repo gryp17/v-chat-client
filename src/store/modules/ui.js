@@ -24,6 +24,11 @@ const mutations = {
 };
 
 const actions = {
+	/**
+	 * Sets the loading state
+	 * @param {Object} context
+	 * @param {Boolean} loading
+	 */
 	setLoading(context, loading) {
 		const mutation = loading ? 'ADD_ACTIVE_PROCESS' : 'REMOVE_ACTIVE_PROCESS';
 		context.commit(mutation);

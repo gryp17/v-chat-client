@@ -23,11 +23,19 @@ API.interceptors.response.use((res) => {
 	return res;
 });
 
-//not needed anymore
+/**
+ * Sets the axios authentication token
+ * Not used anymore
+ * @param {String} token
+ */
 export function setApiToken(token) {
 	API.defaults.headers.common.token = token;
 }
 
+/**
+ * Sets the axios base url
+ * @param {String} baseURL
+ */
 export function setApiBaseURL(baseURL) {
 	API.defaults.baseURL = baseURL;
 }

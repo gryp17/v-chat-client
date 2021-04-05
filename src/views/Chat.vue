@@ -119,6 +119,9 @@
 			...mapActions('settings', [
 				'getSettings'
 			]),
+			/**
+			 * Connects to the socket.io server and listens for it's events
+			 */
 			connectToSocket() {
 				//initialize the socket connection
 				this.socket = SocketIO(this.server, {
@@ -157,11 +160,17 @@
 					this.updateUser(user);
 				});
 			},
+			/**
+			 * Disconnects from the socket.io server
+			 */
 			disconnectFromSocket() {
 				if (this.socket) {
 					this.socket.disconnect();
 				}
 			},
+			/**
+			 * Toggles the conversation details
+			 */
 			toggleDetails() {
 				this.detailsAreVisible = !this.detailsAreVisible;
 			}

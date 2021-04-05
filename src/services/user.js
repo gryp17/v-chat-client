@@ -44,6 +44,10 @@ export default {
 	getSession() {
 		return API.get('/auth/session');
 	},
+	/**
+	 * Fetches all users
+	 * @returns {Promise}
+	 */
 	getUsers() {
 		return API.get('/user/all');
 	},

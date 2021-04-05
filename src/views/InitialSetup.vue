@@ -36,6 +36,9 @@
 			...mapActions('auth', [
 				'setServer'
 			]),
+			/**
+			 * Submits the initial setup form
+			 */
 			async submit() {
 				if (this.submitting) {
 					return;
