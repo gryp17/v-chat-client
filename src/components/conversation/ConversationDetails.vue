@@ -32,6 +32,10 @@
 			...mapActions('chat', [
 				'setSelectedUser'
 			]),
+			/**
+			 * Opens the user profile modal
+			 * @param {Number} userId
+			 */
 			showProfileModal(userId) {
 				this.setSelectedUser(userId);
 				this.$modal.show('profile-modal');

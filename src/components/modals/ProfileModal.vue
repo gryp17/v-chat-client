@@ -63,10 +63,16 @@
 			...mapActions('chat', [
 				'openConversationWithUser'
 			]),
+			/**
+			 * Creates/opens a conversation with the user
+			 */
 			async openConversation() {
 				await this.openConversationWithUser(this.userProfile.id);
 				this.$modal.hide('profile-modal');
 			},
+			/**
+			 * Opens the edit profile modal
+			 */
 			showEditProfileModal() {
 				this.$modal.hide('profile-modal');
 				setTimeout(() => {

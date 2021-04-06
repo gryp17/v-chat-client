@@ -65,12 +65,20 @@
 				'sendMessage',
 				'sendFileMessage'
 			]),
+			/**
+			 * Adds an emoji to the textarea
+			 * @param {Object} emoji
+			 */
 			addEmoji(emoji) {
 				this.message = `${this.message}${emoji.native}`;
 				//focus the message input once the emoticon has been added
 				//...look at me mom - no jquery!
 				this.$refs.messageInput.$el.querySelector('textarea').focus();
 			},
+			/**
+			 * Submits the chat message
+			 * @param {Object} e
+			 */
 			async onSubmit(e) {
 				if (!e.shiftKey) {
 					e.preventDefault();
@@ -94,6 +102,10 @@
 				this.message = '';
 				this.submitting = false;
 			},
+			/**
+			 * Submits the file message
+			 * @param {Object} e
+			 */
 			async fileSelected(e) {
 				this.file = e.target.files[0];
 

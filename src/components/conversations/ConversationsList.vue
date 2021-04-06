@@ -69,6 +69,9 @@
 			...mapActions('chat', [
 				'setSelectedConversation'
 			]),
+			/**
+			 * Opens the start conversation modal
+			 */
 			openStartConversationModal() {
 				this.$modal.show('start-conversation-modal');
 			}

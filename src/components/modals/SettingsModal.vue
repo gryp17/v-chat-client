@@ -59,10 +59,16 @@
 			...mapActions('settings', [
 				'updateSettings'
 			]),
+			/**
+			 * Sets the checkbox values before opening the modal
+			 */
 			onBeforeOpen() {
 				this.messageNotifications = this.showMessageNotifications;
 				this.onlineStatusNotifications = this.showOnlineStatusNotifications;
 			},
+			/**
+			 * Submits the settings modal
+			 */
 			async submit() {
 				if (this.submitting) {
 					return;

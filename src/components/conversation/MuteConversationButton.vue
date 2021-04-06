@@ -43,6 +43,9 @@
 			...mapActions('chat', [
 				'muteConversation'
 			]),
+			/**
+			 * Toggles the conversation muted state
+			 */
 			async toggleMuted() {
 				if (this.loading) {
 					return;

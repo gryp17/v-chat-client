@@ -40,6 +40,10 @@
 			document.removeEventListener('click', this.handleOutsideClick);
 		},
 		methods: {
+			/**
+			 * Closes the picker when a click is made outside of the component
+			 * @param {Object} e
+			 */
 			handleOutsideClick(e) {
 				const picker = this.$refs.picker.$el;
 				const isClickInside = picker.contains(e.target);
@@ -48,13 +52,24 @@
 					this.closePicker();
 				}
 			},
+			/**
+			 * Toggles the picker
+			 * @param {Object} e
+			 */
 			togglePicker(e) {
 				e.stopPropagation();
 				this.opened = !this.opened;
 			},
+			/**
+			 * Closes the picker
+			 */
 			closePicker() {
 				this.opened = false;
 			},
+			/**
+			 * Emits the select event with the selected emoji
+			 * @param {Object} emoji
+			 */
 			onSelectEmoji(emoji) {
 				this.$emit('select', emoji);
 				this.closePicker();

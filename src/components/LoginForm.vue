@@ -62,6 +62,9 @@
 				'clearFormError',
 				'resetFormErrors'
 			]),
+			/**
+			 * Submits the login form
+			 */
 			async submit() {
 				if (this.submitting) {
 					return;

@@ -62,19 +62,33 @@
 				'getMessages',
 				'setSelectedUser'
 			]),
+			/**
+			 * Opens the profile modal
+			 * @param {Number} userId
+			 */
 			showProfileModal(userId) {
 				this.setSelectedUser(userId);
 				this.$modal.show('profile-modal');
 			},
+			/**
+			 * Scrolls the chat to the bottom
+			 */
 			scrollToBottom() {
 				const list = this.$refs.list;
 				list.scrollTop = list.scrollHeight;
 			},
+			/**
+			 * Fetches more messages on scroll
+			 * @param {Object} e
+			 */
 			onChatScroll(e) {
 				if (e.target.scrollTop < 50) {
 					this.fetchOlderMessages();
 				}
 			},
+			/**
+			 * Fetches more/older message
+			 */
 			async fetchOlderMessages() {
 				if (this.fetchingMessages) {
 					return;

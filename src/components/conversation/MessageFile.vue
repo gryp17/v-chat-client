@@ -62,12 +62,18 @@
 			}
 		},
 		methods: {
+			/**
+			 * Opens a save file dialog and downloads the file
+			 */
 			async download() {
 				ipcRenderer.send('download-url', {
 					url: this.file.link,
 					filename: this.file.originalName
 				});
 			},
+			/**
+			 * Opens the file (image) in a new window
+			 */
 			openFile() {
 				window.open(this.file.link, '_blank', 'frame=true,nodeIntegration=no');
 			}

@@ -75,6 +75,9 @@
 			...mapActions('chat', [
 				'openConversationWithUser'
 			]),
+			/**
+			 * Resets the modal state before opening it
+			 */
 			onBeforeOpen() {
 				this.resetState();
 			},
@@ -84,6 +87,10 @@
 			resetState() {
 				Object.assign(this.$data, this.$options.data.call(this));
 			},
+			/**
+			 * Starts/opens a conversation with the selected user
+			 * @param {Number} userId
+			 */
 			async openConversation(userId) {
 				await this.openConversationWithUser(userId);
 				this.$modal.hide('start-conversation-modal');

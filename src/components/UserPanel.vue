@@ -79,6 +79,10 @@
 			...mapActions('auth', [
 				'logout'
 			]),
+			/**
+			 * Handles clicks outside of the component and closes the actions menu
+			 * @param {Object} e
+			 */
 			handleOutsideClick(e) {
 				const panel = this.$refs.panel;
 				const isClickInside = panel.contains(e.target);
@@ -87,12 +91,21 @@
 					this.hideActions();
 				}
 			},
+			/**
+			 * Hides the actions menu
+			 */
 			hideActions() {
 				this.showActions = false;
 			},
+			/**
+			 * Toggles the actions menu
+			 */
 			toggleActions() {
 				this.showActions = !this.showActions;
 			},
+			/**
+			 * Logs out the user
+			 */
 			async onLogout() {
 				this.hideActions();
 
@@ -101,10 +114,16 @@
 					name: 'authentication'
 				});
 			},
+			/**
+			 * Opens the edit profile modal
+			 */
 			onEditProfile() {
 				this.hideActions();
 				this.$modal.show('edit-profile-modal');
 			},
+			/**
+			 * Opens the settings modal
+			 */
 			onOpenSettings() {
 				this.hideActions();
 				this.$modal.show('settings-modal');

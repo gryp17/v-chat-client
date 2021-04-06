@@ -80,6 +80,9 @@
 				'clearFormError',
 				'resetFormErrors'
 			]),
+			/**
+			 * Submits the signup form
+			 */
 			async submit() {
 				if (this.submitting) {
 					return;

@@ -22,6 +22,9 @@
 			}
 		},
 		methods: {
+			/**
+			 * Emits the click event with the user id
+			 */
 			onClick() {
 				this.$emit('click', this.user.id);
 			}

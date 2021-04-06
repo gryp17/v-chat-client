@@ -129,6 +129,9 @@
 			...mapActions('auth', [
 				'updateUser'
 			]),
+			/**
+			 * Resets the form before opening the modal
+			 */
 			onBeforeOpen() {
 				this.resetFormErrors(formName);
 				this.resetState();
@@ -141,6 +144,9 @@
 				this.avatar = e.target.files[0];
 				this.avatarPreview = URL.createObjectURL(e.target.files[0]);
 			},
+			/**
+			 * Submits the edit profile modal
+			 */
 			async submit() {
 				if (this.submitting) {
 					return;
