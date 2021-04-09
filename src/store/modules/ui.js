@@ -1,6 +1,7 @@
 const getDefaultState = () => {
 	return {
-		activeProcesses: 0
+		activeProcesses: 0,
+		focused: true
 	};
 };
 
@@ -20,6 +21,9 @@ const mutations = {
 		if (state.activeProcesses > 0) {
 			state.activeProcesses--;
 		}
+	},
+	SET_FOCUSED(state, focused) {
+		state.focused = focused;
 	}
 };
 
@@ -32,6 +36,14 @@ const actions = {
 	setLoading(context, loading) {
 		const mutation = loading ? 'ADD_ACTIVE_PROCESS' : 'REMOVE_ACTIVE_PROCESS';
 		context.commit(mutation);
+	},
+	/**
+	 * Sets the focused state
+	 * @param {Object} context
+	 * @param {Boolean} focused
+	 */
+	setFocused(context, focused) {
+		context.commit('SET_FOCUSED', focused);
 	}
 };
 

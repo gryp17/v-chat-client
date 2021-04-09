@@ -48,7 +48,8 @@
 		},
 		methods: {
 			...mapActions('ui', [
-				'setLoading'
+				'setLoading',
+				'setFocused'
 			]),
 			...mapActions('auth', [
 				'getUserSession',
@@ -70,6 +71,10 @@
 				//on download complete open the directory where the file was saved
 				ipcRenderer.on('download-complete', (event, path) => {
 					shell.showItemInFolder(path);
+				});
+
+				ipcRenderer.on('window-focused', (event, focused) => {
+					this.setFocused(focused);
 				});
 			},
 			/**

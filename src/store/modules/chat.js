@@ -333,13 +333,14 @@ const actions = {
 			});
 
 			const [mainWindow] = remote.BrowserWindow.getAllWindows();
+			const appIsFocused = context.rootState.ui.focused;
 			const showMessageNotifications = context.rootState.settings.showMessageNotifications;
 			const conversation = context.state.conversations.find((conversation) => {
 				return conversation.id === message.conversationId;
 			});
 
 			//if the conversation is not muted and the window is not focused...
-			if (!conversation.muted && !mainWindow.isFocused()) {
+			if (!conversation.muted && !appIsFocused) {
 				//flash the taskbar
 				mainWindow.flashFrame(true);
 

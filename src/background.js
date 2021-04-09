@@ -83,6 +83,15 @@ function createWindow() {
 		win.webContents.send('download-complete', dl.getSavePath());
 	});
 
+	//manually update the focused state instead of using win.isFocused() since isFocused() doesn't work properly (https://github.com/electron/electron/issues/20464)
+	win.on('focus', () => {
+		win.webContents.send('window-focused', true);
+	});
+
+	win.on('blur', () => {
+		win.webContents.send('window-focused', false);
+	});
+
 	win.on('closed', () => {
 		win = null;
 	});
