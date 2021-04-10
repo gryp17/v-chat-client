@@ -9,7 +9,7 @@
 				type="text"
 				name="url"
 				floating-label
-				placeholder="Server URL"
+				placeholder="Server URL (e.g. http://v-chat.com:1234)"
 			></FormInput>
 
 			<FormButton

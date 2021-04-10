@@ -320,39 +320,41 @@ const actions = {
 		context.commit('ADD_CONVERSATION_MESSAGE', message);
 
 		const userSession = context.rootState.auth.userSession;
+		const isOwnMessage = message.userId === userSession.id;
+		const conversationIsOpened = message.conversationId === context.state.selectedConversation;
+		const appIsFocused = context.rootState.ui.focused;
+		const messageNotificationsEnabled = context.rootState.settings.showMessageNotifications;
+		const [mainWindow] = remote.BrowserWindow.getAllWindows();
+		const author = context.state.users[message.userId];
+		const conversation = context.state.conversations.find((conversation) => {
+			return conversation.id === message.conversationId;
+		});
+		const showNotifications = !conversation.muted && messageNotificationsEnabled && (!conversationIsOpened || !appIsFocused);
+		const flashTaskbar = !conversation.muted && !appIsFocused;
 
-		if (message.userId === userSession.id) {
+		if (isOwnMessage) {
 			return;
 		}
 
-		//if the conversation is not opened mark it as unread and send a notification
-		if (message.conversationId !== context.state.selectedConversation) {
+		//if the conversation is already opened mark it as read automatically
+		if (conversationIsOpened) {
+			context.dispatch('markAsRead', message.conversationId);
+		} else {
+			//otherwise mark it as unread
 			context.commit('SET_CONVERSATION_UNREAD_STATUS', {
 				conversationId: message.conversationId,
 				status: true
 			});
+		}
 
-			const [mainWindow] = remote.BrowserWindow.getAllWindows();
-			const appIsFocused = context.rootState.ui.focused;
-			const showMessageNotifications = context.rootState.settings.showMessageNotifications;
-			const conversation = context.state.conversations.find((conversation) => {
-				return conversation.id === message.conversationId;
-			});
+		//flash the taskbar
+		if (flashTaskbar) {
+			mainWindow.flashFrame(true);
+		}
 
-			//if the conversation is not muted and the window is not focused...
-			if (!conversation.muted && !appIsFocused) {
-				//flash the taskbar
-				mainWindow.flashFrame(true);
-
-				//show the message notifications if they are enabled
-				if (showMessageNotifications) {
-					const author = context.state.users[message.userId];
-					showNewMessageNotification(message, author, conversation);
-				}
-			}
-		} else {
-			//otherwise mark it as read automatically
-			context.dispatch('markAsRead', message.conversationId);
+		//show new message notification
+		if (showNotifications) {
+			showNewMessageNotification(message, author, conversation);
 		}
 	},
 	/**
