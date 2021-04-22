@@ -1,6 +1,9 @@
 <template>
 	<div id="app">
-		<LoadingIndicator v-show="loading" />
+		<LoadingIndicator
+			v-show="loading"
+			full-screen
+		/>
 		<router-view />
 	</div>
 </template>
@@ -53,13 +56,17 @@
 			]),
 			...mapActions('auth', [
 				'getUserSession',
+				'logout',
 				'resetState'
 			]),
 			/**
 			 * Listens for the electron (main window) events
 			 */
 			listenForElectronEvents() {
-				ipcRenderer.on('change-server', () => {
+				ipcRenderer.on('change-server', async () => {
+					//logout before changing the server
+					await this.logout();
+
 					//reset the auth state
 					this.resetState();
 
@@ -83,30 +90,22 @@
 			async initializeApp() {
 				this.setLoading(true);
 
+				let page;
+
 				if (!this.server) {
-					//redirect to the initial setup page
-					this.redirectTo({
-						name: 'initial-setup'
-					});
-					this.setLoading(false);
-					return;
-				}
-
-				//set the axios base URL
-				setApiBaseURL(this.server);
-
-				//get the user session
-				await this.getUserSession();
-
-				if (!this.isLoggedIn) {
-					this.redirectTo({
-						name: 'authentication'
-					});
+					page = 'initial-setup';
 				} else {
-					this.redirectTo({
-						name: 'chat'
-					});
+					//set the axios base URL
+					setApiBaseURL(this.server);
+
+					//get the user session
+					await this.getUserSession();
+					page = this.isLoggedIn ? 'chat' : 'authentication';
 				}
+
+				await this.redirectTo({
+					name: page
+				});
 
 				this.setLoading(false);
 			},
@@ -116,7 +115,7 @@
 			 * @param {String} path
 			 */
 			redirectTo(path) {
-				this.$router.push(path).catch(() => {});
+				return this.$router.push(path).catch(() => {});
 			}
 		}
 	};
@@ -159,6 +158,10 @@
 
 		::-moz-focus-inner {
 			border: 0;
+		}
+
+		input {
+			filter: none;
 		}
 
 		button:focus {

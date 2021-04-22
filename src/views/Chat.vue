@@ -1,38 +1,25 @@
 <template>
 	<div v-if="!loading && isLoggedIn" class="chat-page">
-		<div v-if="conversation" class="page-content">
+		<div class="page-content">
 			<div class="left-panel-wrapper">
 				<UserPanel />
 				<ConversationsList />
 			</div>
 
-			<div class="chat-wrapper">
-				<div class="header">
-					<MuteConversationButton />
-
-					<FormButton
-						transparent
-						class="details-btn"
-						:active="detailsAreVisible"
-						@click="toggleDetails"
-					>
-						<i class="fas fa-info-circle"></i>
-						Details
-					</FormButton>
-				</div>
-
+			<div v-if="conversation" class="chat-wrapper">
+				<ConversationHeader/>
 				<MessagesList />
-
 				<ConversationControls />
 			</div>
-
-			<ConversationDetails :opened="detailsAreVisible" />
+			<ConversationPlaceholder v-else />
 		</div>
 
 		<ProfileModal />
 		<EditProfileModal />
 		<StartConversationModal />
 		<SettingsModal />
+		<ConversationDetailsModal />
+		<ImagePreviewModal />
 	</div>
 </template>
 
@@ -41,32 +28,35 @@
 	import { mapState, mapGetters, mapActions } from 'vuex';
 	import UserPanel from '@/components/UserPanel';
 	import ConversationsList from '@/components/conversations/ConversationsList';
-	import ConversationDetails from '@/components/conversation/ConversationDetails';
+	import ConversationHeader from '@/components/conversation/ConversationHeader';
 	import ConversationControls from '@/components/conversation/ConversationControls';
+	import ConversationPlaceholder from '@/components/conversation/ConversationPlaceholder';
 	import MessagesList from '@/components/conversation/MessagesList';
-	import MuteConversationButton from '@/components/conversation/MuteConversationButton';
 	import ProfileModal from '@/components/modals/ProfileModal';
 	import EditProfileModal from '@/components/modals/EditProfileModal';
 	import StartConversationModal from '@/components/modals/StartConversationModal';
 	import SettingsModal from '@/components/modals/SettingsModal';
+	import ConversationDetailsModal from '@/components/modals/ConversationDetailsModal';
+	import ImagePreviewModal from '@/components/modals/ImagePreviewModal';
 
 	export default {
 		components: {
 			UserPanel,
 			ConversationsList,
-			ConversationDetails,
+			ConversationHeader,
 			ConversationControls,
+			ConversationPlaceholder,
 			MessagesList,
-			MuteConversationButton,
 			ProfileModal,
 			EditProfileModal,
 			StartConversationModal,
-			SettingsModal
+			SettingsModal,
+			ConversationDetailsModal,
+			ImagePreviewModal
 		},
 		data() {
 			return {
 				socket: null,
-				detailsAreVisible: false,
 				onlineUsersSet: false
 			};
 		},
@@ -87,9 +77,9 @@
 		async mounted() {
 			this.setLoading(true);
 
+			await this.getUsers();
 			await Promise.all([
 				this.getConversations(),
-				this.getUsers(),
 				this.getSettings()
 			]);
 
@@ -167,12 +157,6 @@
 				if (this.socket) {
 					this.socket.disconnect();
 				}
-			},
-			/**
-			 * Toggles the conversation details
-			 */
-			toggleDetails() {
-				this.detailsAreVisible = !this.detailsAreVisible;
 			}
 		}
 	};
@@ -202,16 +186,24 @@
 				flex-direction: column;
 				height: 100%;
 				flex: 1;
+				background: $background;
+			}
+		}
 
-				.header {
-					padding: 10px;
-					background-color: $white;
-					border-bottom: solid 1px $gray;
+		@media (max-width: $small) {
+			.page-content {
+				.left-panel-wrapper {
+					width: 100%;
+				}
 
-					.details-btn {
-						float: right;
-						color: $text-color;
-					}
+				.chat-wrapper {
+					position: absolute;
+					width: 100%;
+					height: 100%;
+				}
+
+				.conversation-placeholder {
+					display: none;
 				}
 			}
 		}

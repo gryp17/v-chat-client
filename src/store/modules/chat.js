@@ -33,8 +33,19 @@ const getters = {
 				return state.users[userId];
 			});
 
+			let name = conversation.name;
+
+			//if the conversation is private use the user displayName as conversation name
+			if (conversation.isPrivate) {
+				const user = users.find((user) => {
+					return user.id !== currentUser.id;
+				});
+				name = user.displayName;
+			}
+
 			return {
 				...conversation,
+				name,
 				users
 			};
 		});
@@ -155,10 +166,6 @@ const actions = {
 			const conversations = data;
 
 			context.commit('SET_CONVERSATIONS', conversations);
-
-			if (conversations && conversations.length > 0) {
-				context.dispatch('setSelectedConversation', conversations[0].id);
-			}
 		} catch (err) {
 			Vue.toasted.global.apiError({
 				message: `Failed to fetch the conversations: ${err}`

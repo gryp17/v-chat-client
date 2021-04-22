@@ -1,7 +1,7 @@
 <template>
 	<div
 		:class="['conversation-item', { active, unread: conversation.unread }]"
-		:title="conversationName"
+		:title="conversation.name"
 		@click="$emit('open', conversation.id)"
 	>
 		<div class="conversation-item-inner">
@@ -15,7 +15,7 @@
 					class="fas fa-bell-slash"
 					title="Muted"
 				/>
-			</span>{{ conversationName }}
+			</span>{{ conversation.name }}
 		</div>
 	</div>
 </template>
@@ -43,13 +43,6 @@
 				return this.conversation.users.find((user) => {
 					return user.id !== this.currentUser.id;
 				});
-			},
-			conversationName() {
-				if (!this.conversationUser) {
-					return;
-				}
-
-				return this.conversation.isPrivate ? this.conversationUser.displayName : this.conversation.name;
 			},
 			online() {
 				if (this.conversation.isPrivate) {

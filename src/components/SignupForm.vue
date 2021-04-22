@@ -99,11 +99,11 @@
 
 				const data = await this.signup(params);
 
-				if (data.user) {
+				if (data && data.user) {
 					this.$router.push({
 						name: 'chat'
 					});
-				} else if (data.errors) {
+				} else if (data && data.errors) {
 					this.setFormErrors({
 						errors: data.errors,
 						form: formName

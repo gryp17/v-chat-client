@@ -1,16 +1,15 @@
 <template>
 	<div :class="['message', { own }]">
-		<div
-			@click="$emit('openProfile', message.userId)"
-			class="avatar-wrapper"
-		>
-			<img
-				:src="message.user.avatarLink"
-				:title="avatarTitle"
-				:class="['avatar', { online }]"
-			/>
-			<div :title="displayName" class="author">
-				{{ displayName }}
+		<div class="avatar-wrapper">
+			<div @click="$emit('openProfile', message.userId)">
+				<img
+					:src="message.user.avatarLink"
+					:title="avatarTitle"
+					:class="['avatar', { online }]"
+				/>
+				<div :title="displayName" class="author">
+					{{ displayName }}
+				</div>
 			</div>
 		</div>
 		<div class="message-wrapper">
@@ -93,13 +92,13 @@
 		.avatar-wrapper {
 			width: 120px;
 			text-align: center;
-			cursor: pointer;
 
 			.avatar {
 				width: 100px;
 				height: 100px;
 				border-radius: 100%;
 				border: solid 4px $gray;
+				cursor: pointer;
 
 				&.online {
 					border-color: $green;
@@ -111,6 +110,7 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 				font-size: 14px;
+				cursor: pointer;
 			}
 		}
 

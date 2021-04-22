@@ -1,37 +1,17 @@
 <template>
 	<div class="message-file">
-		<div
+		<img
 			v-if="fileIsImage"
 			class="image-file"
-		>
-			<img
-				title="Open image"
-				:src="file.link"
-				@click="openFile"
-			/>
-
-			<div class="controls">
-				<FormButton
-					title="Open image"
-					@click="openFile()"
-				>
-					<i class="far fa-image"></i>
-					Open
-				</FormButton>
-				<FormButton
-					title="Download image"
-					@click="download()"
-				>
-					<i class="far fa-arrow-alt-circle-down"></i>
-					Download
-				</FormButton>
-			</div>
-		</div>
+			title="Open preview"
+			:src="file.link"
+			@click="openImagePreview"
+		/>
 		<div
 			v-else
 			class="other-file"
 			title="Download file"
-			@click="download"
+			@click="onDownload"
 		>
 			<div class="file-icon-wrapper">
 				<i class="fas fa-file-download"></i>
@@ -47,7 +27,7 @@
 </template>
 
 <script>
-	import { ipcRenderer } from 'electron';
+	import { download } from '@/utils/files';
 
 	export default {
 		props: {
@@ -63,19 +43,16 @@
 		},
 		methods: {
 			/**
-			 * Opens a save file dialog and downloads the file
+			 * Opens the image preview modal
 			 */
-			async download() {
-				ipcRenderer.send('download-url', {
-					url: this.file.link,
-					filename: this.file.originalName
-				});
+			openImagePreview() {
+				this.$modal.show('image-preview-modal', this.file);
 			},
 			/**
-			 * Opens the file (image) in a new window
+			 * Opens a save file dialog and downloads the file
 			 */
-			openFile() {
-				window.open(this.file.link, '_blank', 'frame=true,nodeIntegration=no');
+			async onDownload() {
+				download(this.file.link, this.file.originalName);
 			}
 		}
 	};
@@ -84,34 +61,8 @@
 <style lang="scss">
 	.message-file {
 		.image-file {
-			position: relative;
-
-			img {
-				width: 100%;
-				cursor: pointer;
-			}
-
-			.controls {
-				position: absolute;
-				bottom: 5px;
-				padding: 15px;
-				opacity: 0;
-				width: 100%;
-				transition: all 300ms ease;
-				background-color: rgba($gray-dark, 0.5);
-
-				.form-button {
-					margin-right: 10px;
-					padding: 8px 12px;
-					font-size: 14px;
-				}
-			}
-
-			&:hover {
-				.controls {
-					opacity: 1;
-				}
-			}
+			width: 100%;
+			cursor: pointer;
 		}
 
 		.other-file {

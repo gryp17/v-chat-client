@@ -131,7 +131,7 @@
 <style lang="scss">
 	.conversation-controls {
 		.message-input {
-			margin: 0 -1px 0px 0px;
+			margin: 0 1px 0px 0px;
 			font-size: 16px;
 
 			textarea {

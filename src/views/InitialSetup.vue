@@ -1,5 +1,14 @@
 <template>
 	<div class="initial-setup-page">
+		<div class="logo-wrapper">
+			<img
+				src="@/assets/img/logo.png"
+				title="vChat"
+				class="logo"
+			/>
+			vChat
+		</div>
+
 		<div class="form-wrapper">
 			<h4>Specify your vChat server URL</h4>
 
@@ -64,12 +73,23 @@
 
 <style lang="scss">
 	.initial-setup-page {
-		display: flex;
-		flex-direction: column;
 		height: 100%;
 
+		.logo-wrapper {
+			margin-top: 20px;
+			padding: 10px;
+			text-align: center;
+			font-size: 22px;
+
+			.logo {
+				display: block;
+				margin: auto;
+				width: 80px;
+			}
+		}
+
 		.form-wrapper {
-			margin: auto;
+			margin: 20px auto 0px auto;
 			width: 70%;
 			max-width: 500px;
 			padding: 15px;
@@ -84,6 +104,12 @@
 			.form-button {
 				display: block;
 				margin: auto;
+			}
+		}
+
+		@media (max-width: $small) {
+			.form-wrapper {
+				width: 90%;
 			}
 		}
 	}

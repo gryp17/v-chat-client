@@ -21,7 +21,7 @@
 		data() {
 			return {
 				limit: 10,
-				fetchingMessages: false
+				fetchMessagesTimeout: null
 			};
 		},
 		computed: {
@@ -90,20 +90,19 @@
 			 * Fetches more/older message
 			 */
 			async fetchOlderMessages() {
-				if (this.fetchingMessages) {
-					return;
+				if (this.fetchMessagesTimeout) {
+					clearTimeout(this.fetchMessagesTimeout);
 				}
 
-				this.fetchingMessages = true;
+				this.fetchMessagesTimeout = setTimeout(() => {
+					const params = {
+						conversationId: this.conversation.id,
+						limit: this.limit,
+						offset: this.offset
+					};
 
-				const params = {
-					conversationId: this.conversation.id,
-					limit: this.limit,
-					offset: this.offset
-				};
-
-				await this.getMessages(params);
-				this.fetchingMessages = false;
+					this.getMessages(params);
+				}, 500);
 			}
 		}
 	};
