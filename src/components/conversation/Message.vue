@@ -24,6 +24,11 @@
 					v-linkified:options="linkifiedOptions"
 				/>
 			</div>
+
+			<MessageTimestamp
+				:alignment="timestampAlignment"
+				:date="message.createdAt"
+			/>
 		</div>
 	</div>
 </template>
@@ -31,10 +36,12 @@
 <script>
 	import { shell } from 'electron';
 	import MessageFile from '@/components/conversation/MessageFile';
+	import MessageTimestamp from '@/components/conversation/MessageTimestamp';
 
 	export default {
 		components: {
-			MessageFile
+			MessageFile,
+			MessageTimestamp
 		},
 		props: {
 			message: {
@@ -67,6 +74,9 @@
 			},
 			isFileMessage() {
 				return this.message.type === 'file';
+			},
+			timestampAlignment() {
+				return this.own ? 'left' : 'right';
 			}
 		},
 		mounted() {
@@ -90,7 +100,6 @@
 		padding: 5px 15px;
 
 		.avatar-wrapper {
-			width: 120px;
 			text-align: center;
 
 			.avatar {
@@ -115,15 +124,16 @@
 		}
 
 		.message-wrapper {
+			margin-left: 20px;
 			flex: 1;
 			//fixes an issue with the text ellipsis? wtf?
 			width: 1px;
 
 			.message-content {
 				position: relative;
-				margin : 15px 0px 0px 15px;
+				margin-top: 20px;
 				background-color: $white;
-				padding: 20px;
+				padding: 15px;
 				box-shadow:	0px 0px 0px 2px $gray;
 				word-break: break-word;
 
@@ -148,12 +158,13 @@
 			}
 
 			.message-wrapper {
-				.message-content {
-					margin-right: 15px;
+				margin-left: 0px;
+				margin-right: 20px;
 
+				.message-content {
 					&::before {
 						left: 100%;
-						top: 20px;
+						top: 15px;
 
 						border-right: 12px solid transparent;
 						border-left: 12px solid $white;
