@@ -22,10 +22,12 @@ const getters = {
 		const currentUser = rootState.auth.userSession;
 
 		return state.conversations.filter((conversation) => {
-			//show only conversations that have messages
+			//show only conversations that are public/group chats
+			//OR have messages
 			//OR were initiated/created by the current user
 			//OR the conversation is the selectedConversation (corner case check for when both users tried to start the conversation at the same time)
-			return conversation.messages.length > 0
+			return !conversation.isPrivate
+				|| conversation.messages.length > 0
 				|| (currentUser && currentUser.id === conversation.createdBy)
 				|| state.selectedConversation === conversation.id;
 		}).map((conversation) => {
