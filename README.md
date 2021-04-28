@@ -1,5 +1,5 @@
 # v-chat-client
-An Electron/VueJS based desktop chat client that uses the [v-chat-server](https://github.com/gryp17/v-chat-server) API.
+An Electron/VueJS based desktop chat client that uses the [v-chat-server](https://github.com/gryp17/v-chat-server) API. The application has a [web build](https://github.com/gryp17/v-chat-web) as well.
 
 
 It has the following features:
