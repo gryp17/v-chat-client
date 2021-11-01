@@ -157,7 +157,7 @@
 				const formData = new FormData();
 
 				['displayName', 'password', 'repeatPassword', 'avatar', 'bio'].forEach((field) => {
-					if (this[field]) {
+					if (this[field] !== null) {
 						formData.append(field, this[field]);
 					}
 				});
